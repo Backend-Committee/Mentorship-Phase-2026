@@ -1,0 +1,26 @@
+{
+  "Book.15fc19c3-8182-4f99-8d60-46d0c1aa7dd3": {
+    "id": "15fc19c3-8182-4f99-8d60-46d0c1aa7dd3",
+    "title": "Test",
+    "author": "Author",
+    "isbn": "123",
+    "published_date": "2023-01-01",
+    "available_copies": 4,
+    "total_copies": 5,
+    "__class__": "Book",
+    "created_at": "2025-12-15T22:42:18.182337",
+    "updated_at": "2025-12-15T22:42:18.187074"
+  },
+  "Book.0eb763a6-90a6-49f3-a430-b978f34c5007": {
+    "id": "0eb763a6-90a6-49f3-a430-b978f34c5007",
+    "title": "test-book",
+    "author": "test-name",
+    "isbn": "778868",
+    "published_date": "2001-09-20",
+    "available_copies": 50,
+    "total_copies": 50,
+    "__class__": "Book",
+    "created_at": "2025-12-15T22:49:25.416761",
+    "updated_at": "2025-12-15T22:49:25.416761"
+  }
+}

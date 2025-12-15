@@ -1,0 +1,14 @@
+{
+  "Transaction.88e55b41-150a-41cc-be29-653fdd4aef91": {
+    "id": "88e55b41-150a-41cc-be29-653fdd4aef91",
+    "user_id": "5638ebc9-3854-4027-99d8-aa9aeb698c09",
+    "book_id": "15fc19c3-8182-4f99-8d60-46d0c1aa7dd3",
+    "transaction_type": "borrow",
+    "transaction_date": "2025-12-15T22:42:18.186959",
+    "status": "active",
+    "return_date": "",
+    "__class__": "Transaction",
+    "created_at": "2025-12-15T22:42:18.187041",
+    "updated_at": "2025-12-15T22:42:18.187041"
+  }
+}
