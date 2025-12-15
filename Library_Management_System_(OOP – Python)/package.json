@@ -1,0 +1,12 @@
+{
+  "name": "star-union",
+  "version": "1.0.0",
+  "main": "Library_Management_System.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "Ahmed Sheref",
+  "license": "ISC",
+  "description": ""
+}
