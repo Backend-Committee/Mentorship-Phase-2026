@@ -1,0 +1,17 @@
+{
+    "books": [
+        {
+            "bookID": 1,
+            "title": "zbook",
+            "author": "zanaty",
+            "available": true
+        }
+    ],
+    "users": [
+        {
+            "ID": 1,
+            "name": "zanaty",
+            "borrowedBooks": []
+        }
+    ]
+}
