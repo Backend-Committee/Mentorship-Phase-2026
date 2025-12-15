@@ -1,0 +1,28 @@
+{
+  "name": "My Library",
+  "books": [
+    {
+      "ID": 1,
+      "title": "clean code",
+      "author": "Robert Martin",
+      "category": "Software",
+      "pages": 464
+    },
+    {
+      "ID": 2,
+      "title": "oop",
+      "author": "Novel",
+      "category": "SOLID",
+      "pages": 328
+    }
+  ],
+  "users": [
+    {
+      "id": 10,
+      "name": "Ahmed",
+      "email": "ahmedshalhadad1@gmail.com",
+      "phone": "01091575793",
+      "borrowedBooks": []
+    }
+  ]
+}

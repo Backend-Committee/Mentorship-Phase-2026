@@ -117,6 +117,12 @@ class Library:
             "users": [u.to_json() for u in self.users]
         }
     
+    def save_to_file(self, filename="library_data.json"):
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(self.to_json(), f, indent=2, ensure_ascii=False)
+        print(f"Saved to {filename}")
+
+    
     def menu(self):
         while True:
             print("\n===== Library Menu =====")
@@ -186,6 +192,8 @@ def main():
 
     # borrow via User
     lib.menu()
+
+    lib.save_to_file()
 
     # print("\n=== Library JSON (After Borrow) ===")
     # print(json.dumps(lib.to_json(), indent=2, ensure_ascii=False))
