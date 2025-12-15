@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "title": "1919",
+        "author_name": "Ahmed Morad",
+        "publisher": "ana",
+        "year_of_publish": 2008,
+        "borrowed": false,
+        "borrowed_by": null
+    },
+    {
+        "id": 2,
+        "title": "Harry Potter and the Deathly Hallows",
+        "author_name": "J.K Rowling",
+        "publisher": "1997",
+        "year_of_publish": 1997,
+        "borrowed": false,
+        "borrowed_by": null
+    },
+    {
+        "id": 3,
+        "title": "Harry Potter and the Champer of secrets",
+        "author_name": "J.K Rowling",
+        "publisher": "ana",
+        "year_of_publish": 1992,
+        "borrowed": false,
+        "borrowed_by": null
+    }
+]
