@@ -1,5 +1,30 @@
-{
-    "Lord of the flies": "Available",
-    "The picture of Dorian Gray": "Available",
-    "And then there were none": "Available"
-}
+[
+    {
+        "name": "Lord of the flies",
+        "year": "2006",
+        "genre": "fantasy",
+        "author": "William Goldings",
+        "status": "Available"
+    },
+    {
+        "name": "The picture of Dorian Gray",
+        "year": "1890",
+        "genre": "gothic horror",
+        "author": "Oscar Wilde",
+        "status": "Borrowed"
+    },
+    {
+        "name": "And then there were none",
+        "year": "1800",
+        "genre": "thriller",
+        "author": "Agatha Christi",
+        "status": "Available"
+    },
+    {
+        "name": "To kill a mocking bird",
+        "year": "2005",
+        "genre": "sadness",
+        "author": "",
+        "status": "Available"
+    }
+]
