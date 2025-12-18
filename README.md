@@ -1,7 +1,7 @@
 # Library Management System
 
 ## Description
-Manage who library users, books, and borrowing
+Manage who library users are, show books, and allow book borrowing
 
 ## Features
 -Add User
