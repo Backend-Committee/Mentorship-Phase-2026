@@ -8,6 +8,8 @@ Manage who library users are, show books, and allow book borrowing
 -Add Book
 -Borrow Book
 -View Available Books
+-Return Book
+-View Available Books
 
-## author
+## Author
 lelo
