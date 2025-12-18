@@ -18,7 +18,6 @@ This project is part of the **Backend Committee – Star Union** mentorship task
 ---
 
 ## 🧱 Project Structure
-
 .
 ├── main.py # Main application logic
 ├── books.json # Stores books data
@@ -49,3 +48,4 @@ This project is part of the **Backend Committee – Star Union** mentorship task
 ```bash
 python main.py
 ```
+
