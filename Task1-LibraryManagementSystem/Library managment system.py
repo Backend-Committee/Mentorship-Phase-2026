@@ -110,7 +110,7 @@ class ManagementSystem:
        
     def loadData(self):
         try:
-            with open("Tasks/Task1-LibraryManagementSystem/books.json", "r") as file:
+            with open("books.json", "r") as file:
                 data = json.load(file)
                 for book in data:
                     self.__Books.append(Book.from_dict(book))
@@ -121,7 +121,8 @@ class ManagementSystem:
         try:
             # you can't make a set as a json
             # self.__Users = {"Rawan Ahmed", "Mesh Rawan Ahmed"};
-            with open("Tasks/Task1-LibraryManagementSystem/users.json", "r") as fi:
+        # with open("Tasks/Task1-LibraryManagementSystem/users.json", "r") as fi:
+            with open("users.json", "r") as fi:
                 data = json.load(fi)
                 for user in data:
                     self.__Users.append(User.from_dict(user))
@@ -129,12 +130,13 @@ class ManagementSystem:
             print("No previous Users found, starting fresh!") 
                 
     def SaveBooks(self):
-        with open("Tasks/Task1-LibraryManagementSystem/books.json", "w") as file: # write
+        with open("books.json", "w") as file: # write
             json.dump([book.to_dict() for book in self.__Books], file, indent=4) #indentation
             # edits the json file
             
     def SaveUsers(self):
-        with open("Tasks/Task1-LibraryManagementSystem/users.json", "w") as file:
+        # the terminal sees what is the folder you are running the file in 
+        with open("users.json", "w") as file:
             # json.dump(list(self.__Users), file, indent=4)
             json.dump([user.to_dict() for user in self.__Users], file, indent=4) # sorted list
              
@@ -170,10 +172,10 @@ class ManagementSystem:
         print("User Added Successfully!")
     
     # false if not available
-    def BorrowBook(self, bookname):
+    def BorrowBook(self, bookName):
         # for book, status in self.__Books.items():
         for book in self.__Books:
-            if bookname == book.name:       
+            if bookName == book.name:       
                 if book.status == "Borrowed":
                     print("Sorry, the book is already borrowed")
                 else:
@@ -184,9 +186,9 @@ class ManagementSystem:
         
         print("Sorry, We don't have this book")
             
-    def ReturnBook(self, bookname):
+    def ReturnBook(self, bookName):
         for book in self.__Books:  
-            if bookname == book.name:
+            if bookName == book.name:
                 if book.status == "Borrowed":
                         book.status ="Available"
                         self.SaveBooks()
@@ -285,6 +287,10 @@ def main():
         
         elif choice == "2":
             name = input("Enter book name: ")
+            while name == "":
+                print("Enter a real book name!")
+                name = input("Enter book name: ")
+                
             library.AddBook(name)
         
         elif choice == "3":
@@ -303,6 +309,11 @@ def main():
         elif choice == "6":
             name = input("Enter user name: ")
             user_id = input("Enter user ID: ")
+            
+            while name == "" or id == "":
+                print("Really? type real data this time")
+                name = input("Enter user name: ")
+                user_id = input("Enter user ID: ")
             library.AddUser(name, user_id)
         
         elif choice == "7":
