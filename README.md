@@ -1,144 +1,144 @@
 # \# Library Management System (Python OOP)
 
-# 
+#### 
 
-# \## 📚 Project Overview
+#### \## 📚 Project Overview
 
-# This is a simple \*\*Library Management System\*\* implemented in \*\*Python\*\* using \*\*Object-Oriented Programming (OOP)\*\* concepts.
+#### This is a simple \*\*Library Management System\*\* implemented in \*\*Python\*\* using \*\*Object-Oriented Programming (OOP)\*\* concepts.
 
-# The system allows you to manage books, users, and the borrowing/returning process.
+#### The system allows you to manage books, users, and the borrowing/returning process.
 
-# 
+#### 
 
-# ---
+#### ---
 
-# 
+#### 
 
-# \## 🎯 Objective
+#### \## 🎯 Objective
 
-# Create a simple library system that can:
+#### Create a simple library system that can:
 
-# 
+#### 
 
-# \- Manage books
+#### \- Manage books
 
-# \- Manage users
+#### \- Manage users
 
-# \- Allow borrowing and returning books
+#### \- Allow borrowing and returning books
 
-# \- Display available books
+#### \- Display available books
 
-# 
+#### 
 
-# ---
+#### ---
 
-# 
+#### 
 
-# \## 🏗️ Features
+#### \## 🏗️ Features
 
-# The system includes:
+#### The system includes:
 
-# 
+#### 
 
-# 1\. \*\*Add a Book\*\* – Add new books to the library.
+#### 1\. \*\*Add a Book\*\* – Add new books to the library.
 
-# 2\. \*\*Add a User\*\* – Register new users.
+#### 2\. \*\*Add a User\*\* – Register new users.
 
-# 3\. \*\*Borrow Book\*\* – Allow a user to borrow a book if it’s available.
+#### 3\. \*\*Borrow Book\*\* – Allow a user to borrow a book if it’s available.
 
-# 4\. \*\*Return Book\*\* – Allow a user to return a borrowed book.
+#### 4\. \*\*Return Book\*\* – Allow a user to return a borrowed book.
 
-# 5\. \*\*Display Available Books\*\* – Show all books that are currently available.
+#### 5\. \*\*Display Available Books\*\* – Show all books that are currently available.
 
-# 
+#### 
 
-# ---
+#### ---
 
-# 
+#### 
 
-# \## 🧩 Classes \& Methods
+#### \## 🧩 Classes \& Methods
 
-# 
+#### 
 
-# \### \*\*Book\*\*
+#### \### \*\*Book\*\*
 
-# Represents a book in the library.
+#### Represents a book in the library.
 
-# 
+#### 
 
-# \- `\\\_\\\_init\\\_\\\_(self, title, author, is\\\_available=True)` – Initialize a book.
+#### \- `\\\_\\\_init\\\_\\\_(self, title, author, is\\\_available=True)` – Initialize a book.
 
-# \- `disPlay\\\_info(self)` – Display book information.
+#### \- `disPlay\\\_info(self)` – Display book information.
 
-# 
+#### 
 
-# \### \*\*User\*\*
+#### \### \*\*User\*\*
 
-# Represents a library user.
+#### Represents a library user.
 
-# 
+#### 
 
-# \- `\\\_\\\_init\\\_\\\_(self, name, user\\\_id)` – Initialize a user.
+#### \- `\\\_\\\_init\\\_\\\_(self, name, user\\\_id)` – Initialize a user.
 
-# \- `display\\\_info(self)` – Display user information including borrowed books.
+#### \- `display\\\_info(self)` – Display user information including borrowed books.
 
-# 
+#### 
 
-# \### \*\*Library\*\*
+#### \### \*\*Library\*\*
 
-# Handles all library operations.
+#### Handles all library operations.
 
-# 
+#### 
 
-# \- `add\\\_book(self, book)` – Add a book to the library.
+#### \- `add\\\_book(self, book)` – Add a book to the library.
 
-# \- `add\\\_user(self, user)` – Add a user to the library.
+#### \- `add\\\_user(self, user)` – Add a user to the library.
 
-# \- `borrow\\\_book(self, book, user)` – Borrow a book for a user.
+#### \- `borrow\\\_book(self, book, user)` – Borrow a book for a user.
 
-# \- `return\\\_book(self, book, user)` – Return a borrowed book.
+#### \- `return\\\_book(self, book, user)` – Return a borrowed book.
 
-# \- `display\\\_available\\\_books(self)` – Print all available books.
+#### \- `display\\\_available\\\_books(self)` – Print all available books.
 
-# 
+#### 
 
-# ---
+#### ---
 
-# 
+#### 
 
-# \## 💻 How to Run
+#### \## 💻 How to Run
 
-# 1\. Make sure you have \*\*Python 3.x\*\* installed.
+#### 1\. Make sure you have \*\*Python 3.x\*\* installed.
 
-# 2\. Run the script in your terminal or Python IDE:
+#### 2\. Run the script in your terminal or Python IDE:
 
-# ```bash
+#### ```bash
 
-# python Backend\_projects.py
+#### python Backend\_projects.py
 
+#### 
 
+#### 
 
+#### --- Library Menu ---
 
+#### 1\. Add Book
 
---- Library Menu ---
+#### 2\. Add User
 
-1\. Add Book
+#### 3\. Borrow Book
 
-2\. Add User
+#### 4\. Return Book
 
-3\. Borrow Book
+#### 5\. Display Available Books
 
-4\. Return Book
+#### 6\. Exit
 
-5\. Display Available Books
+#### Enter your choice: 1
 
-6\. Exit
+#### Enter book title: Python Basics
 
-Enter your choice: 1
+#### Enter book author: John Doe
 
-Enter book title: Python Basics
-
-Enter book author: John Doe
-
-Book added successfully
+#### Book added successfully
 
