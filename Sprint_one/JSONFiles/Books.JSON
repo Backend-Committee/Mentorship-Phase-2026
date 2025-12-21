@@ -1,0 +1,16 @@
+[
+    {
+        "ID": 1,
+        "Title": "1984",
+        "Author": "George Orwell",
+        "Place": "A1",
+        "Available": false
+    },
+    {
+        "ID": 2,
+        "Title": "7abibi",
+        "Author": "ana",
+        "Place": "B1",
+        "Available": true
+    }
+]
