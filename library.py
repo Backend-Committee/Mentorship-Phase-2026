@@ -8,22 +8,7 @@ class Users():
         print(f"Welcome!! {self.name}")    
 
 
-    def borrow_book(self, book):
-        if book.available:
-            book.available = False
-            self.borrowed_books.append(book)
-            print(f"{self.name} borrowed {book.title}")
-        else:
-            print("Book isn't Available at the moment..")
-
-    def return_book(self, book):
-        if book in self.borrowed_books:
-            book.availabe = True
-            self.borrowed_books.remove(book)
-            print(f"{self.title} returned successfully! returned by: {self.name}")
-        else:
-            print(f"{self.name} doesn't have the book {self.title}")
-
+    
 users_list = []
 
 def add_user():
@@ -52,6 +37,23 @@ Book Author: {self.author}
 Release Date: {self.year}
 Availability: {status}
 ''')
+    
+    def borrow_book(self, book):
+        if book.available:
+            book.available = False
+            self.borrowed_books.append(book)
+            print(f"{self.name} borrowed {book.title}")
+        else:
+            print("Book isn't Available at the moment..")
+
+    def return_book(self, book):
+        if book in self.borrowed_books:
+            book.availabe = True
+            self.borrowed_books.remove(book)
+            print(f"{self.title} returned successfully! returned by: {self.name}")
+        else:
+            print(f"{self.name} doesn't have the book {self.title}")
+
 
 books = []
 def add_book():
@@ -70,6 +72,8 @@ book1 = add_book()
 user2 = add_user()
 book2 = add_book()
 
+user1.borrow_book(book1) 
+user2.borrow_book(book2)
 
 
 print(f"\nTotal users: {len(users_list)}")
