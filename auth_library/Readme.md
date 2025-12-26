@@ -1,6 +1,4 @@
-# 📚 Book Library Manager (Django Edition)
-
-A full-stack web application for exploring classic books and managing a personal favorites list. This project was ported from Node.js to **Python (Django)**, maintaining the exact same file structure, variable names, and logic, including a custom **JSON-based database** implementation.
+# 📚 Book Library Manager (Django)
 
 ---
 
