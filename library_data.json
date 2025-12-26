@@ -6,14 +6,16 @@
       "title": "clean code",
       "author": "Robert Martin",
       "category": "Software",
-      "pages": 464
+      "pages": 464,
+      "status": false
     },
     {
       "ID": 2,
       "title": "oop",
       "author": "Novel",
       "category": "SOLID",
-      "pages": 328
+      "pages": 328,
+      "status": true
     }
   ],
   "users": [
@@ -22,7 +24,15 @@
       "name": "Ahmed",
       "email": "ahmedshalhadad1@gmail.com",
       "phone": "01091575793",
-      "borrowedBooks": []
+      "borrowedBooks": [
+        {
+          "id": 1,
+          "title": "clean code",
+          "author": "Robert Martin",
+          "category": "Software",
+          "pages": 464
+        }
+      ]
     }
   ]
 }

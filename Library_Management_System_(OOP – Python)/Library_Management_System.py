@@ -18,7 +18,8 @@ class Book:
             "title": self.title,
             "author": self.author,
             "category": self.category,
-            "pages": self.pages
+            "pages": self.pages,
+            "status" : self.status
         }
 
 
@@ -207,4 +208,6 @@ def main():
 
 
 
-main()
+
+if __name__ == '__main__':
+    main()

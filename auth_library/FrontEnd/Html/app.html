@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Library Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container app-container">
+        <h1>Book Library Dashboard</h1>
+        
+        <div id="messageBox" class="error-message"></div>
+
+        <div class="btn-group">
+            <button id="btnRandom" class="btn">Get Random Book</button>
+            <button id="btnHighest" class="btn">Highest Rated</button>
+            <button id="btnOldest" class="btn">Oldest Book</button>
+        </div>
+
+        <div id="resultArea" class="book-display hidden">
+            <img id="bookImage" src="" alt="Book Cover" class="book-cover hidden">
+            
+            <h3 id="bookTitle">Book Title</h3>
+            <p><strong>Author:</strong> <span id="bookAuthor">-</span></p>
+            <p><strong>Downloads:</strong> <span id="bookDownloads">-</span></p>
+            <p><strong>Birth Year:</strong> <span id="bookYear">-</span></p>
+            
+            <div style="margin-top: 15px;">
+                <a id="bookLink" href="#" target="_blank" class="btn btn-read hidden">Read Book</a>
+                <button id="btnAddToFav" class="btn btn-fav hidden">★ Add to Favorites</button>
+             </div>
+        </div>
+
+        <div class="favorites-section">
+            <h2>My Favorite Books</h2>
+            <div id="favoritesGrid" class="fav-grid">
+                <p style="color: #888;">Loading favorites...</p>
+            </div>
+        </div>
+
+        <button onclick="logout()" class="btn btn-secondary">Logout</button>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>

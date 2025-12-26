@@ -1,0 +1,199 @@
+[
+  {
+    "username": "ahmed",
+    "email": "ahmedsheref2288@yahoo.com",
+    "password": "$2b$12$/3qGhsAwJM31mBJPWOuaFeqs6UeAS8vo/uwAY4dm.bkKR5E3puD4K",
+    "favorites": []
+  },
+  {
+    "username": "ali",
+    "email": "20230542@stud.fci-cu.edu.eg",
+    "password": "$2b$12$F.qnVXQfHtAZvYpCdHKCy.soXeVFb2PDMHX3tSJqtR34nDND98BT6",
+    "favorites": [
+      {
+        "id": 394,
+        "title": "Cranford",
+        "authors": [
+          {
+            "name": "Gaskell, Elizabeth Cleghorn",
+            "birth_year": 1810,
+            "death_year": 1865
+          }
+        ],
+        "summaries": [
+          "\"Cranford\" by Elizabeth Cleghorn Gaskell is a novel written in the mid-19th century. The story unfolds in a small English village dominated by women, where men are conspicuously absent from social life. The narrative is rich with observations about the peculiar rituals, customs, and dynamics of the tight-knit community, primarily focusing on the lives of its female inhabitants, including the amiable and kind-hearted Miss Matty and the spirited Captain Brown, who disrupts their tranquil existence.  At the start of \"Cranford,\" we are introduced to the unique social structure of the village, characterized by its predominantly female residents who manage their affairs without the presence of men, aside from the occasional visitor. The opening chapter humorously details the societal norms and the unspoken rules that govern interactions, such as visiting etiquette and the preference for economy over ostentation. Key characters like the gentle Miss Matty and the charismatic Captain Brown are introduced, hinting at a deeper exploration of human relationships and character development as the story progresses. Through the eyes of the narrator, the reader gets a glimpse into the endearing quirks and camaraderie of the Cranford community, setting the stage for the unfolding tales of friendship, love, and social commentary that define this charming novel. (This is an automatically generated summary.)"
+        ],
+        "editors": [],
+        "translators": [],
+        "subjects": [
+          "England -- Fiction",
+          "Female friendship -- Fiction",
+          "Older women -- Fiction",
+          "Pastoral fiction",
+          "Sisters -- Fiction",
+          "Villages -- Fiction"
+        ],
+        "bookshelves": [
+          "Category: British Literature",
+          "Category: Novels"
+        ],
+        "languages": [
+          "en"
+        ],
+        "copyright": false,
+        "media_type": "Text",
+        "formats": {
+          "text/html": "https://www.gutenberg.org/ebooks/394.html.images",
+          "application/epub+zip": "https://www.gutenberg.org/ebooks/394.epub3.images",
+          "application/x-mobipocket-ebook": "https://www.gutenberg.org/ebooks/394.kf8.images",
+          "text/plain; charset=us-ascii": "https://www.gutenberg.org/ebooks/394.txt.utf-8",
+          "application/rdf+xml": "https://www.gutenberg.org/ebooks/394.rdf",
+          "image/jpeg": "https://www.gutenberg.org/cache/epub/394/pg394.cover.medium.jpg",
+          "text/plain; charset=utf-8": "https://www.gutenberg.org/files/394/394-0.txt",
+          "application/octet-stream": "https://www.gutenberg.org/cache/epub/394/pg394-h.zip"
+        },
+        "download_count": 40802
+      },
+      {
+        "id": 64317,
+        "title": "The Great Gatsby",
+        "authors": [
+          {
+            "name": "Fitzgerald, F. Scott (Francis Scott)",
+            "birth_year": 1896,
+            "death_year": 1940
+          }
+        ],
+        "summaries": [
+          "\"The Great Gatsby\" by F. Scott Fitzgerald is a novel written in the early 20th century. The story is mainly narrated by Nick Carraway, who reflects on the life of his enigmatic neighbor, Jay Gatsby, and the extravagant world of wealth and excess he inhabits. The novel explores themes of the American Dream, love, and social class.  At the start of the novel, Nick Carraway reflects on advice from his father about withholding judgment of others, which sets the stage for the unfolding narrative. We learn about Nick's background, his move to West Egg, and his connection to wealthy acquaintances like Tom and Daisy Buchanan. Nick's first glimpse of Gatsby is during a moment of solitude when he sees Gatsby reaching out toward a distant green light, symbolizing his unattainable dreams. This opening portion lays the groundwork for the intricate relationships and social dynamics in the world of 1920s America, hinting at the luxurious yet hollow lives that many characters lead. (This is an automatically generated summary.)"
+        ],
+        "editors": [],
+        "translators": [],
+        "subjects": [
+          "First loves -- Fiction",
+          "Long Island (N.Y.) -- Fiction",
+          "Married women -- Fiction",
+          "Psychological fiction",
+          "Rich people -- Fiction"
+        ],
+        "bookshelves": [
+          "Category: American Literature",
+          "Category: Classics of Literature",
+          "Category: Novels"
+        ],
+        "languages": [
+          "en"
+        ],
+        "copyright": false,
+        "media_type": "Text",
+        "formats": {
+          "text/html": "https://www.gutenberg.org/ebooks/64317.html.images",
+          "application/epub+zip": "https://www.gutenberg.org/ebooks/64317.epub3.images",
+          "application/x-mobipocket-ebook": "https://www.gutenberg.org/ebooks/64317.kf8.images",
+          "text/plain; charset=us-ascii": "https://www.gutenberg.org/ebooks/64317.txt.utf-8",
+          "application/rdf+xml": "https://www.gutenberg.org/ebooks/64317.rdf",
+          "image/jpeg": "https://www.gutenberg.org/cache/epub/64317/pg64317.cover.medium.jpg",
+          "application/octet-stream": "https://www.gutenberg.org/cache/epub/64317/pg64317-h.zip"
+        },
+        "download_count": 36990
+      },
+      {
+        "id": 2160,
+        "title": "The Expedition of Humphry Clinker",
+        "authors": [
+          {
+            "name": "Smollett, T. (Tobias)",
+            "birth_year": 1721,
+            "death_year": 1771
+          }
+        ],
+        "summaries": [
+          "\"The Expedition of Humphry Clinker\" by Tobias Smollett is a novel written during the mid-18th century. This humorous work explores the journey and misadventures of the Bramble family and their companions as they travel through Wales and England, providing a satirical glimpse into the social and cultural life of the time. The story is primarily told through a series of letters, offering a diverse range of perspectives from its characters, including the hypochondriac Matthew Bramble and his lively niece, Lydia Melford.  The opening of the novel introduces several key characters through a series of letters among various recipients. The narrative begins with Jonathan Dustwich, who writes to Mr. Henry Davis about his plans to publish a collection of letters, asserting the importance of their content. We also meet Matthew Bramble, who expresses his ailments and frustrations with familial responsibilities, alluding to troublesome interactions with his niece\u2019s romantic interests. As they prepare for a trip to the Hot Well in Bristol, the Bramble family\u2019s dynamic begins to unfold, hinting at both familial loyalty and the conflicts that arise from their contrasting personalities. Ultimately, the beginning sets the stage for a blend of comedy, social commentary, and insight into human relationships throughout their journey. (This is an automatically generated summary.)"
+        ],
+        "editors": [],
+        "translators": [],
+        "subjects": [
+          "Epistolary fiction",
+          "Great Britain -- Fiction",
+          "Travelers -- Fiction"
+        ],
+        "bookshelves": [
+          "Best Books Ever Listings",
+          "Category: British Literature",
+          "Category: Classics of Literature",
+          "Category: Essays, Letters & Speeches",
+          "Category: Humour",
+          "Category: Novels",
+          "Category: Travel Writing",
+          "Historical Fiction"
+        ],
+        "languages": [
+          "en"
+        ],
+        "copyright": false,
+        "media_type": "Text",
+        "formats": {
+          "text/html": "https://www.gutenberg.org/ebooks/2160.html.images",
+          "application/epub+zip": "https://www.gutenberg.org/ebooks/2160.epub3.images",
+          "application/x-mobipocket-ebook": "https://www.gutenberg.org/ebooks/2160.kf8.images",
+          "text/plain; charset=us-ascii": "https://www.gutenberg.org/ebooks/2160.txt.utf-8",
+          "application/rdf+xml": "https://www.gutenberg.org/ebooks/2160.rdf",
+          "image/jpeg": "https://www.gutenberg.org/cache/epub/2160/pg2160.cover.medium.jpg",
+          "application/octet-stream": "https://www.gutenberg.org/cache/epub/2160/pg2160-h.zip"
+        },
+        "download_count": 40505
+      }
+    ]
+  },
+  {
+    "username": "ahmed",
+    "email": "bosybebo95@yahoo.com",
+    "password": "$2b$12$jvYC02goYr4tFmM6voKTme5XJ/9ZCM/SqC9sMiNRqM5kvDMaLl.ii",
+    "favorites": [
+      {
+        "id": 2641,
+        "title": "A Room with a View",
+        "authors": [
+          {
+            "name": "Forster, E. M. (Edward Morgan)",
+            "birth_year": 1879,
+            "death_year": 1970
+          }
+        ],
+        "summaries": [
+          "\"A Room with a View\" by E. M. Forster is a novel written during the early 20th century, which explores themes of social conventions and personal freedom. Set primarily in Italy and England, the narrative follows the journey of Lucy Honeychurch, a young woman navigating her feelings about love, societal expectations, and her own desires against the backdrop of her experiences abroad.  The opening of the story introduces the character of Lucy and her cousin Charlotte Bartlett as they arrive at the Pension Bertolini in Florence. Disappointed by the accommodation\u2019s lack of a promised view, they bicker about their arrangements. Lucy's eagerness to experience Italy conflicts with Charlotte's more cautious demeanor. Here, the reader meets Mr. Emerson and his son George, who challenge the norms of polite society, offering their rooms to Lucy and Charlotte out of kindness, which Charlotte initially declines. The tension between personal desires and societal expectations is palpable, setting the stage for Lucy's internal conflict and her eventual blossoming into independence and self-discovery. (This is an automatically generated summary.)"
+        ],
+        "editors": [],
+        "translators": [],
+        "subjects": [
+          "British -- Italy -- Fiction",
+          "England -- Fiction",
+          "Florence (Italy) -- Fiction",
+          "Humorous stories",
+          "Young women -- Fiction"
+        ],
+        "bookshelves": [
+          "Category: British Literature",
+          "Category: Novels",
+          "Category: Romance",
+          "Italy"
+        ],
+        "languages": [
+          "en"
+        ],
+        "copyright": false,
+        "media_type": "Text",
+        "formats": {
+          "text/html": "https://www.gutenberg.org/ebooks/2641.html.images",
+          "application/epub+zip": "https://www.gutenberg.org/ebooks/2641.epub3.images",
+          "application/x-mobipocket-ebook": "https://www.gutenberg.org/ebooks/2641.kf8.images",
+          "text/plain; charset=us-ascii": "https://www.gutenberg.org/ebooks/2641.txt.utf-8",
+          "application/rdf+xml": "https://www.gutenberg.org/ebooks/2641.rdf",
+          "image/jpeg": "https://www.gutenberg.org/cache/epub/2641/pg2641.cover.medium.jpg",
+          "application/octet-stream": "https://www.gutenberg.org/cache/epub/2641/pg2641-h.zip"
+        },
+        "download_count": 53757
+      }
+    ]
+  }
+]
