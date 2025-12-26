@@ -4,16 +4,18 @@ from auth_system.validation import ValidationError
 from utils import get_opt
 import os
 from analyzer import Analyzer
+import json
 
 STORAGE_PATH = "storage"
 CACHE_PATH = "cache"
 
 
 ROUND_TO_NAME = {
-    1: "Quarter-finals",
-    2: "Semi-finals",
-    3: "3rd Place Final",
-    4: "Final",
+    1: "Final",
+    2: "3rd Place Final",
+    3: "Semi-finals",
+    4: "Quarter-finals",
+    5: "Round of 16",
 }
 
 
@@ -82,4 +84,6 @@ if __name__ == "__main__":
     
     os.makedirs(CACHE_PATH, exist_ok=True)
     analyzer = Analyzer(dir_path=CACHE_PATH)
-    analyzer.show_best_player(round)
+    best_player = analyzer.get_best_player(round)
+    print("THE BEST PLAYER")
+    print(json.dumps(best_player, indent=2))

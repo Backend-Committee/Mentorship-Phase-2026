@@ -14,7 +14,7 @@ class Analyzer:
         self.session = requests.Session()
         self.session.headers["x-apisports-key"] = self.API_KEY
 
-    def show_best_player(self, round: str):
+    def get_best_player(self, round: str):
         players_ratings = []
 
         fixtures = self._get_round_fixtures(round)
@@ -38,8 +38,8 @@ class Analyzer:
         with open(os.path.join(self.dir_path, "debug.json"), "w") as f:
             json.dump(best_player, f)
         
-        print("THE BEST PLAYER")
-        print(json.dumps(best_player, indent=2))
+        return best_player
+        
 
     def _get_round_fixtures(self, round):
         fixtures_json_path = os.path.join(self.dir_path, f"fixtures_{round}.json")
