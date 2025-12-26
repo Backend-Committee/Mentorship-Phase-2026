@@ -1,0 +1,74 @@
+[
+    {
+        "country": "Canada",
+        "domains": [
+            "uoit.ca"
+        ],
+        "name": "University of Ontario Institute of Technology",
+        "web_pages": [
+            "http://www.uoit.ca/"
+        ],
+        "alpha_two_code": "CA",
+        "state-province": "Ontario"
+    },
+    {
+        "country": "Canada",
+        "domains": [
+            "sait.ca"
+        ],
+        "name": "Southern Alberta Institute of Technology",
+        "web_pages": [
+            "http://www.sait.ca/"
+        ],
+        "alpha_two_code": "CA",
+        "state-province": "Alberta"
+    },
+    {
+        "country": "Canada",
+        "domains": [
+            "nait.ca"
+        ],
+        "name": "Northern Alberta Institute of Technology",
+        "web_pages": [
+            "http://www.nait.ca/"
+        ],
+        "alpha_two_code": "CA",
+        "state-province": "Alberta"
+    },
+    {
+        "country": "Canada",
+        "domains": [
+            "nvit.bc.ca"
+        ],
+        "name": "Nicola Valley Institute of Technology",
+        "web_pages": [
+            "http://www.nvit.bc.ca/"
+        ],
+        "alpha_two_code": "CA",
+        "state-province": "British Columbia"
+    },
+    {
+        "country": "Canada",
+        "domains": [
+            "cal.devry.ca"
+        ],
+        "name": "DeVry Institute of Technology",
+        "web_pages": [
+            "http://www.cal.devry.ca/"
+        ],
+        "alpha_two_code": "CA",
+        "state-province": "Alberta"
+    },
+    {
+        "country": "Canada",
+        "domains": [
+            "bcit.ca"
+        ],
+        "name": "British Columbia Institute of Technology",
+        "web_pages": [
+            "http://www.bcit.ca/"
+        ],
+        "alpha_two_code": "CA",
+        "state-province": "British Columbia"
+    }
+]
