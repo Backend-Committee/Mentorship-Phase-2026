@@ -173,9 +173,6 @@ if __name__ == "__main__":
     photo = analyzer.save_player_image(best_player["photo"])
     country_logo = analyzer.save_country_logo(best_player["country_logo"])
     
-    print(photo)
-    print(country_logo)
-    
     print("THE BEST PLAYER")
     print(json.dumps(best_player, indent=2))
     analyzer.close()
