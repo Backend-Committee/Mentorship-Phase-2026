@@ -13,6 +13,11 @@ class Analyzer:
 
         self.session = requests.Session()
         self.session.headers["x-apisports-key"] = self.API_KEY
+        
+        self.player_photos_path = os.path.join(self.dir_path, "players_photos")
+        os.makedirs(self.player_photos_path, exist_ok=True)
+        self.countries_logos_path = os.path.join(self.dir_path, "countries_logos")
+        os.makedirs(self.countries_logos_path, exist_ok=True)
 
     def get_best_player(self, round: str):
         players_ratings = []
@@ -39,8 +44,49 @@ class Analyzer:
             json.dump(best_player, f)
         
         return best_player
+    
+    def save_player_image(self, player_photo_url: str, exists_ok = True):
+        file_name = player_photo_url.split("/")[-1]
+        file_path = os.path.join(self.player_photos_path, file_name)
+        if os.path.exists(file_path):
+            print(f"PLAYER PHOTO ALREADY EXISTS: {file_path}")
+            input("PRESS ENTER TO CONTINUE")
+            print()
+            if exists_ok:
+                return file_path
+            else:
+                raise Exception()
+            
+        resp = self.session.get(player_photo_url)
+        with open(file_path, "wb") as f:
+            f.write(resp.content)
+        print(f"SAVED PLAYER IMAGE TO {file_path}")
+        input("PRESS ENTER TO CONTINUE")
+        print()
         
-
+        return file_path
+            
+    def save_country_logo(self, country_logo, exists_ok=True):
+        file_name = country_logo.rsplit("/")[-1]
+        file_path = os.path.join(self.countries_logos_path, file_name)
+        if os.path.exists(file_path):
+            print(f"COUNTRY LOGO ALREADY EXISTS: {file_path}")
+            input("PRESS ENTER TO CONTINUE")
+            print()
+            if exists_ok:
+                return file_path
+            else:
+                raise Exception()
+            
+        resp = self.session.get(country_logo)
+        with open(file_path, "wb") as f:
+            f.write(resp.content)
+        print(f"SAVED COUNTRY LOGO TO {file_path}")
+        input("PRESS ENTER TO CONTINUE")
+        print()
+        
+        return file_path
+    
     def _get_round_fixtures(self, round):
         fixtures_json_path = os.path.join(self.dir_path, f"fixtures_{round}.json")
 
@@ -88,16 +134,16 @@ class Analyzer:
             print()
 
         for team_dict in stats["response"]:
-            team_name = team_dict["team"]["name"]
-            team_logo = team_dict["team"]["logo"]
+            country = team_dict["team"]["name"]
+            country_logo = team_dict["team"]["logo"]
             for player in team_dict["players"]:
                 abstracted_player = {
                     "id": player["player"]["id"],
                     "name": player["player"]["name"],
                     "photo": player["player"]["photo"],
                     "rating": player["statistics"][0]["games"]["rating"],
-                    "team_name": team_name,
-                    "team_logo": team_logo
+                    "country": country,
+                    "country_logo": country_logo
                 }
                 result.append(abstracted_player)
 
