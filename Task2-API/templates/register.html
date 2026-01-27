@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="../static/register.css" />
+    <link rel="stylesheet" href="../static/header.css" />
+    <link rel="stylesheet" href="../static/all.css" />
+  </head>
+  <body>
+    <header>
+      {% if username %}
+      <p>Welcome back {{username}}</p>
+      {% endif %}
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {% if not username %}
+          <li><a href="/login">Login</a></li>
+          <li><a href="/register">Register</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <div class="container">
+      <h1>Sign Up</h1>
+      <form method="POST">
+        <input name="username" placeholder="Username" required />
+        <input name="email" type="email" placeholder="Email" required />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </body>
+</html>

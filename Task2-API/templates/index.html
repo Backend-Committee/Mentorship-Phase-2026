@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poems for life</title>
+    <link rel="stylesheet" href="../static/index.css" />
+    <link rel="stylesheet" href="../static/header.css" />
+    <link rel="stylesheet" href="../static/all.css" />
+  </head>
+  <body>
+    <header>
+        {% if username %}
+        <p>Welcome back {{username}}</p>
+        {% endif %}
+        <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            {% if not username %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+    </header>
+    <div class="container">
+      <header>
+        <h1>Poems for life</h1>
+      </header>
+
+      <div class="poem-container">
+          <h2 class="poem-title">{{ poems[-1].title }}</h2>
+          <h4 class="poem-author">by {{ poems[-1].author }}</h4>
+
+          <div class="poem-lines">
+            {% for line in poems[-1].lines %}
+              <p>{{ line }}</p>
+            {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>

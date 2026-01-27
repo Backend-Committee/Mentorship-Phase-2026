@@ -1,0 +1,28 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "rawan",
+            "email": "rawan@mail.com",
+            "password": "hashed_password_here"
+        },
+        {
+            "id": 2,
+            "username": "Rawan",
+            "email": "mesh@mail.com",
+            "password": "html"
+        },
+        {
+            "id": 3,
+            "username": "Rawan",
+            "email": "rawan.ahmed@gmail.com",
+            "password": "httttttml"
+        },
+        {
+            "id": 4,
+            "username": "Rawah",
+            "email": "rawan@gmail.com",
+            "password": "hwhwhwh"
+        }
+    ]
+}

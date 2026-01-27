@@ -39,13 +39,3 @@ This project is part of the **Backend Committee – Star Union** mentorship task
 - Menu-driven CLI application
 
 ---
-
-## 🚀 How to Run
-
-1. Make sure you have **Python 3** installed
-2. Clone the repository
-3. Run the program:
-
-```bash
-python main.py
-```

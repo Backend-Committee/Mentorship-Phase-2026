@@ -4,7 +4,7 @@
     "year": "2006",
     "genre": "fantasy",
     "author": "William Goldings",
-    "status": "Available"
+    "status": "Borrowed"
   },
   {
     "name": "The picture of Dorian Gray",
@@ -18,7 +18,7 @@
     "year": "1800",
     "genre": "thriller",
     "author": "Agatha Christi",
-    "status": "Available"
+    "status": "Borrowed"
   },
   {
     "name": "To kill a mocking bird",
@@ -26,5 +26,19 @@
     "genre": "sadness",
     "author": "",
     "status": "Available"
+  },
+  {
+    "name": "Show you work",
+    "year": "2010",
+    "genre": "Selfhelp",
+    "author": "Austin kelon",
+    "status": "Borrowed"
+  },
+  {
+    "name": "Power of habit ",
+    "year": "2000",
+    "genre": "SelfHelp",
+    "author": "Charles Doeg",
+    "status": "Borrowed"
   }
 ]

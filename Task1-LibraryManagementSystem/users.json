@@ -12,11 +12,6 @@
   {
     "name": "Ziad Ahmed",
     "userId": 3,
-    "Books": []
-  },
-  {
-    "name": "Mohamed",
-    "userId": "10",
-    "Books": []
+    "Books": ["Show you work", "Power of habit "]
   }
 ]

@@ -109,6 +109,8 @@ class ManagementSystem:
        self.loadData()
        
     def loadData(self):
+        """loads the data from json
+        """
         try:
             with open("books.json", "r") as file:
                 data = json.load(file)
@@ -171,22 +173,57 @@ class ManagementSystem:
         self.SaveUsers()
         print("User Added Successfully!")
     
+    def showAllBooks(self):
+        print("\n" + "*" *10)
+        print("\n Library Books")
+        print("\n" + "*" *10)
+        for book in self.__Books:
+            print("\n" + book.name)
+        
+    def showAvailableBooks(self):
+        print("\n" + "*" *20)
+        print("Library Books")
+        print("\n" + "*" *20)
+        for book in self.__Books:
+            if book.status == "Available":
+                print("\n" + book.name)
+    
     # false if not available
-    def BorrowBook(self, bookName):
+    # def BorrowBook(self, bookName):
+    #     # for book, status in self.__Books.items():
+    #     for book in self.__Books:
+    #         if bookName == book.name:       
+    #             if book.status == "Borrowed":
+    #                 print("Sorry, the book is already borrowed")
+    #             else:
+    #                 print("Book Borrowed successfully!")
+    #                 book.status = "Borrowed"
+    #                 self.SaveBooks()
+    #             return
+        
+    #     print("Sorry, We don't have this book")
+    
+    # false if not available
+    def BorrowBook(self, bookName, id):
         # for book, status in self.__Books.items():
+        user = next((u for u in self.__Users if u.userId == id), None)
+        if user is None:
+            print("User not found! Please register first.")
+            return
         for book in self.__Books:
             if bookName == book.name:       
-                if book.status == "Borrowed":
-                    print("Sorry, the book is already borrowed")
-                else:
+                if book.borrow():
                     print("Book Borrowed successfully!")
-                    book.status = "Borrowed"
+                    user.borrow(bookName)
+                    self.SaveUsers()
                     self.SaveBooks()
+                else:
+                    print("Sorry, the book is already borrowed")
                 return
         
         print("Sorry, We don't have this book")
             
-    def ReturnBook(self, bookName):
+    def ReturnBook(self, bookName, userId):
         for book in self.__Books:  
             if bookName == book.name:
                 if book.status == "Borrowed":
@@ -294,10 +331,10 @@ def main():
             library.AddBook(name)
         
         elif choice == "3":
-            # book_name = input("Enter book name to borrow: ")
-            # user_id = input("Enter your user ID: ")
-            # library.BorrowBook(book_name, user_id)
-            library.BorrowBook(book_name)
+            user_id = input("Enter your user ID: ")
+            library.showAvailableBooks()
+            book_name = input("Enter book name to borrow: ")
+            library.BorrowBook(book_name, user_id)
         
         elif choice == "4":
             book_name = input("Enter book name to return: ")
@@ -328,3 +365,11 @@ def main():
 # to treat the file as a standalone if run directly, and import it as a module if needed
 if __name__ == "__main__":
     main()
+    
+    
+# ! connect the user class
+# ! Add new choices
+# ! menu for books
+# ! use inquirer
+# ! still needs to divide classes
+# ! make a good task out of this 

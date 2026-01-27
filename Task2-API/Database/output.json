@@ -1,0 +1,109 @@
+{
+    "poems": [
+        {
+            "id": 1,
+            "title": "John Keats",
+            "author": "George Gordon, Lord Byron",
+            "lines": [
+                "WHO killed John Keats?",
+                "  \"I,\" says the Quarterly,",
+                "So savage and Tartarly;",
+                "  \"'T was one of my feats.\"",
+                "",
+                "Who shot the arrow?",
+                "  \"The poet-priest Milman",
+                "(So ready to kill man)",
+                "  \"Or Southey, or Barrow.\""
+            ]
+        },
+        {
+            "id": 1,
+            "title": "Sonnet",
+            "author": "Amy Levy",
+            "lines": [
+                "Most wonderful and strange it seems, that I",
+                "Who but a little time ago was tost",
+                "High on the waves of passion and of pain,",
+                "With aching heat and wildly throbbing brain,",
+                "Who peered into the darkness, deeming vain",
+                "All things there found if but One thing were lost,",
+                "Thus calm and still and silent here should lie,",
+                "Watching and waiting, --waiting passively.",
+                "",
+                "The dark has faded, and before mine eyes",
+                "Have long, grey flats expanded, dim and bare;",
+                "And through the changing guises all things wear",
+                "Inevitable Law I recognise:",
+                "Yet in my heart a hint of feeling lies",
+                "Which half a hope and half a despair."
+            ]
+        },
+        {
+            "id": 2,
+            "title": "To Constantia",
+            "author": "Percy Bysshe Shelley",
+            "lines": [
+                "The rose that drinks the fountain dew",
+                "In the pleasant air of noon,",
+                "Grows pale and blue with altered hue--",
+                "In the gaze of the nightly moon;",
+                "For the planet of frost, so cold and bright,",
+                "Makes it wan with her borrowed light.",
+                "",
+                "Such is my heart--roses are fair,",
+                "And that at best a withered blossom;",
+                "But thy false care did idly wear",
+                "Its withered leaves in a faithless bosom;",
+                "And fed with love, like air and dew,",
+                "Its growth--"
+            ]
+        },
+        {
+            "id": 3,
+            "title": "Child of a Day",
+            "author": "Walter Savage Landor",
+            "lines": [
+                "Child of a day, thou knowest not",
+                "The tears that overflow thy urn,",
+                "The gushing eyes that read thy lot,",
+                "Nor, if thou knewest, couldst return!",
+                "",
+                "And why the wish! the pure and blest",
+                "Watch like thy mother o'er thy sleep.",
+                "O peaceful night! O envied rest!",
+                "Thou wilt not ever see her weep."
+            ]
+        },
+        {
+            "id": 4,
+            "title": "I cannot dance upon my Toes",
+            "author": "Emily Dickinson",
+            "lines": [
+                "I cannot dance upon my Toes --",
+                "No Man instructed me --",
+                "But oftentimes, among my mind,",
+                "A Glee possesseth me,",
+                "",
+                "That had I Ballet knowledge --",
+                "Would put itself abroad",
+                "In Pirouette to blanch a Troupe --",
+                "Or lay a Prima, mad,",
+                "",
+                "And though I had no Gown of Gauze --",
+                "No Ringlet, to my Hair,",
+                "Nor hopped to Audiences -- like Birds,",
+                "One Claw upon the Air,",
+                "",
+                "Nor tossed my shape in Eider Balls,",
+                "Nor rolled on wheels of snow",
+                "Till I was out of sight, in sound,",
+                "The House encore me so --",
+                "",
+                "Nor any know I know the Art",
+                "I mention -- easy -- Here --",
+                "Nor any Placard boast me --",
+                "It's full as Opera --"
+            ]
+        }
+    ]
+}
