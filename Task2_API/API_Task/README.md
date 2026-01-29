@@ -16,7 +16,11 @@ API Used
 
 TheMealDB API
 
-&nbsp;– public and free, no API key needed.
+ – public and free, no API key needed.
+
+
+
+\[TheMealDB API Documentation](https://www.themealdb.com/api.php) – public and free, no API key needed.
 
 
 
@@ -88,15 +92,13 @@ Output Example
 
 {
 
-&nbsp; "Meal\_Name": "Chicken Handi",
+  "Meal\_Name": "Chicken Handi",
 
-&nbsp; "Meal\_Category": "Chicken",
+  "Meal\_Category": "Chicken",
 
-&nbsp; "Meal\_Area": "Indian",
+  "Meal\_Area": "Indian",
 
-&nbsp; "Meal\_Link\_Youtube": "https://www.youtube.com/watch?v=example"
+  "Meal\_Link\_Youtube": "https://www.youtube.com/watch?v=example"
 
 }
-
-
 
