@@ -4,39 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Poems for life</title>
-    <link rel="stylesheet" href="../static/index.css" />
-    <link rel="stylesheet" href="../static/header.css" />
-    <link rel="stylesheet" href="../static/all.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='index.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='header.css') }}"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='all.css') }}" />
   </head>
   <body>
-    <header>
-        {% if username %}
-        <p>Welcome back {{username}}</p>
-        {% endif %}
-        <nav>
-          <ul>
-            <li><a href="/">Home</a></li>
-            {% if not username %}
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-            {% endif %}
-          </ul>
-        </nav>
+    <header id="main-header">
+      {% if username %}
+      <p>Welcome back <span>{{username}}</span></p>
+      {% endif %}
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {% if username %}
+          <li><a href="/logout">Logout</a></li>
+          {% else %}
+          <li><a href="/login">Login</a></li>
+          <li><a href="/register">Register</a></li>
+          {% endif %}
+        </ul>
+      </nav>
     </header>
     <div class="container">
       <header>
         <h1>Poems for life</h1>
+        <p>Poem {{currentIndex + 1}} of {{poemsLength}}</p>
       </header>
 
       <div class="poem-container">
-          <h2 class="poem-title">{{ poems[-1].title }}</h2>
-          <h4 class="poem-author">by {{ poems[-1].author }}</h4>
+        <h2 class="poem-title">{{ poem.title }}</h2>
+        <h4 class="poem-author">by {{ poem.author }}</h4>
 
-          <div class="poem-lines">
-            {% for line in poems[-1].lines %}
-              <p>{{ line }}</p>
-            {% endfor %}
+        <div class="poem-lines">
+          {% for line in poem.lines %}
+          <p>{{ line }}</p>
+          {% endfor %}
+        </div>
+
+        <div class="navigation">
+          <a
+            href="/previous"
+            class="btn btn-previous"
+            style="
+            {% if currentIndex == 0 %}
+            opacity: 0.5; pointer-events: none
+            {% endif %}
+            "
+          >
+            ← Previous
+          </a>
+
+          <a href="/next" class="btn btn-next">
+            {% if currentIndex >= poemsLength - 1 %} New Poem → {% else %} Next
+            → {% endif %}
+          </a>
+        </div>
       </div>
     </div>
   </body>
+  <script src="{{ url_for('static', filename='hover.js') }}" defer></script>
 </html>

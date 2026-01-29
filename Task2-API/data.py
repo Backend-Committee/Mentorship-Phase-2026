@@ -37,7 +37,9 @@ def fetch_and_process():
 
 
     newPoem = {
-        "id": len(poems["poems"]),
+        # "id": len(poems["poems"]),
+        # "id": max([poem["id"] for poem in poems["poems"]]) + 1 if poems["poems"] else 0,
+        "id": max([poem["id"] for poem in poems["poems"]], default=-1) + 1,
         "title": data[0]["title"],
         "author": data[0]["author"],
         "lines": data[0]["lines"]
@@ -47,4 +49,9 @@ def fetch_and_process():
 
     save(poems)
 
-    return poems["poems"]
+    return poems
+
+
+def get_all_poems():
+    poems = load_previous()
+    return poems

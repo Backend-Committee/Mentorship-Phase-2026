@@ -57,7 +57,7 @@ button[type="submit"] {
   margin-top: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #667eea;
+  background-color: #cdb4db;
   color: white;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -68,5 +68,5 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #5a67d8;
+  background-color: #cdb4db;
 }

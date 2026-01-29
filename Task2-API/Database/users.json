@@ -23,6 +23,12 @@
             "username": "Rawah",
             "email": "rawan@gmail.com",
             "password": "hwhwhwh"
+        },
+        {
+            "id": 4,
+            "username": "Halem",
+            "email": "halem.no@gmail.com",
+            "password": "halemhalem"
         }
     ]
 }
