@@ -1,47 +1,102 @@
-Meal Data Processor ??
-Project Description
-This project is a Python-based data processing tool that fetches meal recipes from an external API. It filters and organizes data based on specific cuisines (Indian and Chinese), renames data fields for better readability, and exports the results into structured JSON files.
+🍽 Meal API Project
 
-API Documentation
-This project utilizes the public API from: TheMealDB API Documentation
+What is this?
 
-Setup Instructions
-To get this project running on your local machine, follow these steps:
 
-Install Python: Ensure you have Python installed on your system.
 
-Install Dependencies: This project requires the requests library. Install it using pip:
+A small Python project that fetches meal data from a public API, processes it, and saves it in neat JSON files.
 
-Bash
+It shows all meals, and also filters Indian and Chinese meals.
+
+
+
+API Used
+
+
+
+TheMealDB API
+
+&nbsp;– public and free, no API key needed.
+
+
+
+Setup
+
+
+
+Make sure Python is installed (3.7+).
+
+
+
+Install requests library:
+
+
+
 pip install requests
-File Setup: Save the code in a file named main.py.
 
-API Key Setup
-This project uses the Free Tier API key (1) provided by TheMealDB for development purposes.
 
-No private API key is required to run the current version of this script.
 
-How to Run the Project
-Run the script through your terminal or command prompt:
 
-Bash
-python main.py
-Features & Outputs:
-Data Transformation: Renames raw API fields to user-friendly keys like Meal_Name and Meal_Link_Youtube.
 
-Data Export: Generates three JSON files:
+Download the project files or clone the repository.
 
-meal_combine.json: The full list of processed chicken meals.
 
-Egyptian_Meals.json: (Contains Indian cuisine data as per the filter).
 
-Chinese_Meals.json: Contains filtered Chinese cuisine data.
+How to Run
 
-Console Summary: Displays the HTTP status code and the total count of meals processed for each category.
+python your\_script\_name.py
 
-Expected Console Output:
-Plaintext
-Status_Code 200
-Number of Total Meals :  [Total Count]
-Number of Indian Meals : [Count]
-Number of Chinese Meals : [Count]
+
+
+What happens when you run it:
+
+
+
+Fetches meals from the API
+
+
+
+Renames and selects important fields: Meal\_Name, Meal\_Category, Meal\_Area, Meal\_Link\_Youtube
+
+
+
+Filters meals into Indian and Chinese
+
+
+
+Counts total meals and prints results
+
+
+
+Saves the data in:
+
+
+
+meal\_combine.json → all meals
+
+
+
+Indian\_Meals.json → Indian meals
+
+
+
+Chinese\_Meals.json → Chinese meals
+
+
+
+Output Example
+
+{
+
+&nbsp; "Meal\_Name": "Chicken Handi",
+
+&nbsp; "Meal\_Category": "Chicken",
+
+&nbsp; "Meal\_Area": "Indian",
+
+&nbsp; "Meal\_Link\_Youtube": "https://www.youtube.com/watch?v=example"
+
+}
+
+
+

@@ -17,6 +17,9 @@ class User:
         self.borrowed_books = []
 
     def display_info(self):
+        """
+        Dispaly user information
+        """
         return (
             f"User Name: {self.name}\n"
             f"User ID: {self.id}\n"
