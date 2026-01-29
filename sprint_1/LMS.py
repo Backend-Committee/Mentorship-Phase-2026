@@ -155,7 +155,7 @@ class library:
             return "There is no borrowed books"
         else:
             for key, value in self.borrowed_books.items():
-                print(f"Book : {key.title}\n"
+                print(f"\nBook : {key.title}\n"
                       f"author: {key.author}\n"
                       f"borrowed by {value}")
 
@@ -170,108 +170,123 @@ def load_library():
 
 lib = load_library()
 
-print("1- Im a Worker ")
-print("2- Im a Customer ")
-f_choice = int(input("Enter your choice: "))
 
-if f_choice == 1:
-    worker = lib.is_worker(int(input("Enter your Worker ID: ")))
-    if worker:
-        while True:
-            print("\n0- Exit")
-            print("1- Add Book")
-            print("2- Remove Book")
-            print("3- Add Customer")
-            print("4- Add Worker")
-            print("5- Show Books")
-            print("6- show borrowed books list")
-            print("7- Show customers list")
-            if worker.workerID == 666:
-                print("8- Show workers list (Manager only)")
-                print("9- Reset the system (Manager only)")
+while True:
+    print("\n0- Exit")
+    print("1- Im a Worker ")
+    print("2- Im a Customer ")
 
-            choice = int(input("Please Enter your choice: "))
-            if choice == 0:
-                break
+    try : f_choice = int(input("Enter your choice: "))
+    except ValueError:
+        print("Not a number")
+        break
 
-            elif choice == 1:
-                lib.add_book(input("\nPlease enter the title of the book: "),
-                             input("Please enter the authors name: "))
-
-            elif choice == 2:
-                lib.show_books()
-                lib.remove_book(input("\nPlease enter the title of the book: "),
-                                input("Please enter the authors name: "))
-
-            elif choice == 3:
-                lib.add_customer(input("\nPlease enter the name of the customer:"),
-                                 input("Please enter the email address: "),
-                                 int(input("Please enter the age: ")),
-                                 int(input("Please enter the ID: ")))
-
-            elif choice == 4:
-                lib.add_worker(input("\nPlease enter the name of the worker: "),
-                               input("Please enter the email address: "),
-                               int(input("Please enter the age: ")),
-                               int(input("Please enter the salary: ")),
-                               int(input("Please enter the work ID: ")))
-
-            elif choice == 5:
-                lib.show_books()
-
-            elif choice == 6:
-                lib.show_borrowed_books()
-
-            elif choice == 7:
-                lib.show_customer_list()
-
-            elif choice == 8:
+    if f_choice == 0:
+        break
+    elif f_choice == 1:
+        try: worker = lib.is_worker(int(input("Enter your Worker ID: ")))
+        except ValueError:
+            print("\nNot a number!")
+            worker = False
+        if worker:
+            while True:
+                print("\n0- Exit")
+                print("1- Add Book")
+                print("2- Remove Book")
+                print("3- Add Customer")
+                print("4- Add Worker")
+                print("5- Show Books")
+                print("6- show borrowed books list")
+                print("7- Show customers list")
                 if worker.workerID == 666:
-                    lib.show_workers_list()
-                else:
-                    print("\nThe manger only can see the workers information")
+                    print("8- Show workers list (Manager only)")
+                    print("9- Reset the system (Manager only)")
 
-            elif choice == 9:
-                if worker.workerID == 666:
-                    if (bool(input("\nAre you sure MR Bassam ?\npress 1 if yes "))
-                            and os.path.exists("library_data.pkl")):
-                        os.remove("library_data.pkl")
-                        print("System has been reset. Please restart the program.")
-                        exit()
-                else:
-                    print("\nThe manger only can reset the system")
+                choice = int(input("Please Enter your choice: "))
+                if choice == 0:
+                    break
 
-    else:
-        print("\nInvalid worker ID")
+                elif choice == 1:
+                    lib.add_book(input("\nPlease enter the title of the book: "),
+                                 input("Please enter the authors name: "))
 
-elif f_choice == 2:
-    customer = lib.is_customer(int(input("Please enter the customer ID: ")))
-    if customer:
-        while True:
-            print("\n0- Exit")
-            print("1- Borrow book")
-            print("2- Return borrowed book")
-            print("3- Show books")
-            choice = int(input("Please Enter your choice: "))
-            if choice == 0:
-                break
+                elif choice == 2:
+                    lib.show_books()
+                    lib.remove_book(input("\nPlease enter the title of the book: "),
+                                    input("Please enter the authors name: "))
 
-            elif choice == 1:
-                lib.show_books()
-                lib.borrow_book(customer, input("\nPlease enter the title of the book: "),
-                                input("Please enter the authors name: "))
+                elif choice == 3:
+                    lib.add_customer(input("\nPlease enter the name of the customer:"),
+                                     input("Please enter the email address: "),
+                                     int(input("Please enter the age: ")),
+                                     int(input("Please enter the ID: ")))
 
-            elif choice == 2:
-                print("\n The books you are borrowed are \n")
-                for key, value in lib.borrowed_books.items():
-                    if value == customer:
-                        print(f"{key}  -  {value}")
-                lib.return_borrowed_book(customer.name, input("\nPlease enter the title of the book: "),
-                                         input("Please enter the authors name: "))
+                elif choice == 4:
+                    lib.add_worker(input("\nPlease enter the name of the worker: "),
+                                   input("Please enter the email address: "),
+                                   int(input("Please enter the age: ")),
+                                   int(input("Please enter the salary: ")),
+                                   int(input("Please enter the work ID: ")))
 
-            elif choice == 3:
-                print()
-                lib.show_books()
-    else:
-        print("Invalid customer ID\n",
-              "Please let a worker add you")
+                elif choice == 5:
+                    lib.show_books()
+
+                elif choice == 6:
+                    lib.show_borrowed_books()
+
+                elif choice == 7:
+                    lib.show_customer_list()
+
+                elif choice == 8:
+                    if worker.workerID == 666:
+                        lib.show_workers_list()
+                    else:
+                        print("\nThe manger only can see the workers information")
+
+                elif choice == 9:
+                    if worker.workerID == 666:
+                        if (bool(input("\nAre you sure MR Bassam ?\npress 1 if yes "))
+                                and os.path.exists("library_data.pkl")):
+                            os.remove("library_data.pkl")
+                            print("System has been reset. Please restart the program.")
+                            exit()
+                    else:
+                        print("\nThe manger only can reset the system")
+
+        else:
+            print("\nInvalid worker ID")
+
+    elif f_choice == 2:
+        try: customer = lib.is_customer(int(input("Please enter the customer ID: ")))
+        except ValueError:
+            print("Not a number")
+            customer = False
+        if customer:
+            while True:
+                print("\n0- Exit")
+                print("1- Borrow book")
+                print("2- Return borrowed book")
+                print("3- Show books")
+                choice = int(input("Please Enter your choice: "))
+                if choice == 0:
+                    break
+
+                elif choice == 1:
+                    lib.show_books()
+                    lib.borrow_book(customer, input("\nPlease enter the title of the book: "),
+                                    input("Please enter the authors name: "))
+
+                elif choice == 2:
+                    print("\n The books you are borrowed are \n")
+                    for key, value in lib.borrowed_books.items():
+                        if value == customer:
+                            print(f"{key}  -  {value}")
+                    lib.return_borrowed_book(customer.name, input("\nPlease enter the title of the book: "),
+                                             input("Please enter the authors name: "))
+
+                elif choice == 3:
+                    print()
+                    lib.show_books()
+        else:
+            print("Invalid customer ID\n",
+                  "Please let a worker add you")
