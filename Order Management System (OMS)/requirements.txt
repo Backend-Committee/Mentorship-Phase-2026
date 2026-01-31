@@ -1,0 +1,6 @@
+sqlalchemy
+python-dotenv
+customtkinter
+pillow
+matplotlib
+bcrypt
