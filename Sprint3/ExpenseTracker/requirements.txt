@@ -1,0 +1,4 @@
+InquirerPy
+pyfiglet
+termcolor
+prompt_toolkit
