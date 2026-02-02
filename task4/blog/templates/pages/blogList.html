@@ -1,0 +1,7 @@
+{%extends 'base.html'%}
+{%block content%}
+{%for x in blogs%}
+    <h1>Title : {{x.title}}</h1>
+    <h2>author : {{x.author}}</h2>
+{%endfor%}
+{%endblock content%}
