@@ -524,22 +524,19 @@ def login_user():
 ### 1. Home Page - Poem Display
 
 ```
-<img width="1363" height="672" alt="image" src="./screenshots/home.png" />
-
+![home page screenshot](screenshots/home.png)
 ```
 
 ### 2. Login Page
 
 ```
-<img width="1329" height="497" alt="image" src="./screenshots/login.png" />
-
+![login page screenshot](screenshots/login.png)
 ```
 
 ### 3. Register Page
 
 ```
-<img width="1331" height="511" alt="image" src="./screenshots/signup.png" />
-
+![Register page screenshot](screenshots/signup.png)
 ```
 
 ---
