@@ -54,49 +54,45 @@ Login checks credentials against the in-memory index for fast access.
 
 # 🧩 Main Components
 
-1. User Dataclass
+1.  User Dataclass
 
-   Represents a user entity
+    Represents a user entity
 
-2. MiniAuth Class
+2.  MiniAuth Class
 
-   Handles:
+    Handles:
+    - Database initialization
 
-- Database initialization
+    - Loading users from JSON
 
-- Loading users from JSON
+    - Registering users
 
-- Registering users
+    - Logging in users
 
-- Logging in users
+    Key methods:
+    - loadIndex() – Loads and indexes users from the JSON file
 
-Key methods:
+    - register_user() – Registers a new user
 
-- loadIndex() – Loads and indexes users from the JSON file
+    - login_user() – Authenticates a user
 
-- register_user() – Registers a new user
+    - validate_user() – Checks if an email already exists
 
-- login_user() – Authenticates a user
+3.  Validation Functions
 
-- validate_user() – Checks if an email already exists
+    CheckEmail(email)
+    - Ensures the email follows a valid format.
 
-3. Validation Functions
+    CheckPassword(password)
+    - Ensures the password is strong enough.
 
-CheckEmail(email)
+4.  CLI Interface (main)
 
-- Ensures the email follows a valid format.
+    Provides a simple menu:
 
-CheckPassword(password)
-
-- Ensures the password is strong enough.
-
-4. CLI Interface (main)
-
-Provides a simple menu:
-
-1. Register
-2. Login
-3. Exit
+         1. Register
+         2. Login
+         3. Exit
 
 # ▶️ How to Run
 
