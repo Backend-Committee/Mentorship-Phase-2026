@@ -56,11 +56,11 @@ Login checks credentials against the in-memory index for fast access.
 
 1. User Dataclass
 
-Represents a user entity
+   Represents a user entity
 
 2. MiniAuth Class
 
-Handles:
+   Handles:
 
 - Database initialization
 
