@@ -19,6 +19,23 @@ def add_user():
     new_user.welcome()
     return new_user
 
+def borrow_book(self, book):
+    if book.available:
+        book.available = False
+        self.borrowed_books.append(book)
+        print(f"{self.name} borrowed {book.title}")
+    else:
+        print("Book isn't Available at the moment..")
+
+def return_book(self, book):
+    if book in self.borrowed_books:
+        book.available = True
+        self.borrowed_books.remove(book)
+        print(f"{self.title} returned successfully! returned by: {self.name}")
+    else:
+        print(f"{self.name} doesn't have the book {self.title}")
+
+
 
 class Books():
     def __init__(self, title = "", author = "", year = 0, available = True):
@@ -38,22 +55,6 @@ Release Date: {self.year}
 Availability: {status}
 ''')
     
-    def borrow_book(self, book):
-        if book.available:
-            book.available = False
-            self.borrowed_books.append(book)
-            print(f"{self.name} borrowed {book.title}")
-        else:
-            print("Book isn't Available at the moment..")
-
-    def return_book(self, book):
-        if book in self.borrowed_books:
-            book.availabe = True
-            self.borrowed_books.remove(book)
-            print(f"{self.title} returned successfully! returned by: {self.name}")
-        else:
-            print(f"{self.name} doesn't have the book {self.title}")
-
 
 books = []
 def add_book():
