@@ -31,6 +31,7 @@ def sign_up(file_obj):
     password = input("Enter a password: ")
 
     file_obj.seek(0)
+    file_obj.truncate()
     try:
         users = json.load(file_obj)
     except json.JSONDecodeError:
@@ -48,9 +49,6 @@ def sign_up(file_obj):
         "password": password
     })
 
-    # overwrite file
-    # file_obj.seek(0)
-    # file_obj.truncate()
     json.dump(users, file_obj, indent=4)
 
     print("Sign up successful")
