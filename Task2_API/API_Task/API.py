@@ -6,6 +6,9 @@ URL="https://www.themealdb.com/api/json/v1/1/search.php?s=chicken"
 res=requests.get(URL)
 data=res.json()
 
+with open ("meal.json","w") as file:
+   json.dump(data,file,indent=4)
+
 #Rename fields and Extract specific fields
 combine=[]
 for item in data['meals']:
