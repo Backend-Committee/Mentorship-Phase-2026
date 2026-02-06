@@ -1,0 +1,20 @@
+{
+    "hamzaMohamed": {
+        "password": "d753b65ba10ed2d8f687e653d4c8cc00c7ddf3e90ada4affbabb8760306b88af",
+        "cities": [
+            "Cairo"
+        ]
+    },
+    "mohamed": {
+        "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "cities": []
+    },
+    "hamzaa": {
+        "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "cities": []
+    },
+    "hamzaaa": {
+        "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "cities": []
+    }
+}
