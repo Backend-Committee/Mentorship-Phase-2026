@@ -1,0 +1,10 @@
+.blog_title {
+    list-style: none;
+    background-color: slategray;
+    padding: 16px;
+    margin: 16px;
+}
+
+.blog_title a {
+    color: white;
+}

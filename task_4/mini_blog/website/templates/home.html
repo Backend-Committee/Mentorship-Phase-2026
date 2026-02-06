@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+
+{% block title %} Home Page {% endblock %} 
+
+{% block content %}
+    <h2>Welcome to mini blog</h2>
+    <p>Choose any blog from these series.</p>
+    <hr />
+
+    <ul>
+        {% for blog in blogs %}
+        <li class="blog_title">
+            <a href="{% url 'blog' forloop.counter0 %}"> {{ blog.0 }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
