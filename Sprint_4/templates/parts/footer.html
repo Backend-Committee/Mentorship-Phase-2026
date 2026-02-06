@@ -1,0 +1,91 @@
+{% load static %}
+<!-- footer.html -->
+<footer class="main-footer">
+    <div class="footer-container">
+        <!-- Top Section -->
+        <div class="footer-top">
+            <div class="footer-brand">
+                <span class="footer-logo">📜</span>
+                <h3>ديوان الشعر</h3>
+                <p>اكتشف جمال الشعر العربي من كل العصور والأقطار</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>استكشف</h4>
+                    <ul>
+                        <li><a href="#" onclick="goHome(event)">قصيدة عشوائية</a></li>
+                        <li><a href="#" onclick="showEra('جاهلي')">العصر الجاهلي</a></li>
+                        <li><a href="#" onclick="showEra('عباسي')">العصر العباسي</a></li>
+                        <li><a href="#" onclick="showEra('حديث')">الشعر الحديث</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>شعراء مميزون</h4>
+                    <ul>
+                        <li><a href="#" onclick="searchPoet('امرؤ القيس')">امرؤ القيس</a></li>
+                        <li><a href="#" onclick="searchPoet('المتنبي')">المتنبي</a></li>
+                        <li><a href="#" onclick="searchPoet('أحمد شوقي')">أحمد شوقي</a></li>
+                        <li><a href="#" onclick="searchPoet('نزار قباني')">نزار قباني</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>عن الموقع</h4>
+                    <ul>
+                        <li><a href="#" onclick="showInfo('about')">من نحن</a></li>
+                        <li><a href="#" onclick="showInfo('api')">API</a></li>
+                        <li><a href="#" onclick="showInfo('contact')">تواصل معنا</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="footer-bottom">
+            <p>&copy; 2024 ديوان الشعر العربي. جميع الحقوق محفوظة.</p>
+            <div class="footer-social">
+                <a href="#" title="Twitter">🐦</a>
+                <a href="#" title="Facebook">📘</a>
+                <a href="#" title="Instagram">📷</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<link rel="stylesheet" href="{% static 'CSS_Files/footer.css' %}">
+
+<script>
+    // Go home (random poem)
+    function goHome(e) {
+        e.preventDefault();
+        sessionStorage.removeItem('searchQuery');
+        sessionStorage.setItem('loadRandom', 'true');
+        window.location.href = 'home.html';
+    }
+
+    // Search by era
+    function showEra(era) {
+        sessionStorage.setItem('selectedEra', era);
+        sessionStorage.removeItem('searchQuery');
+        window.location.href = 'home.html?era=' + encodeURIComponent(era);
+    }
+
+    // Search by poet
+    function searchPoet(poet) {
+        sessionStorage.setItem('searchQuery', poet);
+        sessionStorage.removeItem('randomPoem');
+        window.location.href = 'home.html?search=' + encodeURIComponent(poet);
+    }
+
+    // Show info modal
+    function showInfo(type) {
+        const messages = {
+            'about': 'ديوان الشعر العربي - منصة لاكتشاف الشعر العربي من كل العصور',
+            'api': 'API متاح للمطورين للوصول إلى قاعدة بيانات الشعر العربي',
+            'contact': 'تواصل معنا عبر البريد: info@diwan.com'
+        };
+        alert(messages[type]);
+    }
+</script>

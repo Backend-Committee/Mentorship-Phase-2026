@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'CSS_Files/Poets.css' %}">
+</head>
+<body>
+    <main class="main-content">
+
+        {% for poet in poets %}
+        <section class="poet-card">
+            <header class="poet-header">
+                <div class="poet-name">{{ poet.name }}</div>
+                <div class="poet-fullname">{{ poet.full_name }}</div>
+                <span class="poet-era">{{ poet.era }}</span>
+            </header>
+
+            <div class="poet-bio">
+                {{ poet.bio }}
+            </div>
+
+            <div class="poet-meta">
+                <div class="poet-meta-item">
+                    <span class="poet-meta-label">تاريخ الولادة</span>
+                    <span class="poet-meta-value">{{ poet.birth_date }}</span>
+                </div>
+                <div class="poet-meta-item">
+                    <span class="poet-meta-label">تاريخ الوفاة</span>
+                    <span class="poet-meta-value">{{ poet.death_date }}</span>
+                </div>
+            </div>
+        </section>
+        {% endfor %}
+
+    </main>
+</body>
+</html>
+{% endblock %}

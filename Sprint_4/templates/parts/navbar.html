@@ -1,0 +1,36 @@
+{% load static %}
+<!-- navbar.html -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <!-- Logo -->
+        <a href="{% url 'index' %}" class="nav-logo">
+            <span class="logo-icon">📜</span>
+            <span class="logo-text">ديوان</span>
+        </a>
+
+        <!-- Search Bar -->
+        <div class="nav-search">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="ابحث عن قصيدة..."
+                autocomplete="off"
+                onkeypress="if(event.key==='Enter') searchFromNavbar()"
+            >
+            <button class="search-btn" onclick="searchFromNavbar()">
+                🔍
+            </button>
+        </div>
+
+        <!-- User Section -->
+        <div class="user-section" id="userSection">
+            <!-- Guest -->
+            <a href="{%url "poets"%}" class="login-link" id="guestLink">
+                الشعراء
+            </a>
+        </div>
+    </div>
+</nav>
+
+<link rel="stylesheet" href="{% static 'CSS_Files/navbar.css' %}">
+

@@ -1,0 +1,316 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #fdfbf7;
+            color: #2c3e50;
+            line-height: 1.8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            flex: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        /* ===== Poem Display Section ===== */
+        .poem-display {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poem-display::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-family: 'Amiri', serif;
+            font-size: 8rem;
+            color: #d4af37;
+            opacity: 0.2;
+            line-height: 1;
+        }
+
+        /* Poem Header */
+        .poem-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .poem-title {
+            font-family: 'Amiri', serif;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .poet-name {
+            font-size: 1.3rem;
+            color: #8e44ad;
+            font-weight: 600;
+        }
+
+        .poem-era {
+            display: inline-block;
+            background: #f8f9fa;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Poem Content */
+        .poem-content {
+            font-family: 'Amiri', serif;
+            font-size: 1.6rem;
+            line-height: 3;
+            text-align: center;
+            color: #2c3e50;
+            margin: 2rem 0;
+        }
+
+        .verse {
+            margin: 0.5rem 0;
+        }
+
+        .verse:nth-child(even) {
+            color: #8e44ad;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Poem Footer */
+        .poem-footer {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .poem-meta-item {
+            text-align: center;
+        }
+
+        .poem-meta-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+
+        .poem-meta-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Poem Actions */
+        .poem-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn-large {
+            padding: 0.8rem 2rem;
+            border: 2px solid #8e44ad;
+            background: white;
+            color: #8e44ad;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn-large:hover {
+            background: #8e44ad;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .action-btn-large.primary {
+            background: linear-gradient(135deg, #2c3e50 0%, #8e44ad 100%);
+            color: white;
+            border: none;
+        }
+
+        .action-btn-large.primary:hover {
+            box-shadow: 0 10px 20px rgba(142, 68, 173, 0.3);
+        }
+
+        /* ===== Search Results Section ===== */
+        .search-results-section {
+            display: none;
+        }
+
+        .search-results-section.active {
+            display: block;
+        }
+
+        .search-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-header h2 {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+
+        .search-header p {
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        .back-btn {
+            background: none;
+            border: 2px solid #ddd;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            border-color: #8e44ad;
+            color: #8e44ad;
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-right: 4px solid #d4af37;
+        }
+
+        .result-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .result-title {
+            font-family: 'Amiri', serif;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-poet {
+            color: #8e44ad;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-excerpt {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* ===== Loading State ===== */
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .spinner-large {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #8e44ad;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== Empty State ===== */
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #888;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .poem-display {
+                padding: 2rem 1.5rem;
+            }
+
+            .poem-title {
+                font-size: 1.8rem;
+            }
+
+            .poem-content {
+                font-size: 1.2rem;
+                line-height: 2.5;
+            }
+
+            .poem-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn-large {
+                width: 100%;
+                justify-content: center;
+            }
+        }
