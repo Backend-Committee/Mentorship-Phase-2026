@@ -1,5 +1,7 @@
 # 🎓 School Management System
 
+### the ERD Diagram image ![img_1.png](img_1.png)
+
 A simple and efficient tool to manage school records using **Python** and **SQLite3**. This program allows you to track students, teachers, subjects, and grades in an organized database.
 
 ---
