@@ -1,5 +1,5 @@
-from ..database.db import Session
-from ..database.models import Patient
+from database.db import Session
+from database.models import Patient
 
 class PatientRepository:
     def __init__(self):

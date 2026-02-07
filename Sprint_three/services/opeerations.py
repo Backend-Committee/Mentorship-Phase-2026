@@ -1,10 +1,10 @@
 from database.models import Doctor, Patient
-from ..repositories.appoinment_repo import AppoinmentRepository
-from ..repositories.patient_repo import PatientRepository
-from..repositories.doctor_repo import DoctorRepository
+from repositories.appoinment_repo import AppointmentRepository
+from repositories.patient_repo import PatientRepository
+from repositories.doctor_repo import DoctorRepository
 class OperationService:
     def __init__(self):
-        self.appoinment_repo = AppoinmentRepository()
+        self.appoinment_repo = AppointmentRepository()
         self.patient_repo = PatientRepository()
         self.doctor_repo = DoctorRepository()
 

@@ -1,9 +1,9 @@
 from services.auth import AuthService
-from services.opeerations import OperationsService
+from services.opeerations import OperationService
 
 def doctor():
     auth_service = AuthService()
-    operations_service = OperationsService()
+    operations_service = OperationService()
     while True:
         print("\n1- Login\n2- sign up\nPress 0 to back to main menu...")
         sub_choice = input("Enter your choice: ")
@@ -29,7 +29,7 @@ def doctor():
 
 def patient():
     auth_service = AuthService()
-    operations_service = OperationsService()
+    operations_service = OperationService()
     while True:
         print("\n1- Login\n2- sign up\nPress 0 to back to main menu...")
         sub_choice = input("Enter your choice: ")
@@ -54,7 +54,7 @@ def patient():
             break
 
 def view_appointments_for_doctor(doctor_id):
-    operations_service = OperationsService()
+    operations_service = OperationService()
     appointments = operations_service.view_appointments_for_doctor(doctor_id)
     for appt in appointments:
         print(appt)
@@ -73,7 +73,7 @@ def view_appointments_for_doctor(doctor_id):
             break
 
 def cancel_appointment(appointment_id):
-    operations_service = OperationsService()
+    operations_service = OperationService()
     canceled_appointment = operations_service.cancel_appointment(appointment_id)
     if canceled_appointment:
         print("Appointment canceled successfully.")
@@ -81,7 +81,7 @@ def cancel_appointment(appointment_id):
         print("Failed to cancel appointment.")
 
 def update_doctor(doctor):
-    operations_service = OperationsService()
+    operations_service = OperationService()
     while True:
         print("What do you want to update?")
         print("1- Name\n2- Specialization\n3- Schedule\n4- Password\n5- Phone Number\nPress 0 to back to main menu...")
@@ -110,7 +110,7 @@ def update_doctor(doctor):
             break
 
 def search_doctors():
-    operations_service = OperationsService()
+    operations_service = OperationService()
     while True:
         print("1- Search by specialization\n2- Search by doctor name\nPress 0 to back to main menu...")
         search_choice = input("Enter your choice: ")
@@ -134,7 +134,7 @@ def search_doctors():
             break
 
 def view_appointments_for_patient(patient_id):
-    operations_service = OperationsService()
+    operations_service = OperationService()
     appointments = operations_service.view_appointments_for_patient(patient_id)
     if appointments:
         for appt in appointments:
@@ -143,7 +143,7 @@ def view_appointments_for_patient(patient_id):
         print("No appointments found for this patient.")
 
 def update_patient(patient):
-    operations_service = OperationsService()
+    operations_service = OperationService()
     while True:
         print("What do you want to update?")
         print("1- Name\n2- Age\n3- Password\n4- Phone Number\n5- Diseases History\nPress 0 to back to main menu...")
@@ -172,7 +172,7 @@ def update_patient(patient):
             break
 
 def book_appointment(patient_id, doctor_id):
-    operations_service = OperationsService()
+    operations_service = OperationService()
     appointment_time = input("Enter appointment time (e.g., 2024-07-01 10:00): ")
     new_appointment = operations_service.book_appointment(patient_id, doctor_id, appointment_time)
     if new_appointment:

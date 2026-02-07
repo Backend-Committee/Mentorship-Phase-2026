@@ -1,5 +1,5 @@
-from ..repositories.patient_repo import PatientRepository
-from ..repositories.doctor_repo import DoctorRepository
+from repositories.patient_repo import PatientRepository
+from repositories.doctor_repo import DoctorRepository
 class AuthService:
     def __init__(self):
         self.patient_repo = PatientRepository()
