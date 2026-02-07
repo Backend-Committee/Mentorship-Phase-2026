@@ -169,6 +169,44 @@ def show_student_subjects():
     except ValueError:
         print("Please enter a valid number.")
 
+def enroll_teacher():
+    print("\nEnrolling Teacher into subjects...\n")
+    try:
+        teacher_id = int(input("Enter Teacher ID: "))
+        sub_id = int(input("Enter Subject ID: "))
+        try:
+            cur.execute("INSERT INTO teacherSubjects (teacher_id, subject_id) VALUES (?, ?)", (teacher_id, sub_id))
+            con.commit()
+            print("Teacher enrolled successfully!")
+        except sqlite3.IntegrityError:
+            print("There is no such teacher or subject, or teacher already enrolled.")
+    except ValueError:
+        print("IDs must be integers!")
+
+def show_subject_teachers():
+    print("\nView Teacher Subjects\n")
+    try:
+        sub_id = int(input("Enter Subject ID to search: "))
+        query = """
+            SELECT subjects.name, teachers.name , teachers.teacher_id
+            FROM subjects
+                JOIN teacherSubjects ON subjects.subject_id = teacherSubjects.subject_id
+                JOIN teachers ON teacherSubjects.teacher_id = teachers.teacher_id
+            WHERE subjects.subject_id = ? \
+            """
+        cur.execute(query, (sub_id,))
+        res = cur.fetchall()
+        if res:
+            subject_name = res[0][0]
+            print(f"\n Teachers for {subject_name}:")
+            for row in res:
+                print(f" - {row[1]}  his id is {row[2]}")
+        else:
+            print("No teachers found for this ID (or ID doesn't exist).")
+    except ValueError:
+        print("Please enter a valid ID.")
+
+
 
 def update_student_grade():
     print("\nUpdating Student Grade...\n")
@@ -203,6 +241,22 @@ def delete_student():
     except ValueError:
         print("Invalid ID.")
 
+def delete_teacher():
+    print("\nDeleting Teacher...\n")
+    try:
+        t_id = int(input("Enter Teacher ID to DELETE: "))
+        try:
+            cur.execute("DELETE FROM teachers WHERE teacher_id = ?", (t_id,))
+            if cur.rowcount > 0:
+                con.commit()
+                print("Teacher deleted successfully!")
+            else:
+                print("Teacher ID not found.")
+        except sqlite3.IntegrityError:
+            print("Teacher has related records. Delete enrollments first.")
+    except ValueError:
+        print("Teacher ID must be an integer.")
+
 
 def main():
     db_creation()
@@ -211,42 +265,59 @@ def main():
         print("\n" + "*" * 35)
         print("SCHOOL MANAGEMENT SYSTEM MENU")
         print("*" * 35)
+        print("0. Exit")
         print("1. Add Student")
         print("2. Add Subject")
         print("3. add teacher")
-        print("4. Enroll Student")
-        print("5. Show All Students")
-        print("6. Show All Subjects")
-        print("7. Show All Teachers")
-        print("8. Show Student Subjects")
-        print("9. Update Grade")
-        print("10. Delete Student")
-        print("11. Exit")
+        print("4. Enroll Student To Subject")
+        print("5. Enroll teacher To Subject")
+        print("6. Show All Students")
+        print("7. Show All Subjects")
+        print("8. Show All Teachers")
+        print("9. Show Student Subjects")
+        print("10. Show Subject Teachers")
+        print("11. Update Grade")
+        print("12. Delete Student")
+        print("13. Delete Teacher")
 
-        choice = input("\n Choose an option (1-8): ")
 
-        if choice == '1':
+        choice = input("\n Choose an option (0-13): ")
+        #enroll teacher
+        #show subject Teachers
+        if choice == '0':
+            break
+        elif choice == '1':
             insert_student()
         elif choice == '2':
             insert_subject()
         elif choice == '3':
             insert_teacher()
         elif choice == '4':
+            show_all_students()
+            show_all_subjects()
             enroll_student()
         elif choice == '5':
-            show_all_students()
-        elif choice == '6':
-            show_all_subjects()
-        elif choice == '7':
             show_all_teachers()
+            show_all_subjects()
+            enroll_teacher()
+        elif choice == '6':
+            show_all_students()
+        elif choice == '7':
+            show_all_subjects()
         elif choice == '8':
-            show_student_subjects()
+            show_all_teachers()
         elif choice == '9':
-            update_student_grade()
+            show_all_students()
+            show_student_subjects()
         elif choice == '10':
-            delete_student()
+            show_all_subjects()
+            show_subject_teachers()
         elif choice == '11':
-            break
+            update_student_grade()
+        elif choice == '12':
+            delete_student()
+        elif choice == '13':
+            delete_teacher()
         else:
             print("Invalid choice!")
 
