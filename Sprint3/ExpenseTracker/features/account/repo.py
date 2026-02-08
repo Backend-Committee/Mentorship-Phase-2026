@@ -1,11 +1,11 @@
 import sqlite3
 from typing import List, Tuple
 
-from features.account.IAccountRepo import IAccountRepo
+from features.account.AccountRepo import AccountRepo
 from features.account.model import Account
 
 
-class AccountRepo(IAccountRepo):
+class AccountRepoImp(AccountRepo):
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
 

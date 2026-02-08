@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from features.user.model import User
 
 
-class IUserRepo(ABC):
+class UserRepo(ABC):
     @abstractmethod
     def create_user(self, display_name: str, auth_id: int) -> User:
         """Create a new user and return the created User instance."""

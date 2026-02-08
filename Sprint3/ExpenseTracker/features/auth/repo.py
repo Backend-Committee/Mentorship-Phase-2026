@@ -1,10 +1,10 @@
 import sqlite3
 
-from features.auth.IAuthInfoRepo import IAuthInfoRepo
+from features.auth.AuthInfoRepo import AuthInfoRepo
 from features.auth.model import AuthInfo
 
 
-class AuthInfoRepo(IAuthInfoRepo):
+class AuthInfoRepoImp(AuthInfoRepo):
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
 

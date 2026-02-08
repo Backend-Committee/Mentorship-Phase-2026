@@ -1,9 +1,9 @@
-from features.user.IUserRepo import IUserRepo
 from features.user.model import User
+from features.user.UserRepo import UserRepo
 
 
 class UserService:
-    def __init__(self, user_repo: IUserRepo):
+    def __init__(self, user_repo: UserRepo):
         self.user_repo = user_repo
 
     def create_user(self, display_name: str, auth_id: int) -> User:

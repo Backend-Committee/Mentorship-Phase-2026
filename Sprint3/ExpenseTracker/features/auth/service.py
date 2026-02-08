@@ -1,14 +1,14 @@
 import hashlib
 import re
 
-from features.auth.IAuthInfoRepo import IAuthInfoRepo
+from features.auth.AuthInfoRepo import AuthInfoRepo
 from features.auth.model import AuthInfo
-from features.user.IUserRepo import IUserRepo
 from features.user.model import User
+from features.user.UserRepo import UserRepo
 
 
 class AuthService:
-    def __init__(self, auth_repo: IAuthInfoRepo, user_repo: IUserRepo):
+    def __init__(self, auth_repo: AuthInfoRepo, user_repo: UserRepo):
         self.auth_repo = auth_repo
         self.user_repo = user_repo
 

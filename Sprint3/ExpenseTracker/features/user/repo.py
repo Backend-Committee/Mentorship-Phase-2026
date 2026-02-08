@@ -1,10 +1,10 @@
 import sqlite3
 
-from features.user.IUserRepo import IUserRepo
 from features.user.model import User
+from features.user.UserRepo import UserRepo
 
 
-class UserRepo(IUserRepo):
+class UserRepoImp(UserRepo):
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
 

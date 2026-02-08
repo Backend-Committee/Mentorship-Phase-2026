@@ -4,7 +4,7 @@ from typing import List, Tuple
 from features.account.model import Account
 
 
-class IAccountRepo(ABC):
+class AccountRepo(ABC):
     @abstractmethod
     def create_account(self, title: str, balance: int, user_id: int) -> Account:
         """Create a new Account and return the created Account instance."""

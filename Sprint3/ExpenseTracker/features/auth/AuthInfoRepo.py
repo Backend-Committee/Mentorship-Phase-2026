@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from features.auth.model import AuthInfo
 
 
-class IAuthInfoRepo(ABC):
+class AuthInfoRepo(ABC):
     @abstractmethod
     def create(self, username: str, email: str, hashed_password: str) -> AuthInfo:
         """Create a new AuthInfo record and return it."""

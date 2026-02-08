@@ -1,11 +1,7 @@
 import os
 
-from InquirerPy.base.control import Choice
-from pyfiglet import figlet_format
-from termcolor import cprint
-
 from database_conf import DatabaseManager
-from features.account.repo import AccountRepo
+from features.account.repo import AccountRepoImp
 from features.account.screen import (
     AccountsMenuScreen,
     CreateAccountScreen,
@@ -15,11 +11,11 @@ from features.account.screen import (
     TransferScreen,
 )
 from features.account.service import AccountService
-from features.auth.repo import AuthInfoRepo
+from features.auth.repo import AuthInfoRepoImp
 from features.auth.screen import AuthMenuScreen, LoginScreen, RegisterScreen
 from features.auth.service import AuthService
 from features.user.model import User
-from features.user.repo import UserRepo
+from features.user.repo import UserRepoImp
 from features.user.screen import (
     ChangeDisplayNameScreen,
     DeleteMyAccountScreen,
@@ -27,6 +23,9 @@ from features.user.screen import (
     ProfileScreen,
 )
 from features.user.service import UserService
+from InquirerPy.base.control import Choice
+from pyfiglet import figlet_format
+from termcolor import cprint
 
 
 def clear():
@@ -38,11 +37,11 @@ class AppController:
     def __init__(self):
         # Bootstrap dependencies
         self.db = DatabaseManager()
-        self.user_repo = UserRepo(self.db.conn)
+        self.user_repo = UserRepoImp(self.db.conn)
         self.user_service = UserService(self.user_repo)
-        self.account_repo = AccountRepo(self.db.conn)
+        self.account_repo = AccountRepoImp(self.db.conn)
         self.account_service = AccountService(self.account_repo)
-        self.auth_repo = AuthInfoRepo(self.db.conn)
+        self.auth_repo = AuthInfoRepoImp(self.db.conn)
         self.auth_service = AuthService(self.auth_repo, self.user_repo)
 
         self.current_user = None

@@ -1,11 +1,11 @@
 from typing import List
 
-from features.account.IAccountRepo import IAccountRepo
+from features.account.AccountRepo import AccountRepo
 from features.account.model import Account
 
 
 class AccountService:
-    def __init__(self, account_repo: IAccountRepo):
+    def __init__(self, account_repo: AccountRepo):
         self.account_repo = account_repo
 
     def create_account(self, title: str, user_id: int, balance: int = 0) -> Account:
