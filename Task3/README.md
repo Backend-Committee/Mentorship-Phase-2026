@@ -1,6 +1,5 @@
-# Task 3 — Simple SQL CRUD CLI (CRUD_DB.py)
+# Task 3 — Simple SQL CRUD CLI 
 
-This README explains the `CRUD_DB.py` script found in the `Task3` folder. The script implements a small command-line interface to perform Create / Read / Update / Delete operations on a `users` table using SQLAlchemy + pyodbc (Microsoft SQL Server). It also includes helpful setup, troubleshooting, and example snippets taken from the actual code.
 
 ---
 
@@ -24,11 +23,7 @@ Edge cases considered
 
 ---
 
-## Files
 
-- `CRUD_DB.py` — main script (contains model, CRUD functions and interactive menu)
-
----
 
 ## Key code (excerpts from `CRUD_DB.py`)
 
