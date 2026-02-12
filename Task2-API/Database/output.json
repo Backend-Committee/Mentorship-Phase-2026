@@ -1,170 +1,47 @@
 {
     "poems": [
         {
+            "id": 0,
+            "title": "Sonnet XVI: In Nature Apt",
+            "author": "Sir Philip Sidney",
+            "lines": [
+                "In nature apt to like when I did see",
+                "Beauties, which were of many carats fine,",
+                "My boiling sprites did thither soon incline,",
+                "And, Love, I thought that I was full of thee:",
+                "",
+                "But finding not those restless flames in me,",
+                "Which others said did make their souls to pine,",
+                "I thought those babes of some pin's hurt did whine,",
+                "By my love judging what love's pain might be.",
+                "",
+                "But while I thus with this young lion played,",
+                "Mine eyes (shall I say curst or blest?) beheld",
+                "Stella; now she is nam'd, need more be said?",
+                "",
+                "In her sight I a lesson new have spell'd,",
+                "I now hav learn'd Love right, and learn'd even so,",
+                "As who by being poisoned doth poison know."
+            ]
+        },
+        {
             "id": 1,
-            "title": "John Keats",
-            "author": "George Gordon, Lord Byron",
-            "lines": [
-                "WHO killed John Keats?",
-                "  \"I,\" says the Quarterly,",
-                "So savage and Tartarly;",
-                "  \"'T was one of my feats.\"",
-                "",
-                "Who shot the arrow?",
-                "  \"The poet-priest Milman",
-                "(So ready to kill man)",
-                "  \"Or Southey, or Barrow.\""
-            ]
-        },
-        {
-            "id": 2,
-            "title": "Sonnet XIX: Farewell, Ye Coral Caves",
-            "author": "Robinson",
-            "lines": [
-                "Farewell, ye coral caves, ye pearly sands,",
-                "Ye waving woods that crown yon lofty steep;",
-                "Farewell, ye Nereides of the glitt'ring deep,",
-                "Ye mountain tribes, ye fawns, ye sylvan bands:",
-                "On the bleak rock your frantic minstrel stands,",
-                "Each task forgot, save that, to sigh and weep;",
-                "In vain the strings her burning fingers sweep,",
-                "No more her touch, the Grecian Lyre commands!",
-                "In Circe's cave my faithless Phaon's laid,",
-                "Her daemons dress his brow with opiate flow'rs;",
-                "Or, loit'ring in the brown pomgranate shade,",
-                "Beguile with am'rous strains the fateful hours;",
-                "While Sappho's lips, to paly ashes fade,",
-                "And sorrow's cank'ring worm her heart devours!"
-            ]
-        },
-        {
-            "id": 3,
-            "title": "Sonnet 94: They that have power to hurt, and will do none",
-            "author": "William Shakespeare",
-            "lines": [
-                "They that have power to hurt, and will do none,",
-                "That do not do the thing they most do show,",
-                "Who, moving others, are themselves as stone,",
-                "Unmoved, cold, and to temptation slow;",
-                "They rightly do inherit heaven's graces,",
-                "And husband nature's riches from expense;",
-                "They are the lords and owners of their faces,",
-                "Others, but stewards of their excellence.",
-                "The summer's flower is to the summer sweet,",
-                "Though to itself, it only live and die,",
-                "But if that flower with base infection meet,",
-                "The basest weed outbraves his dignity:",
-                "  For sweetest things turn sourest by their deeds;",
-                "  Lilies that fester, smell far worse than weeds."
-            ]
-        },
-        {
-            "id": 4,
-            "title": "Declaiming Waters none may dread --",
-            "author": "Emily Dickinson",
-            "lines": [
-                "Declaiming Waters none may dread --",
-                "But Waters that are still",
-                "Are so for that most fatal cause",
-                "In Nature -- they are full --"
-            ]
-        },
-        {
-            "id": 5,
-            "title": "The ocean said to me once",
-            "author": "Stephen Crane",
-            "lines": [
-                "The ocean said to me once,",
-                "\"Look!",
-                "Yonder on the shore",
-                "Is a woman, weeping.",
-                "I have watched her.",
-                "Go you and tell her this --",
-                "Her lover I have laid",
-                "In cool green hall.",
-                "There is wealth of golden sand",
-                "And pillars, coral-red;",
-                "Two white fish stand guard at his bier.",
-                "",
-                "\"Tell her this",
-                "And more --",
-                "That the king of the seas",
-                "Weeps too, old, helpless man.",
-                "The bustling fates",
-                "Heap his hands with corpses",
-                "Until he stands like a child",
-                "With a surplus of toys.\""
-            ]
-        },
-        {
-            "id": 6,
-            "title": "O Sun of Real Peace.",
+            "title": "O Me! O Life!",
             "author": "Walt Whitman",
             "lines": [
-                "O SUN of real peace! O hastening light!",
-                "O free and extatic! O what I here, preparing, warble for!",
-                "O the sun of the world will ascend, dazzling, and take his height\u2014and you too, O my",
-                "    Ideal,",
-                "  will surely ascend!",
-                "O so amazing and broad\u2014up there resplendent, darting and burning!",
-                "O vision prophetic, stagger\u2019d with weight of light! with pouring glories!",
-                "O lips of my soul, already becoming powerless!",
-                "O ample and grand Presidentiads! Now the war, the war is over!",
-                "New history! new heroes! I project you!",
-                "Visions of poets! only you really last! sweep on! sweep on!",
-                "O heights too swift and dizzy yet!",
-                "O purged and luminous! you threaten me more than I can stand!",
-                "(I must not venture\u2014the ground under my feet menaces me\u2014it will not support me:",
-                "O future too immense,)\u2014O present, I return, while yet I may, to you."
-            ]
-        },
-        {
-            "id": 7,
-            "title": "Quem Deus Vult Perdere Prius Dementat",
-            "author": "George Gordon, Lord Byron",
-            "lines": [
-                "God maddens him whom't is his will to lose,",
-                "And gives the choice of death or phrenzy--choose."
-            ]
-        },
-        {
-            "id": 8,
-            "title": "A Letter to Lady Margaret Cavendish Holles-Harley, when a Child",
-            "author": "Matthew Prior",
-            "lines": [
-                "MY noble, lovely, little Peggy,",
-                "Let this my First Epistle beg ye,",
-                "At dawn of morn, and close of even,",
-                "To lift your heart and hands to Heaven.",
-                "In double duty say your prayer:",
-                "Our Father first, then Notre Pere.",
+                "O ME! O life!... of the questions of these recurring;",
+                "Of the endless trains of the faithless\u2014of cities fill\u2019d with the foolish;",
+                "Of myself forever reproaching myself, (for who more foolish than I, and who more",
+                "    faithless?)",
+                "Of eyes that vainly crave the light\u2014of the objects mean\u2014of the struggle ever",
+                "  renew\u2019d;",
+                "Of the poor results of all\u2014of the plodding and sordid crowds I see around me;",
+                "Of the empty and useless years of the rest\u2014with the rest me intertwined;",
+                "The question, O me! so sad, recurring\u2014What good amid these, O me, O life?",
                 "",
-                "And, dearest child, along the day,",
-                "In every thing you do and say,",
-                "Obey and please my lord and lady,",
-                "So God shall love and angels aid ye.",
-                "",
-                "If to these precepts you attend,",
-                "No second letter need I send,",
-                "And so I rest your constant friend."
-            ]
-        },
-        {
-            "id": 9,
-            "title": "In a lonely place,",
-            "author": "Stephen Crane",
-            "lines": [
-                "In a lonely place,",
-                "I encountered a sage",
-                "Who sat, all still,",
-                "Regarding a newspaper.",
-                "He accosted me:",
-                "\"Sir, what is this?\"",
-                "Then I saw that I was greater,",
-                "Aye, greater than this sage.",
-                "I answered him at once,",
-                "\"Old, old man, it is the wisdom of the age.\"",
-                "The sage looked upon me with admiration."
+                "Answer.",
+                "That you are here\u2014that life exists, and identity;",
+                "That the powerful play goes on, and you will contribute a verse."
             ]
         }
     ]

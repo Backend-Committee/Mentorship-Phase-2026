@@ -29,10 +29,16 @@ def home():
     poems_data  = get_all_poems()
     if "current_index" not in session:
         session["current_index"] = len(poems_data["poems"]) - 1
+    elif session["current_index"] >= len(poems_data["poems"]):
+        fetch_and_process()
+        poems_data = get_all_poems()
+        session["current_index"] = 0
+
         
     current_index = session["current_index"]
     # session["poems"] = poems
 
+    
     return render_template(
         "index.html",
         poem=poems_data["poems"][current_index],

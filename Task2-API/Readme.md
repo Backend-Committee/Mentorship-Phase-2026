@@ -535,9 +535,9 @@ def login_user():
 
 ### 3. Register Page
 
-```
+
 ![Register page screenshot](screenshots/signup.png)
-```
+
 
 ---
 
