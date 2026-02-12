@@ -106,6 +106,17 @@ def insert_teacher():
     con.commit()
     print("Teacher added!")
 
+def insert_class():
+    print()
+    try:
+        t_id = input(int("Enter Teacher ID : "))
+        sub_id = input(int("Enter Subject ID : "))
+        h_num = input(int("Enter Hall number : "))
+        date = input("Enter Date : ")
+        time = input("Enter Time : ")
+        cur.execute("INSERT INTO classes (teacher_id, subject_id, hall_num, date, time)Values (?, ?, ?, ?,?)", (t_id, sub_id, h_num, date, time))
+    except ValueError:
+        print("IDs must be integers!")
 
 def enroll_student():
     print("\nEnrolling Student into subjects...\n")
@@ -213,7 +224,6 @@ def update_student_grade():
     try:
         s_id = int(input("Enter Student ID: "))
         new_grade = int(input("Enter New Grade: "))
-        cur = con.cursor()
         cur.execute("UPDATE students SET grade = ? WHERE student_id = ?", (new_grade, s_id))
 
         if cur.rowcount > 0:
@@ -223,6 +233,20 @@ def update_student_grade():
             print("Student ID not found.")
     except ValueError:
         print("Invalid input.")
+
+def update_class_hall_num():
+    try:
+        c_id = int(input("Enter Class ID: "))
+        try:
+            current = cur.execute("SELECT hall_num FROM classes WHERE class_id = ?", (c_id,))
+            print(f"The current hall number is {current}")
+            new_h = int(input("Enter new hall number: "))
+            cur.execute("UPDATE classes SET hall_num = ? WHERE class_id = ?", (new_h, c_id))
+            print("Hall number updated successfully!")
+        except sqlite3.IntegrityError:
+            print("Class ID not found.")
+    except ValueError:
+        print("class ID must be an integer.")
 
 
 def delete_student():
@@ -268,17 +292,19 @@ def main():
         print("0. Exit")
         print("1. Add Student")
         print("2. Add Subject")
-        print("3. add teacher")
-        print("4. Enroll Student To Subject")
-        print("5. Enroll teacher To Subject")
-        print("6. Show All Students")
-        print("7. Show All Subjects")
-        print("8. Show All Teachers")
-        print("9. Show Student Subjects")
-        print("10. Show Subject Teachers")
-        print("11. Update Grade")
-        print("12. Delete Student")
-        print("13. Delete Teacher")
+        print("3. Add teacher")
+        print("4. Add class")
+        print("5. Enroll Student To Subject")
+        print("6. Enroll teacher To Subject")
+        print("7. Show All Students")
+        print("8. Show All Subjects")
+        print("9. Show All Teachers")
+        print("10. Show Student Subjects")
+        print("11. Show Subject Teachers")
+        print("12. Update Grade of student")
+        print("13. Update Class Hall Number")
+        print("14. Delete Student")
+        print("15. Delete Teacher")
 
 
         choice = input("\n Choose an option (0-13): ")
@@ -293,30 +319,38 @@ def main():
         elif choice == '3':
             insert_teacher()
         elif choice == '4':
+            show_all_teachers()
+            show_all_subjects()
+            insert_class()
+        elif choice == '5':
             show_all_students()
             show_all_subjects()
             enroll_student()
-        elif choice == '5':
+        elif choice == '6':
             show_all_teachers()
             show_all_subjects()
             enroll_teacher()
-        elif choice == '6':
-            show_all_students()
         elif choice == '7':
-            show_all_subjects()
+            show_all_students()
         elif choice == '8':
-            show_all_teachers()
+            show_all_subjects()
         elif choice == '9':
+            show_all_teachers()
+        elif choice == '10':
             show_all_students()
             show_student_subjects()
-        elif choice == '10':
+        elif choice == '11':
             show_all_subjects()
             show_subject_teachers()
-        elif choice == '11':
+        elif choice == '12':
             update_student_grade()
         elif choice == '12':
-            delete_student()
+            update_class_hall_num()
         elif choice == '13':
+            update_class_hall_num()
+        elif choice == '14':
+            delete_student()
+        elif choice == '15':
             delete_teacher()
         else:
             print("Invalid choice!")

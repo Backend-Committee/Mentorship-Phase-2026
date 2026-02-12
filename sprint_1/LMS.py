@@ -1,5 +1,6 @@
 import pickle
 import os
+import json
 
 class Book:
 
@@ -68,24 +69,37 @@ class library:
         with open("library_data.pkl", "wb") as file:  # wb = write binary
             pickle.dump(self, file)
 
-    def add_book(self, title, author):
+    def add_book(self):
+        title = input("\nPlease enter the title of the book: ")
+        author = input("\nPlease enter the author of the book: ")
         self.books.append(Book(title, author))
         self.save_data()
         print("The book has been added to the library")
 
-    def remove_book(self, title, author):
+    def remove_book(self):
+        title = input("\nPlease enter the title of the book: ")
+        author = input("\nPlease enter the author of the book: ")
         for book in self.books:
             if book.title == title and book.author == author:
                 self.books.remove(book)
                 self.save_data()
         print("The book has been removed from the library")
 
-    def add_customer(self, name, email, age, ID):
+    def add_customer(self):
+        name = input("\nPlease enter the name of the customer:")
+        email = input("Please enter the email address: ")
+        age = int(input("Please enter the age: "))
+        ID = int(input("Please enter the ID: "))
         self.customers.append(Customer(name, email, age, ID))
         self.save_data()
         print("The customer has been added to the system")
 
-    def add_worker(self, name, email, age, salary, workerID):
+    def add_worker(self):
+        name = input("\nPlease enter the name of the worker: "),
+        email = input("Please enter the email address: "),
+        age = int(input("Please enter the age: ")),
+        salary = int(input("Please enter the salary: ")),
+        workerID = int(input("Please enter the work ID: "))
         self.workers.append(Worker(name, email, age, salary, workerID))
         self.save_data()
         print("The worker has been added to the system")
@@ -125,7 +139,9 @@ class library:
             print(f"{i}- {worker}")
             i += 1
 
-    def borrow_book(self, customer_obj, title_of_book, author):
+    def borrow_book(self, customer_obj):
+        title_of_book = input("\nPlease enter the title of the book: "),
+        author = input("Please enter the authors name: ")
         for book in self.books:
             if book.title == title_of_book and book.author == author:
                 if book.available:
@@ -139,7 +155,9 @@ class library:
         else:
             print("There is no book with that name and author")
 
-    def return_borrowed_book(self, name_of_customer, title_of_book, author):
+    def return_borrowed_book(self, name_of_customer):
+        title_of_book = input("\nPlease enter the title of the book: "),
+        author = input("Please enter the authors name: ")
         for book in self.books:
             if book.title == title_of_book and book.author == author:
                 if book.available:
@@ -207,26 +225,17 @@ while True:
                     break
 
                 elif choice == 1:
-                    lib.add_book(input("\nPlease enter the title of the book: "),
-                                 input("Please enter the authors name: "))
+                    lib.add_book()
 
                 elif choice == 2:
                     lib.show_books()
-                    lib.remove_book(input("\nPlease enter the title of the book: "),
-                                    input("Please enter the authors name: "))
+                    lib.remove_book()
 
                 elif choice == 3:
-                    lib.add_customer(input("\nPlease enter the name of the customer:"),
-                                     input("Please enter the email address: "),
-                                     int(input("Please enter the age: ")),
-                                     int(input("Please enter the ID: ")))
+                    lib.add_customer()
 
                 elif choice == 4:
-                    lib.add_worker(input("\nPlease enter the name of the worker: "),
-                                   input("Please enter the email address: "),
-                                   int(input("Please enter the age: ")),
-                                   int(input("Please enter the salary: ")),
-                                   int(input("Please enter the work ID: ")))
+                    lib.add_worker()
 
                 elif choice == 5:
                     lib.show_books()
@@ -273,16 +282,14 @@ while True:
 
                 elif choice == 1:
                     lib.show_books()
-                    lib.borrow_book(customer, input("\nPlease enter the title of the book: "),
-                                    input("Please enter the authors name: "))
+                    lib.borrow_book(customer)
 
                 elif choice == 2:
                     print("\n The books you are borrowed are \n")
                     for key, value in lib.borrowed_books.items():
                         if value == customer:
                             print(f"{key}  -  {value}")
-                    lib.return_borrowed_book(customer.name, input("\nPlease enter the title of the book: "),
-                                             input("Please enter the authors name: "))
+                    lib.return_borrowed_book(customer.name)
 
                 elif choice == 3:
                     print()
