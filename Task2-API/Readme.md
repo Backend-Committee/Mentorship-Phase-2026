@@ -523,21 +523,15 @@ def login_user():
 
 ### 1. Home Page - Poem Display
 
-```
 ![home page screenshot](screenshots/home.png)
-```
 
 ### 2. Login Page
 
-```
 ![login page screenshot](screenshots/login.png)
-```
 
 ### 3. Register Page
 
-
 ![Register page screenshot](screenshots/signup.png)
-
 
 ---
 
