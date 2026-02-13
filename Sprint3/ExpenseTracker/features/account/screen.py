@@ -1,11 +1,10 @@
 from typing import Callable
 
+from features.account.model import Account
+from features.account.service import AccountService
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from prompt_toolkit.validation import Validator
-
-from features.account.model import Account
-from features.account.service import AccountService
 
 
 class AccountsMenuScreen:
@@ -57,6 +56,9 @@ class TransactionScreen:
 
     def render(self) -> str:
         self.show_accounts()
+
+        if len(self.service.get_all_user_accounts(self.current_user.id)) == 0:
+            return "back"
 
         return inquirer.select(
             message="Choose a transaction",

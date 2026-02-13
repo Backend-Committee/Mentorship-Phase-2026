@@ -83,9 +83,3 @@ You will be greeted with the Expense Star banner and an interactive menu.
 * Expense / Income categories
 * CSV export
 * Transactions history
-
----
-
-## License
-
-MIT License — free to use, modify, and learn from.
