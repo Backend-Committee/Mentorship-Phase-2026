@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Product List</h1>
+
+{% if products %}
+    <ul>
+    {% for product in products %}
+        <li>
+            <h3>{{ product.name }}</h3>
+            <p>Price: ${{ product.price }}</p>
+            <p>Category: {{ product.category|default:"No Category" }}</p>
+            <p>Stock: {{ product.stock }}</p>
+            <p>Available: {% if product.is_Available %}Yes{% else %}No{% endif %}</p>
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <label for="quantity_{{ product.id }}">Quantity:</label>
+                <input type="number" id="quantity_{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}">
+                <button type="submit">Add to Cart</button>
+            </form>
+            <hr>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No products available.</p>
+{% endif %}
+
+<p><a href="{% url 'cart_list' %}">View Cart</a></p>
+
+{% endblock content %}
+
+

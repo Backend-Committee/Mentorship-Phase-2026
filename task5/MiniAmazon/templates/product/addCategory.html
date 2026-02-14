@@ -1,0 +1,9 @@
+{%extends 'base.html'%}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    {{ACF}}
+    <input type="submit" value="add Category">
+</form>
+{%endblock content%}
