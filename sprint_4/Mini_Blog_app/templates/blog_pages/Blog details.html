@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>blog {{ blog.id }}</title>
+</head>
+<body>
+    <h1>{{ blog.title }}</h1>
+    <h2><i>{{ blog.author }}</i></h2>
+    <p><b>{{ blog.content }}</b></p>
+    <p><small>{{ blog.date }}</small></p>
+</body>
+</html>
+{% endblock content %}

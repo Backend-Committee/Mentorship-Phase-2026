@@ -1,0 +1,92 @@
+/* --- الإعدادات العامة --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #65b98a;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* --- الحاوية الرئيسية (عشان الكلام ميبقاش لازق في الشاشة) --- */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* --- شريط التنقل (Navbar) --- */
+.navbar {
+    background-color: #52916e;
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navbar a {
+    color: #52916e;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #52916e; /* لون أزرق فاتح لما تقف بالماوس */
+}
+
+/* --- العناوين الرئيسية --- */
+h1 {
+    color: #2c3e50;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+/* --- كروت المقالات (في صفحة اللستة) --- */
+.blog-card {
+    background-color: #65b98a;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 5px solid #3498db;
+    transition: transform 0.2s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px); /* حركة خفيفة لفوق عند الوقوف بالماوس */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.blog-card a {
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.blog-card a:hover {
+    color: #3498db;
+}
+
+/* --- صفحة تفاصيل المقال --- */
+.blog-details {
+    background-color: #65b98a;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.author-date {
+    color: #7f8c8d;
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.content {
+    font-size: 16px;
+    color: #444;
+}

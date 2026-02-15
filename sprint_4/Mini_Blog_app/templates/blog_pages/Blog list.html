@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>list of blogs</title>
+</head>
+<body>
+<h1>list of blogs</h1>
+{% for p in blogs %}
+    <h1><a href="/blog/{{ p.id }}">{{ p.id }}- {{ p.title }}</a></h1>
+{% endfor %}
+</body>
+</html>
+{% endblock content %}

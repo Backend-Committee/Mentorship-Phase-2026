@@ -1,0 +1,5 @@
+sprint_4/venv/
+venv/
+__pycache__/
+*.sqlite3
+
