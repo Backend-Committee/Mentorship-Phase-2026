@@ -1,0 +1,38 @@
+[
+  {
+    "model": "cart.cartitem",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "product": 1,
+      "quantity": 2
+    }
+  },
+  {
+    "model": "cart.cartitem",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "product": 4,
+      "quantity": 1
+    }
+  },
+  {
+    "model": "cart.cartitem",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "product": 2,
+      "quantity": 3
+    }
+  },
+  {
+    "model": "cart.cartitem",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "product": 3,
+      "quantity": 1
+    }
+  }
+]

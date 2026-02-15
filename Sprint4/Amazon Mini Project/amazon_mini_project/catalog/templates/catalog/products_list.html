@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load extras %}
+{% block title %}Products - My Store{% endblock %}
+{% block content %}
+<h1 class="mb-4">Product List</h1>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            {% if product.image_url %}
+            <img
+                src="{{ product.image_url }}"
+                class="card-img-top"
+                alt="{{ product.title }}"
+            />
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ product.title }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <p class="card-text">
+                    <strong>Price:</strong> ₹{{ product.price }}
+                </p>
+                <p class="card-text">
+                    <strong>Sale:</strong> {{ product.sale_percent }}%
+                </p>
+                <p class="card-text">
+                    <strong>Categories:</strong>
+                    {% for category in product.category.all %}
+                        {{ category.title }}
+                        {% if not forloop.last %}
+                            ,
+                        {% endif %}
+                    {% endfor %}
+                </p>
+
+                <div class="cart-controller" id="cart-controller-{{ product.pk }}">
+                    {% if product.pk not in product_id_quantity %}
+                        <button onclick="addToCart({{ product.pk }})">Add to Cart</button>
+                    {% else %}
+                        <input
+                            type="number"
+                            min="1"
+                            max="100"
+                            value="{{ product_id_quantity|get_item:product.pk }}"
+                            onchange="updateQuantity({{ product.pk }}, this.value)"
+                        />
+                        <button onclick="deleteCartItem({{ product.pk }})">Delete</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Add to Cart
+function addToCart(productId) {
+    showCartControls(productId, 1);
+    fetch('/cart/cart-item/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ productId, quantity: 1 })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err => console.error(err));
+}
+
+// Update Quantity
+function updateQuantity(productId, quantity) {
+    fetch('/cart/cart-item/', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ productId, quantity })
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.error(err));
+}
+
+// Delete Item
+function deleteCartItem(productId) {
+    showAddButton(productId);
+    fetch('/cart/cart-item/', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ productId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err => console.error(err));
+}
+
+// Dynamically replace Add button with Quantity + Delete
+function showCartControls(productId, quantity) {
+    const container = document.getElementById(`cart-controller-${productId}`);
+    container.innerHTML = `
+        <input
+            type="number"
+            min="1"
+            max="100"
+            value="${quantity}"
+            onchange="updateQuantity(${productId}, this.value)"
+        />
+        <button onclick="deleteCartItem(${productId})">Delete</button>
+    `;
+}
+
+// Dynamically replace Quantity + Delete with Add button
+function showAddButton(productId) {
+    const container = document.getElementById(`cart-controller-${productId}`);
+    container.innerHTML = `
+        <button onclick="addToCart(${productId})">Add to Cart</button>
+    `;
+}
+</script>
+{% endblock %}

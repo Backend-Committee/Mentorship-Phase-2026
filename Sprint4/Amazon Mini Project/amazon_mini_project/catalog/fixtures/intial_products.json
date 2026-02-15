@@ -1,0 +1,50 @@
+[
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "title": "Wireless Headphones",
+      "description": "Noise cancelling over-ear headphones",
+      "price": "120.00",
+      "image_url": "https://picsum.photos/300/300?random=1",
+      "sale_percent": 10,
+      "category": [1]
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "title": "Casual T-Shirt",
+      "description": "Comfortable cotton t-shirt",
+      "price": "25.00",
+      "image_url": "https://picsum.photos/300/300?random=2",
+      "sale_percent": 5,
+      "category": [2]
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "title": "Django for Beginners",
+      "description": "Learn Django step by step",
+      "price": "45.00",
+      "image_url": "https://picsum.photos/300/300?random=3",
+      "sale_percent": 15,
+      "category": [3]
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "title": "Smart Watch",
+      "description": "Fitness tracking smart watch",
+      "price": "199.99",
+      "image_url": "https://picsum.photos/300/300?random=4",
+      "sale_percent": 20,
+      "category": [1]
+    }
+  }
+]

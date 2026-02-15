@@ -1,0 +1,26 @@
+[
+  {
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+      "name": "Ahmed",
+      "bio": "Full-stack developer"
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 2,
+    "fields": {
+      "name": "Sara",
+      "bio": "UI/UX designer"
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 3,
+    "fields": {
+      "name": "Omar",
+      "bio": "Backend engineer"
+    }
+  }
+]

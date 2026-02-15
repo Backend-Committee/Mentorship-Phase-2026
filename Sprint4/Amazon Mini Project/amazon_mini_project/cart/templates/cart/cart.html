@@ -1,0 +1,80 @@
+
+{% extends "base.html" %}
+
+{% block title %}My Cart{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">🛒 My Shopping Cart</h2>
+
+    {% if cartItems %}
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th width="120">Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cartItems %}
+                <tr>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <img src="{{ item.product.image_url }}"
+                                 alt="{{ item.product.title }}"
+                                 width="80"
+                                 height="80"
+                                 style="object-fit:cover; border-radius:6px;">
+                            <div>
+                                <strong>{{ item.product.title }}</strong>
+                                <br>
+                                <small class="text-muted">
+                                    {{ item.product.description }}
+                                </small>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        ${{ item.product.price }}
+                    </td>
+
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+
+                    <td>
+                        ${{ item.product.price|floatformat:2|add:"0" }}
+                        × {{ item.quantity }}
+                        =
+                        <strong>
+                            ${{ item.product.price|floatformat:2|add:"0"|floatformat:2 }}
+                        </strong>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <hr>
+
+        <div class="text-end">
+            <h4>
+                Total:
+                <strong>
+                    ${{total}}<br>
+                    {{ cartItems|length }}
+                    item(s)
+                </strong>
+            </h4>
+        </div>
+
+    {% else %}
+        <div class="alert alert-info">
+            Your cart is empty 🛍️
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
