@@ -1,0 +1,282 @@
+{
+    "Student": [
+        {
+            "ST_ID": 1,
+            "Name": "Ahmed Ali",
+            "date_of_birth": 2005,
+            "address": "Alexandria",
+            "parents_contact_number": 1012345678
+        },
+        {
+            "ST_ID": 2,
+            "Name": "Sara Ahmed",
+            "date_of_birth": 2006,
+            "address": "Giza",
+            "parents_contact_number": 1122334455
+        },
+        {
+            "ST_ID": 3,
+            "Name": "John Doe",
+            "date_of_birth": 2005,
+            "address": "Alexandria",
+            "parents_contact_number": 1277889900
+        },
+        {
+            "ST_ID": 4,
+            "Name": "Lila Youssef",
+            "date_of_birth": 2007,
+            "address": "Mansoura",
+            "parents_contact_number": 1555667788
+        },
+        {
+            "ST_ID": 5,
+            "Name": "Ahmed Ali",
+            "date_of_birth": 2005,
+            "address": "Cairo",
+            "parents_contact_number": 1012345678
+        },
+        {
+            "ST_ID": 6,
+            "Name": "Sara Ahmed",
+            "date_of_birth": 2006,
+            "address": "Giza",
+            "parents_contact_number": 1122334455
+        },
+        {
+            "ST_ID": 7,
+            "Name": "John Doe",
+            "date_of_birth": 2005,
+            "address": "Alexandria",
+            "parents_contact_number": 1277889900
+        },
+        {
+            "ST_ID": 8,
+            "Name": "Lila Youssef",
+            "date_of_birth": 2007,
+            "address": "Mansoura",
+            "parents_contact_number": 1555667788
+        }
+    ],
+    "Teachers": [
+        {
+            "TE_ID": 1,
+            "Name": "Mr. Samy",
+            "SALARY": 9000,
+            "Academic_specialty": "Mathematics"
+        },
+        {
+            "TE_ID": 2,
+            "Name": "Ms. Mona",
+            "SALARY": 8500,
+            "Academic_specialty": "Physics"
+        },
+        {
+            "TE_ID": 3,
+            "Name": "Mr. Khaled",
+            "SALARY": 9500,
+            "Academic_specialty": "Computer Science"
+        },
+        {
+            "TE_ID": 4,
+            "Name": "Mr. Samy",
+            "SALARY": 9000,
+            "Academic_specialty": "Mathematics"
+        },
+        {
+            "TE_ID": 5,
+            "Name": "Ms. Mona",
+            "SALARY": 8500,
+            "Academic_specialty": "Physics"
+        },
+        {
+            "TE_ID": 6,
+            "Name": "Mr. Khaled",
+            "SALARY": 9500,
+            "Academic_specialty": "Computer Science"
+        }
+    ],
+    "Subjects": [
+        {
+            "SU_ID": 1,
+            "Title": "Math 101",
+            "Credit": 3
+        },
+        {
+            "SU_ID": 2,
+            "Title": "Physics 1",
+            "Credit": 4
+        },
+        {
+            "SU_ID": 3,
+            "Title": "CS 50",
+            "Credit": 3
+        },
+        {
+            "SU_ID": 4,
+            "Title": "Math 101",
+            "Credit": 3
+        },
+        {
+            "SU_ID": 5,
+            "Title": "Physics 1",
+            "Credit": 4
+        },
+        {
+            "SU_ID": 6,
+            "Title": "CS 50",
+            "Credit": 3
+        }
+    ],
+    "Classes": [
+        {
+            "CL_ID": 1,
+            "Class_name": "Class 1-A",
+            "Maximu_capacity": 30
+        },
+        {
+            "CL_ID": 2,
+            "Class_name": "Science Lab",
+            "Maximu_capacity": 20
+        },
+        {
+            "CL_ID": 3,
+            "Class_name": "Computer Lab 1",
+            "Maximu_capacity": 25
+        },
+        {
+            "CL_ID": 4,
+            "Class_name": "Class 1-A",
+            "Maximu_capacity": 30
+        },
+        {
+            "CL_ID": 5,
+            "Class_name": "Science Lab",
+            "Maximu_capacity": 20
+        },
+        {
+            "CL_ID": 6,
+            "Class_name": "Computer Lab 1",
+            "Maximu_capacity": 25
+        }
+    ],
+    "Enrollment": [
+        {
+            "EN_ID": 1,
+            "ST_ID": 1,
+            "SU_ID": 1,
+            "Grade": 95,
+            "Semester": "First",
+            "Attendance_Rate": 100
+        },
+        {
+            "EN_ID": 2,
+            "ST_ID": 1,
+            "SU_ID": 3,
+            "Grade": 98,
+            "Semester": "First",
+            "Attendance_Rate": 95
+        },
+        {
+            "EN_ID": 3,
+            "ST_ID": 2,
+            "SU_ID": 2,
+            "Grade": 88,
+            "Semester": "First",
+            "Attendance_Rate": 90
+        },
+        {
+            "EN_ID": 4,
+            "ST_ID": 3,
+            "SU_ID": 3,
+            "Grade": 92,
+            "Semester": "First",
+            "Attendance_Rate": 85
+        },
+        {
+            "EN_ID": 5,
+            "ST_ID": 4,
+            "SU_ID": 1,
+            "Grade": 85,
+            "Semester": "First",
+            "Attendance_Rate": 92
+        },
+        {
+            "EN_ID": 6,
+            "ST_ID": 1,
+            "SU_ID": 1,
+            "Grade": 95,
+            "Semester": "First",
+            "Attendance_Rate": 100
+        },
+        {
+            "EN_ID": 7,
+            "ST_ID": 1,
+            "SU_ID": 3,
+            "Grade": 98,
+            "Semester": "First",
+            "Attendance_Rate": 95
+        },
+        {
+            "EN_ID": 8,
+            "ST_ID": 2,
+            "SU_ID": 2,
+            "Grade": 88,
+            "Semester": "First",
+            "Attendance_Rate": 90
+        },
+        {
+            "EN_ID": 9,
+            "ST_ID": 3,
+            "SU_ID": 3,
+            "Grade": 92,
+            "Semester": "First",
+            "Attendance_Rate": 85
+        },
+        {
+            "EN_ID": 10,
+            "ST_ID": 4,
+            "SU_ID": 1,
+            "Grade": 85,
+            "Semester": "First",
+            "Attendance_Rate": 92
+        }
+    ],
+    "Supervision": [
+        {
+            "Sup_ID": 1,
+            "ST_ID": 1,
+            "TE_ID": 1,
+            "Evaluation_Notes": "Excellent in Math"
+        },
+        {
+            "Sup_ID": 2,
+            "ST_ID": 2,
+            "TE_ID": 2,
+            "Evaluation_Notes": "Great improvement"
+        },
+        {
+            "Sup_ID": 3,
+            "ST_ID": 3,
+            "TE_ID": 3,
+            "Evaluation_Notes": "High tech skills"
+        },
+        {
+            "Sup_ID": 4,
+            "ST_ID": 1,
+            "TE_ID": 1,
+            "Evaluation_Notes": "Excellent in Math"
+        },
+        {
+            "Sup_ID": 5,
+            "ST_ID": 2,
+            "TE_ID": 2,
+            "Evaluation_Notes": "Great improvement"
+        },
+        {
+            "Sup_ID": 6,
+            "ST_ID": 3,
+            "TE_ID": 3,
+            "Evaluation_Notes": "High tech skills"
+        }
+    ]
+}

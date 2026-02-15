@@ -64,6 +64,14 @@ def insert_sample_data():
     con = connect_db()
     cur = con.cursor()
     
+    # insert data into Teachers
+    teachers_data = [
+        ('Mr. Samy', 9000, 'Mathematics'),
+        ('Ms. Mona', 8500, 'Physics'),
+        ('Mr. Khaled', 9500, 'Computer Science')
+    ]
+    cur.executemany("INSERT OR IGNORE INTO Teachers (Name, SALARY, Academic_specialty) VALUES(?,?,?)", teachers_data)
+
     # insert data into Student
     students_data = [
         ('Ahmed Ali', 2005, 'Cairo', 1012345678),
@@ -73,13 +81,6 @@ def insert_sample_data():
     ]
     cur.executemany("INSERT OR IGNORE INTO Student(Name, date_of_birth, address, parents_contact_number) VALUES(?,?,?,?)", students_data)
 
-    # insert data into Teachers
-    teachers_data = [
-        ('Mr. Samy', 9000, 'Mathematics'),
-        ('Ms. Mona', 8500, 'Physics'),
-        ('Mr. Khaled', 9500, 'Computer Science')
-    ]
-    cur.executemany("INSERT OR IGNORE INTO Teachers (Name, SALARY, Academic_specialty) VALUES(?,?,?)", teachers_data)
 
     # insert data into Subjects
     subjects_data = [('Math 101', 3), ('Physics 1', 4), ('CS 50', 3)]
@@ -109,6 +110,8 @@ def show_enrollments():
     FROM Enrollment
     JOIN Student ON Enrollment.ST_ID = Student.ST_ID
     JOIN Subjects ON Enrollment.SU_ID = Subjects.SU_ID
+
+
     """
     cur.execute(query)
     rows = cur.fetchall()
