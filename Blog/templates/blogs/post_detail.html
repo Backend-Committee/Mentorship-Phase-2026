@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <article class="blog-post">
+        <h2 class="blog-post-title mb-1">{{ post.title }}</h2>
+        <p class="blog-post-meta text-muted">
+            {{ post.created_at|date:"F d, Y" }} by <a href="#">{{ post.author.username }}</a>
+        </p>
+
+        <div class="content">
+            {{ post.content|linebreaks }}
+        </div>
+        
+        <hr>
+        <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
+    </article>
+{% endblock %}
