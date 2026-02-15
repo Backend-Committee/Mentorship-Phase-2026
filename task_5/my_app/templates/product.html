@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Product - {{ product.name }} {% endblock %}
+{% block content %} 
+    {% if error %}
+        <div class="m-8 py-2 px-8 bg-red-100">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+    <div class="m-8">
+        <img class="w-64 h-64 object-cover" src="{% static product.get_main_image_static_path %}" alt="">
+        <h1 class="mt-4 font-semibold text-4xl">#{{ product.id }} {{ product.name }}</h1>
+        <p class="mt-4">{{ product.desc }}</p>
+        <div class="mt-4"></div>
+        {% if product.category %}
+            <p>Category: <span class="border p-1 rounded-lg w-fit text-sm">{{ product.category.name }}</span></p>                        
+        {% endif %}
+        <p class="mt-1"> Status: {{ product.is_available|yesno:'Available,Not In Stock' }}</p>
+        <p class="mt-1">Stock: {{ product.stock }}</p>
+        <p class="mt-1"> Price {{ product.price }}$ </p>
+        <form action="" method="post" class="border mt-4 p-2" novalidate>
+            {% csrf_token %}
+            {{ form }}
+            <input class="px-4 py-1 mt-2 bg-green-200 cursor-pointer" type="submit" value="Add">
+        </form>
+    </div>
+{% endblock %}

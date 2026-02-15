@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Mini Amazon {% endblock %}
+{% block content %} 
+    <ul class="m-8 flex flex-wrap">
+        {% for product in products %}
+            <li class="border w-fit p-2 m-4 rounded">
+                <a href="{% url 'product' product.id %}" class="flex flex-col items-center">
+                    <img class="w-32 h-32 object-contain" src="{% static product.get_main_image_static_path %}" alt="">
+                    <p class="mt-1 font-semibold">#{{ product.id }} {{ product.name }}</p>
+                    {% if product.category %}
+                        <p class="border p-1 rounded-lg w-fit text-sm mt-1">{{ product.category.name }}</p>                        
+                    {% endif %}
+                    <p class="mt-2"> {{ product.price }}$ </p>
+                    <p class="mt-2"> Status: {{ product.is_available|yesno:'Available,Not In Stock' }}</p>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

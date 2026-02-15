@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %} 
+    <div class="m-4">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for product in products %}
+                <div class="my-4 border p-2">
+                    <input type="submit" class="text-red-400 cursor-pointer" value="delete_{{ product.id }}">
+                    <p class="my-1 font-semibold">#{{ product.id }} {{ product.name }}</p>
+                    <span class="m">Quantity: </span>
+                    <input type="number" name="quantity_{{product_id}}" value="1" min="1" max="{{ product.stock }}" required="">
+                </div>
+            {% endfor %}
+            <input class="px-4 py-1 mt-2 bg-green-200 cursor-pointer" type="submit" value="Order">
+        </form>
+    </div>
+
+    
+{% endblock %}

@@ -1,0 +1,19 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block css %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header class="bg-gray-200 p-8">
+        <h1 class="text-2xl font-bold italic">Mini Amazon</h1>
+        <a class="block mt-2 text-blue-600 underline" href="{% url 'cart' %}">Cart</a>
+    </header>
+    {% block content %}{% endblock %}
+</body>
+</html>
