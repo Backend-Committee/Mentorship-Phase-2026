@@ -1,0 +1,33 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+        body {
+            background: #601010;
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'parts/navebar.html' %}
+
+    <div class="main-container">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    {% include 'parts/footer.html' %}
+
+</body>
+</html>

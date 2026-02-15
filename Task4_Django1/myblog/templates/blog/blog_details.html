@@ -1,0 +1,54 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 850px; margin: 40px auto; padding: 0 20px;">
+    <div style="background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); overflow: hidden;">
+
+        <div style="background: #601010; padding: 30px; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 32px; font-family: 'Arial', sans-serif;">
+                {{ post.title }}
+            </h1>
+        </div>
+
+        <div style="padding: 40px;">
+            <div style="background: #fdf2f2; border-left: 5px solid #601010; padding: 15px; margin-bottom: 25px; border-radius: 5px;">
+                <p style="color: #601010; font-size: 18px; font-style: italic; margin: 0; font-family: 'Georgia', serif;">
+                    "{{ post.content }}"
+                </p>
+            </div>
+
+            <p style="color: #2c3e50; font-size: 20px; line-height: 1.8; text-align: justify; font-family: 'Georgia', serif; margin-bottom: 30px;">
+                {{ post.details }}
+            </p>
+
+            <div style="border-top: 2px solid #f0f0f0; pt: 25px; text-align: center; padding-top: 20px;">
+                <a href="{% url 'blog_list' %}" class="back-btn">
+                    ← Back to Nature Blog
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .back-btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background: #601010;
+        color: white !important;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.3s;
+        box-shadow: 0 4px 10px rgba(96, 16, 16, 0.3);
+    }
+
+        .back-btn:hover {
+            background: #2c3e50;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+</style>
+{% endblock content %}

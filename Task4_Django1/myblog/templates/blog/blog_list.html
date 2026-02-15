@@ -1,0 +1,63 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h1 style="text-align: center; color: white; margin-bottom: 40px; font-family: 'Arial', sans-serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+        Nature Explorer
+    </h1>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        {% for post in posts %}
+        <div class="blog-card">
+            <h2 style="margin-top: 0; font-size: 24px;">
+                <a href="{% url 'blog_details' post.id %}" style="color: #2c3e50; text-decoration: none;">
+                    {{ post.title }}
+                </a>
+            </h2>
+
+            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 20px;">
+                Click to explore the secrets of {{ post.title }}...
+            </p>
+
+            <div style="text-align: center;">
+                <a href="{% url 'blog_details' post.id %}" class="read-more-btn">
+                    Read Details
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .blog-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: 0.3s;
+        text-align: center;
+    }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+        }
+
+    .read-more-btn {
+        display: inline-block;
+        padding: 8px 25px;
+        background: #601010;
+        color: white !important;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .read-more-btn:hover {
+            background: #2c3e50;
+            letter-spacing: 1px;
+        }
+</style>
+{% endblock %}

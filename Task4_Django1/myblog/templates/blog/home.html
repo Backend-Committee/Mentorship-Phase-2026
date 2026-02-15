@@ -1,0 +1,22 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+    <div class="my-card" style="text-align: center; max-width: 600px; padding: 50px;">
+
+        <h1 style="color: #601010; font-size: 45px; font-family: 'Segoe UI', Arial, sans-serif; letter-spacing: -1px; margin-bottom: 10px;">
+            Welcome To My Blog
+        </h1>
+
+        <p style="color: #2c3e50; font-size: 24px; font-family: 'Georgia', serif; font-style: italic;">
+            My Name Is: <span style="font-weight: bold; color: #601010; font-style: normal;">{{ name }}</span>
+        </p>
+
+        <div style="margin-top: 40px;">
+            <a href="{% url 'blog_list' %}" class="my-button">
+                Explore My Stories
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
