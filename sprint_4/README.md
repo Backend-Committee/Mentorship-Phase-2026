@@ -16,8 +16,8 @@ A simple and elegant Blog Web Application built with Python and Django. This pro
 
 ## 🚀 How to Run the Project Locally
 
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-cd your-repo-name
+git clone [https://github.com/Backend-Committee/Mentorship-Phase-2026.git]
+
 
 # On Windows
 python -m venv venv
