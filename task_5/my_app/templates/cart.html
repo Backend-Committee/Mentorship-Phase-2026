@@ -1,22 +1,30 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load custom_extra %}
 
 {% block content %} 
+
+    {% for product in products %}
+        <form action="{% url 'delete_item_from_cart' %}" method="post" id="delete_form_{{ product.id }}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+        </form>
+    {% endfor %}
+    
     <div class="m-4">
         <form action="" method="post">
+            {{ formset.management_form }}
             {% csrf_token %}
-            {% for product in products %}
-                <div class="my-4 border p-2">
-                    <input type="submit" class="text-red-400 cursor-pointer" value="delete_{{ product.id }}">
-                    <p class="my-1 font-semibold">#{{ product.id }} {{ product.name }}</p>
-                    <span class="m">Quantity: </span>
-                    <input type="number" name="quantity_{{product_id}}" value="1" min="1" max="{{ product.stock }}" required="">
+            {% for form in formset %}
+                <div class="m-2 p-4 border rounded">
+                    {% index products forloop.counter0 as product %}                    
+                    <p class="font-semibold mb-2">#{{ product.id }} {{ product.name }}</p>
+                    {{ form }}
+                    <button class="text-red-400 mt-2 cursor-pointer" form="delete_form_{{ product.id }}">Delete</button>
                 </div>
             {% endfor %}
             <input class="px-4 py-1 mt-2 bg-green-200 cursor-pointer" type="submit" value="Order">
         </form>
     </div>
-
-    
 {% endblock %}

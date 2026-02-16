@@ -5,9 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% block css %}{% endblock %}
+    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- {% block css %}{% endblock %} -->
     <title>{% block title %}{% endblock %}</title>
+    <style>
+        input {
+            border: 1px solid black;
+        }
+        .errorlist {
+            color: red
+        }
+    </style>
 </head>
 <body>
     <header class="bg-gray-200 p-8">

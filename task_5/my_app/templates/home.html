@@ -3,7 +3,12 @@
 {% load static %}
 
 {% block title %} Mini Amazon {% endblock %}
-{% block content %} 
+{% block content %}
+    <form class="m-8 p-2 border rounded" action="" method="get">
+        {{ filter_form }}
+        <input class="px-4 py-1 mt-2 bg-green-200 cursor-pointer" type="submit" value="Apply">
+    </form>
+
     <ul class="m-8 flex flex-wrap">
         {% for product in products %}
             <li class="border w-fit p-2 m-4 rounded">

@@ -20,10 +20,13 @@
         <p class="mt-1"> Status: {{ product.is_available|yesno:'Available,Not In Stock' }}</p>
         <p class="mt-1">Stock: {{ product.stock }}</p>
         <p class="mt-1"> Price {{ product.price }}$ </p>
-        <form action="" method="post" class="border mt-4 p-2" novalidate>
-            {% csrf_token %}
-            {{ form }}
-            <input class="px-4 py-1 mt-2 bg-green-200 cursor-pointer" type="submit" value="Add">
-        </form>
+        {% if product.is_available %}
+            <form action="" method="post" class="mt-4">
+                {% csrf_token %}
+                <input type="submit" value="Add To Cart" class="px-4 py-1 mt-2 bg-green-200 cursor-pointer">
+            </form>
+        {% else %}
+            <p class="mt-4 text-yellow-500">This product is currently unavailable!</p>                
+        {% endif %}
     </div>
 {% endblock %}
