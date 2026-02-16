@@ -25,7 +25,7 @@ Perfect for college projects, learning databases, or as a starting point for a r
 
 ## Database Schema (ERD Summary)
 
-- **students** → student_id (PK), first_name, last_name, dob, gender, email (unique), phone
+- **students** → student_id (PK), first_name, last_name, date_of_birth, gender, email (unique), phone
 - **teachers** → teacher_id (PK), first_name, last_name, email (unique), phone, hire_date
 - **subjects** → subject_id (PK), name (unique), credits
 - **classes** → class_id (PK), name, grade_level, academic_year

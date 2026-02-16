@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Mini Blog{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Mini Blog Application</h1>
+        <p>Explore Django with Database-Driven Content</p>
+
+        <nav>
+          <ul>
+            <li><a href="{% url 'blogs:home' %}">Home</a></li>
+            <li><a href="{% url 'blogs:blog_list' %}">All Blogs</a></li>
+            <li><a href="{% url 'blogs:category_list' %}">Categories</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>{% block content %} {% endblock %}</main>
+
+      <footer>
+        <p>&copy; 2024 Mini Blog Application | Built with Django</p>
+        <p>Database-driven blog with Models, Views & Templates</p>
+      </footer>
+    </div>
+  </body>
+</html>

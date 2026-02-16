@@ -96,14 +96,14 @@ def create_tables():
 
 def insert_sample_data():
     # Clear for fresh start
-    # cursor.execute('DELETE FROM enrollments')
-    # cursor.execute('DELETE FROM teacher_assignments')
-    # cursor.execute('DELETE FROM class_subjects')
-    # cursor.execute('DELETE FROM students')
-    # cursor.execute('DELETE FROM teachers')
-    # cursor.execute('DELETE FROM subjects')
-    # cursor.execute('DELETE FROM classes')
-    # conn.commit()
+    cursor.execute('DELETE FROM enrollments')
+    cursor.execute('DELETE FROM teacher_assignments')
+    cursor.execute('DELETE FROM class_subjects')
+    cursor.execute('DELETE FROM students')
+    cursor.execute('DELETE FROM teachers')
+    cursor.execute('DELETE FROM subjects')
+    cursor.execute('DELETE FROM classes')
+    conn.commit()
 
     # Students
     add_student('Maryam', 'Hassan', '2008-05-15', 'Female', 'maryam.h@school.com', '01001234567')
@@ -349,6 +349,7 @@ def main_menu():
 
     while True:
         print("\n=== School Management System ===")
+        print("1. Add")
         print("1. Add Student")
         print("2. View All Students")
         print("3. Update Student Email")
