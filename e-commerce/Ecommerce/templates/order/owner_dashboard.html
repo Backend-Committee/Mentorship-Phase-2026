@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4">Owner Dashboard</h2>
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Manage Orders</h5>
+        </div>
+        <div class="card-body">
+            {% if order_items %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order_items %}
+                        <tr>
+                            <td>#{{ item.order.id }}</td>
+                            <td>{{ item.order.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if item.product and item.product.pic %}
+                                        <img src="{{ item.product.pic.url }}" alt="{{ item.product_name|default:item.product.name }}" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                    {% endif %}
+                                    {{ item.product_name|default:item.product.name }}
+                                </div>
+                            </td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.total_price }}</td>
+                            <td>
+                                {{ item.order.user.username }}<br>
+                                <small class="text-muted">{{ item.order.user.email }}</small>
+                            </td>
+                            <td>
+                                <span class="badge 
+                                    {% if item.status == 'pending' %}bg-warning text-dark
+                                    {% elif item.status == 'processing' %}bg-info text-dark
+                                    {% elif item.status == 'shipped' %}bg-primary
+                                    {% elif item.status == 'delivered' %}bg-success
+                                    {% elif item.status == 'cancelled' %}bg-danger
+                                    {% endif %}">
+                                    {{ item.get_status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ item.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Update Status
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ item.id }}">
+                                        <li><a class="dropdown-item" href="{% url 'update_order_item_status' item.id 'pending' %}">Pending</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'update_order_item_status' item.id 'processing' %}">Processing</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'update_order_item_status' item.id 'shipped' %}">Shipped</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'update_order_item_status' item.id 'delivered' %}">Delivered</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'update_order_item_status' item.id 'cancelled' %}">Cancel Order</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                No orders found for your products yet.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Checkout</h1>
+    <h3>Order Summary</h3>
+    <table class="table">
+        <tbody>
+            {% for item in cart.cartitems.all %}
+            <tr>
+                <td>{{ item.product.name }} (x{{ item.quantity }})</td>
+                <td>${{ item.product.price }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th>Total</th>
+                <th>${{ cart.total_price }}</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="shipping_address" class="form-label">Shipping Address</label>
+            <textarea name="shipping_address" id="shipping_address" class="form-control" rows="3" required>{{ user.address }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="method" class="form-label">Payment Method</label>
+            <select name="method" id="method" class="form-select">
+                <option value="credit_card">Credit Card</option>
+                <option value="paypal">PayPal</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="cash_on_delivery">Cash on Delivery</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Place Order</button>
+    </form>
+{% endblock %}
