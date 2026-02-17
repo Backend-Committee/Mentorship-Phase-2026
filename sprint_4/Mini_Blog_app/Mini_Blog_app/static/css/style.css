@@ -1,92 +1,118 @@
-/* --- الإعدادات العامة --- */
+/* --- إعدادات الخطوط والألوان العامة --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #46c3c0;
-    color: #333333;
     margin: 0;
     padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #3c8988;
+    color: #000000; /* لون النص الفاتح */
     line-height: 1.6;
 }
 
-/* --- الحاوية الرئيسية (عشان الكلام ميبقاش لازق في الشاشة) --- */
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-/* --- شريط التنقل (Navbar) --- */
-.navbar {
-    background-color: #333333;
-    padding: 15px 20px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.navbar a {
-    color: #5346bf;
+/* تنسيق الروابط بشكل عام */
+a {
+    color: #29aaa8; /* اللون البنفسجي الساطع */
     text-decoration: none;
-    margin: 0 15px;
-    font-size: 18px;
-    font-weight: bold;
     transition: color 0.3s ease;
 }
 
-.navbar a:hover {
-    color: #5346bf; /* لون أزرق فاتح لما تقف بالماوس */
+a:hover {
+    color: #21b8b5; /* لون أفتح عند الوقوف بالماوس */
 }
 
-/* --- العناوين الرئيسية --- */
+/* --- شريط التنقل (Navbar) --- */
+.main-nav {
+    background-color: #29aaa8; /* لون أفتح قليلاً من الخلفية */
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* ظل خفيف */
+    margin-bottom: 40px;
+}
+
+.main-nav a {
+    color: #000000;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 15px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.main-nav a:hover {
+    color: #000000;
+    background-color: #fefefe;
+}
+
+/* --- الحاوية الرئيسية (Container) --- */
+.container {
+    max-width: 900px;
+    margin: 0 auto; /* توسيط المحتوى */
+    padding: 0 20px 40px 20px;
+}
+
+/* تنسيق العناوين الرئيسية */
 h1 {
-    color: #2c3e50;
-    border-bottom: 2px solid #000000;
-    padding-bottom: 10px;
+    color: #000000;
+    font-size: 2.5rem;
     margin-bottom: 30px;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 15px;
+    display: inline-block;
 }
 
-/* --- كروت المقالات (في صفحة اللستة) --- */
+/* --- كروت المقالات (في صفحة Blog List) --- */
 .blog-card {
-    background-color: #65b98a;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border-left: 5px solid #3498db;
-    transition: transform 0.2s ease;
+    background-color: #29aaa8; /* لون خلفية الكارت */
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px; /* حواف دائرية */
+    border: 1px solid #000000; /* حدود خفيفة */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .blog-card:hover {
-    transform: translateY(-5px); /* حركة خفيفة لفوق عند الوقوف بالماوس */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-5px); /* حركة خفيفة للأعلى */
+    box-shadow: 0 8px 15px rgba(37, 189, 197, 0.15);
+    border-color: #29aaa8;
 }
 
-.blog-card a {
-    text-decoration: none;
-    color: #2c3e50;
-    font-size: 22px;
-    font-weight: bold;
+/* عنوان المقال داخل الكارت */
+.blog-card h2 a {
+    color: #000000;
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 10px;
 }
 
-.blog-card a:hover {
-    color: #3498db;
+.blog-card h2 a:hover {
+    color: #fefefe;
 }
 
-/* --- صفحة تفاصيل المقال --- */
+/* --- صفحة تفاصيل المقال (Blog Details) --- */
 .blog-details {
-    background-color: #65b98a;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    background-color: #29aaa8;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
+.blog-details h1 {
+    color: #000000; /* عنوان المقال باللون البنفسجي */
+    border: none;
+    padding-bottom: 0;
+}
+
+/* --- تنسيقات مشتركة (التاريخ والمحتوى) --- */
 .author-date {
-    color: #7f8c8d;
-    font-size: 14px;
+    color: #f5dd5d; /* لون رمادي غامق للمعلومات الفرعية */
+    font-size: 0.95rem;
     font-style: italic;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    display: block;
 }
 
 .content {
-    font-size: 16px;
-    color: #444;
+    font-size: 1.1rem;
+    color: #ffffff;
+    line-height: 1.8;
 }
