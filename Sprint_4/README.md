@@ -141,3 +141,18 @@ urlpatterns = [
     path('Poets.html', views.poets, name='poets'),
 ]
 ```
+
+---
+
+## 🚀 Running the Application
+
+1. Clone the repository.
+2. Install Django.
+3. Run `python manage.py runserver`.
+4. Visit `http://127.0.0.1:8000/` to see the homepage.
+5. Visit `http://127.0.0.1:8000/Poets.html` to see the poets page.
+
+---
+
+# Author
+- Zeyad Amin 
