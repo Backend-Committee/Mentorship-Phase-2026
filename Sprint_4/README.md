@@ -60,7 +60,7 @@ Stores poetry content and metadata:
 }
 ```
 ### Poets.json
-```
+``` json
 {
   "id": 1,
   "name": "Poet Name",
