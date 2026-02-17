@@ -91,23 +91,24 @@ How it works:
 
 ```python
 def index(request):
-    file_path = Path(settings.BASE_DIR) / "Blog" / "poems.json"
+    file_path = Path(settings.BASE_DIR) / "Blog"/"poems.json"
 
-    with open(file_path, 'r', encoding='utf-8') as file:
+    if not file_path.exists():
+        return HttpResponse("File not found!", status=404)
+
+    with open(file_path , 'r' ,encoding='utf-8' )as file:
         data = json.load(file)
 
-    random_id = int(random.random() * len(data)) + 1
-    poem = next(item for item in data if item["id"] == random_id)
+    id = int(random.random() * 8) + 1
+    poem = None
+    for i in data:
+        if i['id'] == id:
+            poem = i
 
-    context = {
-        "title": poem["title"],
-        "content": poem["content"],
-        "meter": poem["meter"],
-        "rhyme": poem["rhyme"],
-        "theme": poem["theme"]
-    }
-
-    return render(request, "Blog/index.html", context)
+    context = {'content': poem['content'],
+               'title': poem['title']
+        ,'meter': poem['meter'] , 'rhyme': poem['rhyme'] , 'theme': poem['theme']}
+    return render(request, 'Blog/index.html' , context)
 
 ```
 
@@ -124,21 +125,25 @@ How it works:
 - The data is rendered using loops in HTML.
 
 ```python
-def poets(request):
-    file_path = Path(settings.BASE_DIR) / "Blog" / "Poets.json"
+def poets (request):
+    file_path = Path(settings.BASE_DIR) / "Blog"/"Poets.json"
 
-    with open(file_path, 'r', encoding='utf-8') as file:
+    if not file_path.exists():
+        return HttpResponse("File not found!", status=404)
+
+    with open(file_path , 'r' ,encoding='utf-8' )as file:
         data = json.load(file)
 
-    return render(request, "Blog/Poets.html", {"poets": data})
+    context = {'poets': data}
+    return render(request, 'Blog/Poets.html' , context)
 ```
 
 ### URL Configuration
 
 ```python
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('Poets.html', views.poets, name='poets'),
+    path('',views.index, name = 'index'),
+    path('Poets.html',views.poets, name = 'poets'),
 ]
 ```
 
