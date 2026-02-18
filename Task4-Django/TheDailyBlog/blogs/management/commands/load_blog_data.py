@@ -287,3 +287,6 @@ class Command(BaseCommand):
         self.stdout.write(f'Created {Category.objects.count()} categories')
         self.stdout.write(f'Created {BlogPost.objects.count()} blog posts')
         self.stdout.write(f'Created {Comment.objects.count()} comments')
+        
+        #fixtures
+        #load data

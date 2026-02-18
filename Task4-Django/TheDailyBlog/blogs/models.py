@@ -68,6 +68,8 @@ class BlogPost(models.Model):
         verbose_name = "Blog Post"
         verbose_name_plural = "Blog Posts"
     
+    
+    # slug unique
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
