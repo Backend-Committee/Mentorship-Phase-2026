@@ -1,0 +1,330 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    background: linear-gradient(90deg, #232f3e, #131a22);
+    color: white;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 18px;
+    font-weight: 500;
+}
+
+.navbar a:hover {
+    color: #ff9900;
+}
+
+.navbar form {
+    display: flex;
+    gap: 8px;
+}
+
+.navbar input[type="text"] {
+    padding: 7px 10px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+}
+
+.navbar button {
+    padding: 7px 14px;
+    border: none;
+    background-color: #ff9900;
+    color: #232f3e;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.navbar button:hover {
+    background-color: #e68a00;
+}
+
+/* ================= LAYOUT ================= */
+.page-wrapper {
+    flex: 1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+/* ================= PRODUCTS GRID ================= */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.product-card {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.product-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.product-card h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.product-card p {
+    margin: 4px 0;
+    color: #555;
+}
+
+.product-card button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #ff9900;
+    color: #232f3e;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.product-card button:hover {
+    background-color: #e68a00;
+}
+
+/* ================= CART ================= */
+:root{
+    --primary: #232f3e;
+    --accent: #ff9900;
+    --muted: #6c757d;
+    --card-bg: #ffffff;
+    --shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.cart-title {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.cart-container {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+    align-items: start;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 110px 1fr 140px;
+    gap: 14px;
+    background: var(--card-bg);
+    padding: 14px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    align-items: center;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cart-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.item-details h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.item-details p {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.item-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.remove-btn {
+    background: transparent;
+    border: none;
+    color: #cf3e3e;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.item-price {
+    font-weight: 800;
+    color: var(--primary);
+    font-size: 16px;
+    text-align: right;
+}
+
+/* ================= SUMMARY ================= */
+.cart-summary {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: fit-content;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dashed #f0f0f0;
+}
+
+.summary-row.total {
+    border-bottom: none;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 12px 14px;
+    background: linear-gradient(90deg, var(--accent), #e68a00);
+    color: #232f3e;
+    border: none;
+    border-radius: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255,153,0,0.12);
+}
+
+.empty-cart {
+    font-size: 18px;
+    color: var(--muted);
+    text-align: center;
+    padding: 48px 12px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+    .cart-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .cart-item {
+        grid-template-columns: 90px 1fr;
+        gap: 10px;
+    }
+
+    .item-controls {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+    }
+}
+
+/* ================= FORM ================= */
+.form-container {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #232f3e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #131a22;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    background-color: #232f3e;
+    color: #ddd;
+    text-align: center;
+    padding: 15px;
+    margin-top: auto;
+}

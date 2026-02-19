@@ -1,0 +1,33 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+    <head>
+        <link rel = 'stylesheet'  href="{% static 'CSS_Files/style.css' %}">
+    </head>
+<form method="GET" id="category-form" class="category-filter" style="margin-bottom:16px;">
+    <label for="category-select">Category:</label>
+    <select name="category" onchange="document.getElementById('category-form').submit();">
+    <option value="">Select Category</option>
+    {% for category in categories %}
+        <option value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>
+            {{ category.name }}
+        </option>
+    {% endfor %}
+</select>
+</form>
+
+<div class="products-grid">
+    {% for pro in products_to_view %}
+        <div class="product-card">
+{#            <img src="{{ pro.image.url }}" alt="{{ pro.name }}">#}
+            <h3>{{ pro.name }}</h3>
+            <p>${{ pro.price }}</p>
+            <p>Category: {{ pro.category.name }}</p>
+            <a href="{% url 'add_to_cart' pro.id %}" class="btn">Add to Cart</a>
+        </div>
+    {% empty %}
+        <p>No products found.</p>
+    {% endfor %}
+</div>
+{% include 'footer.html' %}
+{% endblock  %}

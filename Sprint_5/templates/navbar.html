@@ -1,0 +1,15 @@
+<div class="navbar">
+    <div class="nav-left">
+        <a href="{% url 'products' %}">Amazon Mini</a>
+        <a href="{% url 'add_product' %}">Add Product</a>
+        <a href="{% url 'products' %}">Products</a>
+        <a href="{% url 'cart' %}">Cart</a>
+    </div>
+    <form>
+        <input type="text" placeholder="Search products">
+        <button type="submit">Search</button>
+    </form>
+</div>
+{% block content %}
+{% endblock %}
+

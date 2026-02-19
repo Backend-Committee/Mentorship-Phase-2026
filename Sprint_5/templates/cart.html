@@ -1,0 +1,31 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'CSS_Files/style.css' %}">
+<h2 class="cart-title">Shopping Cart</h2>
+
+{% if products_in_cart %}
+
+<div class="cart-grid">
+    {% for item in products_in_cart %}
+    <div class="cart-card">
+        <h3>{{ item.product.name }}</h3>
+        <p class="price">${{ item.product.price }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <p class="subtotal">Subtotal: ${{ item.subtotal }}</p>
+
+        {# لو حبيت ترجع زرار الحذف بعدين #}
+        {# <a href="{% url 'remove_from_cart' item.product.id %}" class="remove-btn">Remove</a> #}
+    </div>
+    {% endfor %}
+</div>
+
+<h3 class="cart-total">Total: ${{ total }}</h3>
+
+{% else %}
+<p class="empty-cart">Your cart is empty.</p>
+{% endif %}
+
+{% include 'footer.html' %}
+{% endblock %}

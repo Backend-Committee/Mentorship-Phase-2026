@@ -1,0 +1,32 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+    <head>
+        <link rel = 'stylesheet'  href="{% static 'CSS_Files/style.css' %}">
+    </head>
+<div class="form-container">
+    <h2>Add New Product</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% if error %}
+        <div class="error-message" style="color: red; margin-bottom: 10px;">
+            {{ error }}
+        </div>
+    {% endif %}
+        <input type="text" placeholder="Product Name" required name="product_name">
+        <input type="number" placeholder="Price" required name="price">
+        <select name="category">
+            {% for category in categories %}
+                <option value="{{ category.id }}">
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="text" placeholder="Description" name="description">
+        <input type="file" accept="image/*" name="image">
+        <button type="submit">Add Product</button>
+    </form>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}
