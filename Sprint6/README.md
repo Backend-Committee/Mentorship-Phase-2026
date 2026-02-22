@@ -1,4 +1,3 @@
-```
 # Django Blog App
 
 A simple blog application built with **Django**. Supports creating, editing, deleting, and viewing blog posts, along with a follow system similar to Instagram for authors.
