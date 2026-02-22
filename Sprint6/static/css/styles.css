@@ -1,0 +1,21 @@
+.follow-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+
+/* 🟢 Follow (pastel green) */
+.follow {
+    background-color: #c8f7c5;
+    color: #1e7f3f;
+}
+
+/* 🔴 Following (pastel red) */
+.following {
+    background-color: #ffd6d6;
+    color: #a94442;
+}

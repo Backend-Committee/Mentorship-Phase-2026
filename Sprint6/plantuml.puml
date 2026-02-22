@@ -1,0 +1,87 @@
+@startuml
+
+skinparam linetype ortho
+
+
+' ========================
+' Entities
+' ========================
+
+entity User {
+  + id : bigint <<PK>>
+  --
+  email : varchar <<unique>>
+  username : varchar <<unique>>
+  password : varchar
+  is_active : boolean
+  date_joined : datetime
+  last_login : datetime
+}
+
+entity Profile {
+  + id : bigint <<PK>>
+  --
+  user_id : bigint <<FK>>
+  bio : text
+  avatar : varchar
+  created_at : datetime
+  updated_at : datetime
+}
+
+entity BlogPost {
+  + id : bigint <<PK>>
+  --
+  author_id : bigint <<FK>>
+  title : varchar
+  slug : varchar <<unique>>
+  content_markdown : text
+  comments_enabled : boolean
+  is_published : boolean
+  created_at : datetime
+  updated_at : datetime
+}
+
+entity Comment {
+  + id : bigint <<PK>>
+  --
+  user_id : bigint <<FK>>
+  blog_post_id : bigint <<FK>>
+  content : text
+  is_edited : boolean
+  created_at : datetime
+  updated_at : datetime
+}
+
+entity Media {
+  + id : bigint <<PK>>
+  --
+  blog_post_id : bigint <<FK>>
+  file : varchar
+  file_type : varchar
+  uploaded_at : datetime
+}
+
+entity Star {
+  + id : bigint <<PK>>
+  --
+  from_user_id : bigint <<FK>>
+  to_user_id : bigint <<FK>>
+  created_at : datetime
+  --
+  <<unique(from_user_id, to_user_id)>>
+}
+
+' ========================
+' Relationships
+' ========================
+
+User ||--|| Profile : has
+User ||--o{ BlogPost : writes
+User ||--o{ Comment : creates
+BlogPost ||--o{ Comment : receives
+BlogPost ||--o{ Media : contains
+
+User ||--o{ Star : gives
+User ||--o{ Star : receives
+
+@enduml

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+
+        <!-- Main Content -->
+        <div class="col-lg-8">
+
+            <!-- Title -->
+            <h1 class="fw-bold">{{ post.title }}</h1>
+
+
+            {% if user == post.author %}
+<div class="btn-group mt-2 mb-5" role="group" aria-label="Basic mixed styles example">
+  <a href="{% url 'blog_edit' post.slug %}" class="btn btn-danger">Edit</a>
+  <a href="{% url 'blog_delete' post.slug %}" class="btn btn-warning">Delete</a>
+</div>
+
+            {% endif %}
+
+
+            <!-- Meta Info -->
+            <p class="text-muted">
+                By <strong>{{ post.author.username }}</strong> |
+                {{ post.created_at|date:"F d, Y" }}
+            </p>
+
+            <hr>
+
+            <!-- Featured Image -->
+            {% if post.featured_image %}
+                <img src="{{ post.featured_image.url }}" class="img-fluid mb-4 rounded">
+            {% endif %}
+
+            <!-- Markdown Content -->
+            <div class="fs-5 lh-lg">
+                {{ post.formatted_markdown|safe }}
+            </div>
+
+            <!-- Tags -->
+            {% if post.tags.all %}
+            <div class="mt-4">
+                <strong>Tags:</strong>
+                {% for tag in post.tags.all %}
+                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Comments -->
+            <div class="mt-5">
+            {% if post.comments_enabled %}
+                <h4>Comments</h4>
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ comment_form.errors }}
+                    {{ comment_form }}
+                    <button type="submit" class="btn btn-primary mt-2">Add Comment</button>
+                </form>
+
+                <hr>
+
+                {% for comment in comments %}
+                    <div class="mb-3">
+                        <strong>{{ comment.user.username }}</strong>
+                        <small class="text-muted">
+                            {{ comment.created_at|date:"F d, Y" }}
+                        </small>
+                        <p>{{ comment.content }}</p>
+                    </div>
+
+                {% empty %}
+                    <p class="text-muted">No comments yet.</p>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">Comments are disabled for this post.</p>
+            {% endif %}
+            </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 100px;">
+                <div class="card-body">
+                    <h5>About the Author</h5>
+                    <h6>
+                        {{ post.author.username|default:"Unknown Author" }}
+                    </h6>
+                    <p>
+                        {{ post.author.bio|default:"No bio available." }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

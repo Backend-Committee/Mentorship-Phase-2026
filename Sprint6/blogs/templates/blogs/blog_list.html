@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h1 class="mb-4">Blog Posts</h1>
+<a href="{% url 'blog_create' %}" class="btn btn-success btn-lg mb-4">
+    + Create New Blog Post
+</a>
+    {% if blogs %}
+        {% for blog in blogs %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+
+                    <!-- Title -->
+                    <h3>
+                        <a href="{% url 'blog_detail' blog.slug %}">
+                            {{ blog.title }}
+                        </a>
+                    </h3>
+
+                    <!-- Meta Info -->
+                    <p class="text-muted">
+                        By {{ blog.author.username }} -
+                        {% if user != blog.author %}
+
+<button
+    class="follow-btn {% if blog.author.id in followed_author_ids %}following{% else %}follow{% endif %}"
+    data-author-id="{{ blog.author.id }}"
+>
+    {% if blog.author.id in followed_author_ids %}
+        Following
+    {% else %}
+        Follow
+    {% endif %}
+</button>
+
+{% endif %}
+                        {{ blog.created_at|date:"M d, Y" }}
+                    </p>
+
+                    <!-- Stats -->
+                    <div class="d-flex justify-content-between">
+
+                        <small>
+                            💬 {{ blog.comments.count }} Comments
+                        </small>
+
+                        <small>
+                            ⭐ {{ blog.author.stars_to.count }} Followers
+                        </small>
+
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            No blog posts available yet.
+        </div>
+    {% endif %}
+
+</div>
+<script>
+console.log("Follow Toggle Script Loaded");
+
+// --------------------
+// Get CSRF Token
+// --------------------
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+
+// --------------------
+// Follow Toggle Logic
+// --------------------
+document.querySelectorAll(".follow-btn").forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const authorId = this.dataset.authorId;
+
+        // Prevent spam clicking
+        this.disabled = true;
+
+        fetch("{% url 'follow_toggle' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrftoken,
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "author_id=" + authorId
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+
+            // Select ALL buttons for this author
+            const allAuthorButtons = document.querySelectorAll(
+                `.follow-btn[data-author-id="${authorId}"]`
+            );
+
+            allAuthorButtons.forEach(btn => {
+
+                if (data.status === "followed") {
+                    btn.textContent = "Following";
+                    btn.classList.remove("follow");
+                    btn.classList.add("following");
+
+                } else if (data.status === "unfollowed") {
+                    btn.textContent = "Follow";
+                    btn.classList.remove("following");
+                    btn.classList.add("follow");
+                }
+
+                btn.disabled = false;
+            });
+
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            this.disabled = false;
+        });
+
+    });
+
+});
+</script>
+{% endblock %}
+
+

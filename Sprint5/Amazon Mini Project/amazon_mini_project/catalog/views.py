@@ -1,7 +1,5 @@
-import json
-
-from django.db.utils import IntegrityError
-from django.http import HttpResponseNotFound, JsonResponse
+from django.http import HttpRequest
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -20,7 +18,7 @@ class ProductView(View):
         cartItem = CartItem.objects.get(product=p, user=u)
         return cartItem.quantity
 
-    def get(self, request):
+    def get(self, request: HttpRequest):
         request.session["user_id"] = 1
         all_products = Product.objects.all()
 

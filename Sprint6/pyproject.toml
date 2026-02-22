@@ -1,0 +1,2 @@
+﻿[tool.ruff]
+exclude = ["venv", "__pycache__"]
