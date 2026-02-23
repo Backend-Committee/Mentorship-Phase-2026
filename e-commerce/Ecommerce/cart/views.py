@@ -12,7 +12,15 @@ def cart_view(request):
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
-    cart.add_product(product)
+    
+    quantity = 1
+    if request.method == 'POST':
+        try:
+            quantity = int(request.POST.get('quantity', 1))
+        except ValueError:
+            quantity = 1
+
+    cart.add_product(product, quantity=quantity)
     return redirect('cart_view')
 
 @login_required

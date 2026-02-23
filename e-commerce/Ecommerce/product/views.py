@@ -21,10 +21,16 @@ def add_product(request):
 
 def product_list(request):
     category = request.GET.get('category')
+    query = request.GET.get('q')
+
+    products = Product.objects.all()
+
     if category:
-        products = Product.objects.filter(category=category)
-    else:
-        products = Product.objects.all()
+        products = products.filter(category=category)
+    
+    if query:
+        products = products.filter(name__icontains=query)
+
     return render(request, 'product/product_list.html', {'products': products, 'categories': STATIC_CATEGORIES})
 
 def product_detail(request, pk):

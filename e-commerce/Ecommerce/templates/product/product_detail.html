@@ -15,7 +15,14 @@
             <p>Category: {{ product.category }}</p>
 
             {% if user.is_authenticated %}
-                <a href="{% url 'add_to_cart' product.pk %}" class="btn btn-success">Add to Cart</a>
+                <form action="{% url 'add_to_cart' product.pk %}" method="POST" class="d-flex align-items-center mt-3">
+                    {% csrf_token %}
+                    <div class="me-3">
+                        <label for="quantity" class="form-label visually-hidden">Quantity</label>
+                        <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" max="{{ product.stock }}" style="width: 80px;">
+                    </div>
+                    <button type="submit" class="btn btn-success">Add to Cart</button>
+                </form>
             {% else %}
                 <p><a href="{% url 'login' %}">Login</a> to add to cart.</p>
             {% endif %}
