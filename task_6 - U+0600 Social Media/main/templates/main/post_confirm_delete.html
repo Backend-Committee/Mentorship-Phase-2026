@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    U+0600 Delete Post
+{% endblock title %}
+
+{% block content %}
+
+    <h1>U+0600 Delete Post</h1>
+
+    <form action="{% url 'post_delete' object.id %}" method="post">
+        {% csrf_token %}
+        <h2>Are you sure you want to delete this post ?</h2>
+        <input type="submit" value="Delete">
+    </form>
+    <hr>
+
+    <p>Owner: {{ object.owner.username }}</p>
+    <p>Created at {{ object.created_at }}</p>
+    <p>Updated at {{ object.updated_at }}</p>
+    <h2>{{ post.title }}</h2>
+    <p>{{ object.get_start_of_content }}</p>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    U+0600 Post
+{% endblock title %}
+
+{% block content %}
+
+    <h1>U+0600 Post</h1>
+
+    <p>Owner: {{ object.owner.username }}</p>
+    <p>Created at {{ object.created_at }}</p>
+    <p>Updated at {{ object.updated_at }}</p>
+    <h2>{{ post.title }}</h2>
+    <p>{{ object.content }}</p>
+    
+    
+    {% if is_owner %}
+        <hr>
+
+        <a href="{% url 'post_update' object.id %}">Update post</a>
+        <a href="{% url 'post_delete' object.id %}">Delete post</a>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    U+0600 Home
+{% endblock title %}
+
+{% block content %}
+
+    <h1>U+0600 Home</h1>
+    <h2>Current User: {{ request.user.username }}</h2>
+    <form action="{% url 'logout' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Logout">
+    </form>
+
+    <ul>
+        <li>
+            <a href="{% url 'post_list' %}">View All Posts</a>
+        </li>
+        <li>
+            <a href="{% url 'post_create' %}">Create New Post</a>
+        </li>
+    </ul>
+{% endblock %}

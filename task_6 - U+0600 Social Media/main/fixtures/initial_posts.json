@@ -1,0 +1,223 @@
+[
+    {
+        "model": "main.post",
+        "pk": 1,
+        "fields": {
+            "owner": 2,
+            "title": "Clean Code Review",
+            "content": "A deep review of Clean Code by Robert C. Martin and why writing readable code matters.",
+            "created_at": "2026-01-01T10:00:00Z",
+            "updated_at": "2026-01-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 2,
+        "fields": {
+            "owner": 2,
+            "title": "Understanding Algorithms",
+            "content": "A discussion about algorithm design techniques and practical examples from programming books.",
+            "created_at": "2026-01-02T10:00:00Z",
+            "updated_at": "2026-01-02T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 3,
+        "fields": {
+            "owner": 2,
+            "title": "Data Structures in Depth",
+            "content": "Stacks, queues, trees, and graphs explained with references to classic textbooks.",
+            "created_at": "2026-01-03T10:00:00Z",
+            "updated_at": "2026-01-03T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 4,
+        "fields": {
+            "owner": 2,
+            "title": "The Pragmatic Programmer Insights",
+            "content": "Key lessons from The Pragmatic Programmer and how to apply them in real projects.",
+            "created_at": "2026-01-04T10:00:00Z",
+            "updated_at": "2026-01-04T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 5,
+        "fields": {
+            "owner": 2,
+            "title": "Learning Python Effectively",
+            "content": "Best Python books for beginners and intermediate developers.",
+            "created_at": "2026-01-05T10:00:00Z",
+            "updated_at": "2026-01-05T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 6,
+        "fields": {
+            "owner": 2,
+            "title": "Mastering C++",
+            "content": "A look into advanced C++ programming books and modern best practices.",
+            "created_at": "2026-01-06T10:00:00Z",
+            "updated_at": "2026-01-06T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 7,
+        "fields": {
+            "owner": 2,
+            "title": "System Design Basics",
+            "content": "Books that teach scalable system architecture and backend design principles.",
+            "created_at": "2026-01-07T10:00:00Z",
+            "updated_at": "2026-01-07T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 8,
+        "fields": {
+            "owner": 2,
+            "title": "Operating Systems Concepts",
+            "content": "Reviewing classical OS textbooks and understanding processes and memory management.",
+            "created_at": "2026-01-08T10:00:00Z",
+            "updated_at": "2026-01-08T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 9,
+        "fields": {
+            "owner": 2,
+            "title": "Database System Design",
+            "content": "Exploring books about relational databases, indexing, and normalization.",
+            "created_at": "2026-01-09T10:00:00Z",
+            "updated_at": "2026-01-09T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 10,
+        "fields": {
+            "owner": 2,
+            "title": "Computer Networks Explained",
+            "content": "Top books that explain networking protocols and distributed systems.",
+            "created_at": "2026-01-10T10:00:00Z",
+            "updated_at": "2026-01-10T10:00:00Z"
+        }
+    },
+
+    {
+        "model": "main.post",
+        "pk": 11,
+        "fields": {
+            "owner": 3,
+            "title": "Refactoring Techniques",
+            "content": "How refactoring books improve code structure and maintainability.",
+            "created_at": "2026-01-11T10:00:00Z",
+            "updated_at": "2026-01-11T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 12,
+        "fields": {
+            "owner": 3,
+            "title": "Introduction to Machine Learning",
+            "content": "Recommended books for understanding machine learning fundamentals.",
+            "created_at": "2026-01-12T10:00:00Z",
+            "updated_at": "2026-01-12T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 13,
+        "fields": {
+            "owner": 3,
+            "title": "Competitive Programming Handbook",
+            "content": "Books that sharpen problem-solving and algorithmic thinking.",
+            "created_at": "2026-01-13T10:00:00Z",
+            "updated_at": "2026-01-13T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 14,
+        "fields": {
+            "owner": 3,
+            "title": "Design Patterns Guide",
+            "content": "Understanding classic design patterns and their practical usage.",
+            "created_at": "2026-01-14T10:00:00Z",
+            "updated_at": "2026-01-14T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 15,
+        "fields": {
+            "owner": 3,
+            "title": "Django for Professionals",
+            "content": "Advanced Django books for backend developers.",
+            "created_at": "2026-01-15T10:00:00Z",
+            "updated_at": "2026-01-15T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 16,
+        "fields": {
+            "owner": 3,
+            "title": "JavaScript Deep Dive",
+            "content": "Modern JavaScript books covering ES6+ and advanced concepts.",
+            "created_at": "2026-01-16T10:00:00Z",
+            "updated_at": "2026-01-16T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 17,
+        "fields": {
+            "owner": 3,
+            "title": "Artificial Intelligence Basics",
+            "content": "Books that introduce AI concepts and intelligent systems.",
+            "created_at": "2026-01-17T10:00:00Z",
+            "updated_at": "2026-01-17T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 18,
+        "fields": {
+            "owner": 3,
+            "title": "Linux System Programming",
+            "content": "Understanding low-level programming and Unix system calls.",
+            "created_at": "2026-01-18T10:00:00Z",
+            "updated_at": "2026-01-18T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 19,
+        "fields": {
+            "owner": 3,
+            "title": "Cybersecurity Fundamentals",
+            "content": "Top cybersecurity books covering cryptography and network security.",
+            "created_at": "2026-01-19T10:00:00Z",
+            "updated_at": "2026-01-19T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 20,
+        "fields": {
+            "owner": 3,
+            "title": "Software Engineering Principles",
+            "content": "Books that explain SDLC, agile methodology, and project management.",
+            "created_at": "2026-01-20T10:00:00Z",
+            "updated_at": "2026-01-20T10:00:00Z"
+        }
+    }
+]

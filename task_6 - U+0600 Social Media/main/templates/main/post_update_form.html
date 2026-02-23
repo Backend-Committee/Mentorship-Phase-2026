@@ -1,0 +1,17 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    U+0600 Update Post
+{% endblock title %}
+
+{% block content %}
+
+    <h1>U+0600 Update Post</h1>
+
+    <form action="{% url 'post_update' object.id %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Save">
+    </form>
+
+{% endblock %}

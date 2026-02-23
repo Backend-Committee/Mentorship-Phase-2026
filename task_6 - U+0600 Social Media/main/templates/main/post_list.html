@@ -1,0 +1,30 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    U+0600 All Posts
+{% endblock title %}
+
+{% block content %}
+
+    <h1>U+0600 All Posts</h1>
+
+    <ul>
+        {% for post in page_obj  %}
+            <li>
+                <p>Owner: {{ post.owner.username}}</p>
+                <p>Created at {{ post.created_at }}</p>
+                <p>Updated at {{ post.updated_at }}</p>
+                <h2>{{ post.title }}</h2>
+                <a href="{% url 'post_detail' post.id %}">Go To Full Post</a>
+                <hr>
+            </li>
+        {% endfor %}   
+    </ul>
+
+    <form action="{% url 'post_list' %}" method="get">
+        <label for="">Page: </label>
+        <input name="page" type="number" value="{{ page_obj.number }}" min="1" max="{{ page_obj.paginator.num_pages }}">
+        <input type="submit" value="Go">
+    </form>
+        
+{% endblock %}
