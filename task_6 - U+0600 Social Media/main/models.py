@@ -11,11 +11,13 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    class Meta:
+        ordering = ["-created_at"]
+
     def get_start_of_content(self):
         if len(self.content) > 256:
             return self.content[:256] + "..."
         return self.content
     
     def get_absolute_url(self):
-        return reverse("post_detail", kwargs={"pk": self.pk})
-    
+        return reverse("post_detail", kwargs={"pk": self.pk})    
