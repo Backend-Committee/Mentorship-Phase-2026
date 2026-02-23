@@ -1,0 +1,68 @@
+{% extends 'store/base.html' %} {% block title %}Your Cart{% endblock %} {%block
+content %}
+<h3 class="fw-bold mb-4">🛒 Your Cart</h3>
+
+{% if items %}
+<div class="card">
+  <table class="table table-hover mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center gap-3">
+            {% if item.product.image_url %}
+            <img
+              src="{{ item.product.image_url }}"
+              style="width: 50px; height: 50px; object-fit: contain"
+            />
+            {% endif %}
+            <a href="{% url 'product_detail' item.product.pk %}"
+              >{{ item.product.name }}</a
+            >
+          </div>
+        </td>
+        <td>${{ item.product.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td class="price fw-bold">${{ item.get_subtotal }}</td>
+        <td>
+          <div class="d-flex gap-2">
+            <a
+              href="{% url 'cart_update' item.pk %}"
+              class="btn btn-sm btn-outline-secondary"
+              >Update</a
+            >
+            <a
+              href="{% url 'cart_remove' item.pk %}"
+              class="btn btn-sm btn-outline-danger"
+              >Remove</a
+            >
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="d-flex justify-content-end mt-4">
+  <div class="card p-3 text-end" style="min-width: 250px">
+    <h5 class="fw-bold">Total: <span class="price">${{ total }}</span></h5>
+    <button class="btn btn-success mt-2">Checkout (coming soon)</button>
+  </div>
+</div>
+
+{% else %}
+<div class="text-center py-5">
+  <p class="fs-4 text-muted">Your cart is empty.</p>
+  <a href="{% url 'product_list' %}" class="btn btn-primary">Browse Products</a>
+</div>
+{% endif %} {% endblock %}

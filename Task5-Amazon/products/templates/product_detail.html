@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block title %}{{ product.name }} {%endblock%} {%
+block content %}
+<a href="{% url 'product_list' %}" class="btn btn-outline-secondary mb-4"
+  >&larr; Back to Products</a
+>
+
+<div class="card p-4">
+  <div class="row">
+    <div class="col-md-4 text-center">
+      {% if product.image_url %}
+      <img
+        src="{{ product.image_url }}"
+        class="img-fluid"
+        style="max-height: 350px; object-fit: contain"
+        alt="{{ product.name }}"
+      />
+      {% else %}
+      <div
+        class="bg-light d-flex align-items-center justify-content-center"
+        style="height: 300px; border-radius: 10px"
+      >
+        <span class="text-muted">No image</span>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="col-md-8">
+      <p class="text-muted mb-1">{{ product.category.name }}</p>
+      <h2 class="fw-bold">{{ product.name }}</h2>
+      <p class="price fs-3 my-2">${{ product.price }}</p>
+
+      {% if product.is_available and product.stock > 0 %}
+      <span class="badge bg-success mb-3"
+        >In Stock — {{ product.stock }} available</span
+      >
+      {% else %}
+      <span class="badge bg-danger mb-3">Out of Stock</span>
+      {% endif %}
+
+      <p class="text-muted">{{ product.description }}</p>
+
+      <div class="d-flex gap-2 mt-4">
+        {% if product.is_available and product.stock > 0 %}
+        <a href="{% url 'cart_add' product.pk %}" class="btn btn-primary"
+          >Add to Cart</a
+        >
+        {% else %}
+        <button class="btn btn-secondary" disabled>Out of Stock</button>
+        {% endif %} {% if request.user.is_staff %}
+        <a
+          href="{% url 'product_update' product.pk %}"
+          class="btn btn-outline-warning"
+          >Edit</a
+        >
+        <a
+          href="{% url 'product_delete' product.pk %}"
+          class="btn btn-outline-danger"
+          >Delete</a
+        >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

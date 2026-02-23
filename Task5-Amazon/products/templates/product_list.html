@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Sidebar Filters -->
+    <div class="col-md-3">
+        <div class="card p-3 mb-4">
+            <h5 class="fw-bold mb-3">Filters</h5>
+            <form method="GET">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Search</label>
+                    <input type="text" name="search" class="form-control" placeholder="Search products..." value="{{ search_query }}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="available_only" id="available_only" class="form-check-input" value="1"
+                        {% if available_only %}checked{% endif %}>
+                    <label class="form-check-label" for="available_only">Available only</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Apply</button>
+                <a href="{% url 'product_list' %}" class="btn btn-outline-secondary w-100 mt-2">Reset</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="col-md-9">
+        <h4 class="fw-bold mb-3">
+            All Products
+            <span class="text-muted fs-6 fw-normal">({{ products|length }} results)</span>
+        </h4>
+
+        {% if products %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for product in products %}
+                <div class="col">
+                    <div class="card h-100 p-3">
+                        {% if product.image_url %}
+                            <img src="{{ product.image_url }}" class="card-img-top" style="height:200px; object-fit:contain;" alt="{{ product.name }}">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <p class="text-muted small mb-1">{{ product.category.name }}</p>
+                            <h6 class="card-title fw-bold">{{ product.name }}</h6>
+                            <p class="price fs-5 mb-1">${{ product.price }}</p>
+
+                            {% if product.is_available and product.stock > 0 %}
+                                <span class="badge bg-success badge-stock mb-2">In Stock ({{ product.stock }})</span>
+                            {% else %}
+                                <span class="badge bg-danger badge-stock mb-2">Out of Stock</span>
+                            {% endif %}
+
+                            <div class="mt-auto d-flex gap-2">
+                                <a href="{% url 'product_detail' product.pk %}" class="btn btn-outline-primary btn-sm flex-grow-1">Details</a>
+                                {% if product.is_available and product.stock > 0 %}
+                                    <a href="{% url 'cart_add' product.pk %}" class="btn btn-primary btn-sm flex-grow-1">Add to Cart</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted fs-5">No products found.</p>
+                <a href="{% url 'product_list' %}" class="btn btn-outline-primary">Clear Filters</a>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
