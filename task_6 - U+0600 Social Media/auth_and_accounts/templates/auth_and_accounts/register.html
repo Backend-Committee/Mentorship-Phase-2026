@@ -13,5 +13,11 @@
         <br>
         <input type="submit" value="Register">
     </form>
-
+    <script>
+        // Will return 'Africa/Cairo'
+        user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        timezone_input = document.getElementsByName('timezone')[0];
+        timezone_input.value = user_timezone;
+    </script>
+    
 {% endblock %}

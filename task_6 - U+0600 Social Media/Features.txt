@@ -4,11 +4,8 @@ Todo:
         add email verification to account.
         add reset password.
         allow users to login with email too.
+        allow users to edit the profile
     main:
-        activate timezone using a middleware 
-        make selected current time zone dynamic instead of static 'Africa/Cairo'
-        use slug field instead of id for post urls
-        make the 403 forbidden page message for post_update and post_delete more verbose
         add profile page showing user with his posts
     Extra
         use ai to make the application more beautiful
