@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>New Poll</h2>
+    <form method="post" id="pollForm">
+        {% csrf_token %}
+        <div class="mb-3">
+             <label for="id_question" class="form-label">Question</label>
+             <input type="text" name="question" class="form-control" id="id_question" required>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Options</label>
+            <div id="options-container">
+                <input type="text" name="options" class="form-control mb-2" placeholder="Option 1" required>
+                <input type="text" name="options" class="form-control mb-2" placeholder="Option 2" required>
+            </div>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="addOption()">Add Option</button>
+        </div>
+        
+        <div class="form-check mb-3">
+             <input type="checkbox" name="active" class="form-check-input" id="id_active" checked>
+             <label class="form-check-label" for="id_active">Active</label>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Create Poll</button>
+    </form>
+    
+    <script>
+        function addOption() {
+            var container = document.getElementById("options-container");
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "options";
+            input.className = "form-control mb-2";
+            input.placeholder = "New Option";
+            container.appendChild(input);
+        }
+    </script>
+{% endblock %}

@@ -52,6 +52,6 @@ A simple blog application built with Django.
 - Create a new blog post.
 - View "My Posts" to see your contributions.
 
-## auther 
+## author 
     - ** name **: Mahmoud Adam
     - ** email **: mahmoudadam5555@gmail.com 

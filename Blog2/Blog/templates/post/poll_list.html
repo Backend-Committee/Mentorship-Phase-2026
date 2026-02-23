@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Polls</h1>
+    {% for poll in polls %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ poll.question }}</h5>
+                <p class="card-text">
+                    {% if poll.active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Closed</span>
+                    {% endif %}
+                </p>
+                <a href="{% url 'poll-detail' poll.pk %}" class="btn btn-primary">Vote / View</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No polls available.</p>
+    {% endfor %}
+{% endblock %}

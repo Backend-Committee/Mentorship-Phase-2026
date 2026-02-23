@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Post content-->
+                <article>
+                    <header class="mb-4">
+                        <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                        <div class="text-muted fst-italic mb-2">Posted on {{ post.created_at|date:"F j, Y" }} by {{ post.author }}</div>
+                        {% if post.category %}
+                             <span class="badge bg-secondary text-decoration-none link-light">{{ post.category }}</span>
+                        {% endif %}
+                        
+                        <div class="mt-2">
+                            {% if user.is_authenticated %}
+                                {% if user == post.author %}
+                                    <a href="{% url 'post-update' post.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    <a href="{% url 'post-delete' post.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+
+                    </header>
+                    {% if post.image %}
+                        <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.image.url }}" alt="{{ post.title }}" /></figure>
+                    {% endif %}
+                    <section class="mb-5">
+                        {{ post.body|safe }}
+                    </section>
+                </article>
+                
+                <hr>
+
+                <div class="d-flex align-items-center mb-4">
+                     <span class="text-muted me-3">{{ likes_count }} Likes</span>
+                     {% if user.is_authenticated %}
+                        <form class="d-inline" method="POST" action="{% url 'add-like' post.pk %}">
+                            {% csrf_token %}
+                            {% if liked %}
+                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-heart"></i> Unlike</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i> Like</button>
+                            {% endif %}
+                        </form>
+                     {% else %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i> Login to Like</a>
+                     {% endif %}
+                </div>
+
+                <!-- Comments section-->
+                <section class="mb-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <!-- Comment form-->
+                            {% if user.is_authenticated %}
+                                <form class="mb-4" method="POST" action="{% url 'add-comment' post.pk %}">
+                                    {% csrf_token %}
+                                    <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" name="body"></textarea>
+                                    <button class="btn btn-primary mt-2" type="submit">Submit Comment</button>
+                                </form>
+                            {% else %}
+                                <div class="alert alert-warning mb-4">
+                                    Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to reproduce a comment.
+                                </div>
+                            {% endif %}
+                            
+                            <!-- Comment list-->
+                            {% for comment in post.comments.all %}
+                                <div class="d-flex mb-4">
+                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">{{ comment.author }} <span class="text-muted small">{{ comment.created_at|timesince }} ago</span></div>
+                                        {{ comment.body }}
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>No comments yet.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

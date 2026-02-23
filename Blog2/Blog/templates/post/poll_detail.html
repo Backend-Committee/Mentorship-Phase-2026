@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>{{ poll.question }}</h1>
+    
+    {% if not user.is_authenticated %}
+        <div class="alert alert-info">
+             Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to vote.
+        </div>
+    {% endif %}
+
+    <div class="card mb-4">
+        <div class="card-body">
+            {% if user_voted %}
+                <div class="alert alert-success">You have voted on this poll.</div>
+                <h5>Results:</h5>
+                <ul class="list-group">
+                    {% for option in poll.options.all %}
+                        {% with votes=option.pollvote_set.count %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ option.text }}
+                            <span class="badge bg-primary rounded-pill">{{ votes }}</span>
+                        </li>
+                        {% endwith %}
+                    {% endfor %}
+                </ul>
+            {% elif poll.active and user.is_authenticated %}
+                <form method="post" action="{% url 'poll-vote' poll.pk %}">
+                    {% csrf_token %}
+                    {% for option in poll.options.all %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="option" id="option{{ option.pk }}" value="{{ option.pk }}" required>
+                            <label class="form-check-label" for="option{{ option.pk }}">
+                                {{ option.text }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                    <br>
+                    <button type="submit" class="btn btn-primary">Vote</button>
+                </form>
+            {% else %}
+               <h5>Results (Poll Closed or Login Required):</h5>
+                <ul class="list-group">
+                    {% for option in poll.options.all %}
+                        {% with votes=option.pollvote_set.count %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ option.text }}
+                             <span class="badge bg-primary rounded-pill">{{ votes }}</span>
+                        </li>
+                        {% endwith %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    
+    <hr>
+    
+    <!-- Comments -->
+    <h4>Comments</h4>
+    {% if user.is_authenticated %}
+        <form class="mb-4" method="POST" action="{% url 'poll-comment' poll.pk %}">
+            {% csrf_token %}
+            <textarea class="form-control" rows="3" placeholder="Leave a comment on this poll!" name="body"></textarea>
+            <button class="btn btn-primary mt-2" type="submit">Submit Comment</button>
+        </form>
+    {% endif %}
+
+    {% for comment in poll.comments.all %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <strong>{{ comment.author }}</strong> <span class="text-muted small">({{ comment.created_at|timesince }} ago)</span>
+                <p>{{ comment.body }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>No comments on this poll yet.</p>
+    {% endfor %}
+
+{% endblock %}
