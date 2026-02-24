@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts</title>
+    {% load static %}
+{#    <link rel="stylesheet" href="{% static 'css/posts.css' %}">#}
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #333;
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.header-content {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    display: inline-block;
+}
+
+nav a, nav span {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.post {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post h2 {
+    margin-bottom: 10px;
+}
+
+.post h2 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.post h2 a:hover {
+    color: #007bff;
+}
+
+.meta {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.content {
+    color: #444;
+}
+    </style>
+
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>My Blog</h1>
+            <nav>
+                {% if user.is_authenticated %}
+                    <span>Hello, {{ user.username }}</span>
+                    <a href="{% url 'New_post' %}">New Post</a>
+                    <a href="{% url 'Accounts:logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'Accounts:login' %}">Login</a>
+                    <a href="{% url 'Accounts:register' %}">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% for post in posts %}
+            <article class="post">
+                <h2><a href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+                <p class="meta">By {{ post.author.username }} on {{ post.date_posted|date:"F d, Y" }}</p>
+                <p class="content">{{ post.content|truncatewords:30 }}</p>
+            </article>
+        {% empty %}
+            <p>No posts yet.</p>
+        {% endfor %}
+    </main>
+</body>
+</html>

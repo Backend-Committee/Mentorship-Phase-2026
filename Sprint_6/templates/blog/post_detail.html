@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    {% load static %}
+{#    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">#}
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #333;
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.header-content {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 a {
+    color: white;
+    text-decoration: none;
+}
+
+nav a, nav span {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.post-detail {
+    background: white;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.post-detail h1 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.meta {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.content {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.content p {
+    margin-bottom: 15px;
+}
+
+.actions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.btn:hover {
+    background: #0056b3;
+}
+
+.btn-danger {
+    background: #dc3545;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.back-link {
+    color: #333;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><a href="">My Blog</a></h1>
+            <nav>
+                {% if user.is_authenticated %}
+                    <span>Hello, {{ user.username }}</span>
+                    <a href="{% url 'New_post' %}">New Post</a>
+                    <a href="{% url 'Accounts:logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'Accounts:login' %}">Login</a>
+                    <a href="{% url 'Accounts:register' %}">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="post-detail">
+            <h1>{{ post.title }}</h1>
+            <p class="meta">By {{ post.author.username }} on {{ post.date_posted|date:"F d, Y" }}</p>
+            <div class="content">
+                {{ post.content|linebreaks }}
+            </div>
+
+            {% if user == post.author %}
+                <div class="actions">
+                    <a href="{% url 'post-update' post.id %}" class="btn">Edit</a>
+                    <a href="{% url 'post-delete' post.id %}" class="btn btn-danger">Delete</a>
+                </div>
+            {% endif %}
+        </article>
+
+{#        <a href="{% url 'post-list' %}" class="back-link">← Back to Posts</a>#}
+    </main>
+</body>
+</html>
