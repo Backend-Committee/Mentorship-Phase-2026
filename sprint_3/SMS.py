@@ -37,6 +37,7 @@ def db_creation():
         hall_num INTEGER,
         date TEXT,
         time TEXT,
+        PRIMARY KEY (hall_num, date, time),
         FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id),
         FOREIGN KEY(subject_id) REFERENCES subjects(subject_id)
         )
@@ -195,7 +196,7 @@ def enroll_teacher():
         print("IDs must be integers!")
 
 def show_subject_teachers():
-    print("\nView Teacher Subjects\n")
+    print("\nView subject teachers\n")
     try:
         sub_id = int(input("Enter Subject ID to search: "))
         query = """

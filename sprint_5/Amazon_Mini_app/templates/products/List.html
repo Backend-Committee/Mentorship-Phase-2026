@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Our Products</h2>
+<hr style="margin: 10px 0 20px;">
+
+<form method="GET" action="" style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <input type="text" name="search" placeholder="Search products..." value="{{ request.GET.search }}" style="width: auto; margin: 0;">
+    <select name="category" style="width: auto; margin: 0;">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+                {{ cat.title }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-secondary">Filter</button>
+</form>
+
+<div class="product-grid">
+    {% for x in products %}
+        <div class="product-card">
+            {% if x.image %}
+                <img src="{{ x.image.url }}" alt="{{ x.title }}">
+            {% endif %}
+            <h3>{{ x.title }}</h3>
+            <p style="color: #b12704; font-weight: bold; margin: 10px 0;">${{ x.price }}</p>
+            <a href="{% url 'product_detail' x.pk %}" class="btn btn-secondary" style="width: 100%;">View Details</a>
+        </div>
+    {% empty %}
+        <p>No products found.</p>
+    {% endfor %}
+</div>
+{% endblock content %}

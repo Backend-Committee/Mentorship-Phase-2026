@@ -5,7 +5,7 @@
 
     {% for p in blogs %}
         <div class="blog-card">
-            <h2><a href="/blog/{{ p.id }}">{{ p.id }}- {{ p.title }}</a></h2>
+            <h2><a href="{% url 'blog_detail' p.id %}">{{ p.id }}- {{ p.title }}</a></h2>
         </div>
     {% endfor %}
 {% endblock content %}

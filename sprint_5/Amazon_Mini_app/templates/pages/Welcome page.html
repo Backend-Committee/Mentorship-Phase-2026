@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container" style="text-align: center;">
+    <h2>Welcome to Mini Amazon</h2>
+    <p style="margin-bottom: 20px; color: #666;">Your favorite e-store.</p>
+    <a href="{% url 'sign-up' %}" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Sign Up</a>
+    <a href="{% url 'login' %}" class="btn btn-secondary" style="width: 100%;">Log In</a>
+</div>
+{% endblock content %}

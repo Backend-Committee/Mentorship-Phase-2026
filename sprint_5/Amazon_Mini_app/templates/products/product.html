@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'product_list' %}" style="text-decoration: none;">← Back to Products</a>
+</div>
+
+<div style="display: flex; gap: 40px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+    <div style="flex: 1;">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; max-width: 400px; border-radius: 8px;">
+        {% endif %}
+    </div>
+    <div style="flex: 2;">
+        <h1 style="margin-bottom: 10px;">{{ product.title }}</h1>
+        <p style="color: #666; margin-bottom: 10px;">Category: {{ product.category.title }}</p>
+        <p style="font-size: 1.5rem; color: #b12704; font-weight: bold; margin-bottom: 10px;">${{ product.price }}</p>
+
+        <p style="margin-bottom: 5px;">
+            <strong>Status:</strong>
+            {% if product.available and product.quantity > 0 %}
+                <span style="color: green;">In Stock ({{ product.quantity }} available)</span>
+            {% else %}
+                <span style="color: red;">Out of Stock</span>
+            {% endif %}
+        </p>
+
+        <h3 style="margin-top: 20px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Description</h3>
+        <p style="margin-top: 10px; line-height: 1.6;">{{ product.description }}</p>
+
+        <div style="margin-top: 30px;">
+            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
