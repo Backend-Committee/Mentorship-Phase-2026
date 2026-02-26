@@ -31,6 +31,21 @@ def add_to_cart(request, product_id):
 
     return redirect('cart')
 
+def remove_from_cart(request, item_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    user = User.objects.get(id=user_id)
+    order, created = Order.objects.get_or_create(user=user, completed=False)
+    item = order.orderitem_set.get(id=item_id)
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.save()
+    else:
+        item.delete()
+    return redirect('cart')
+
+
 def checkout(request):
     user_id = request.session.get('user_id')
     if not user_id:

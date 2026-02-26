@@ -9,12 +9,12 @@
         {% for item in items %}
             <li style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between;">
                 <span><strong>{{ item.product.title }}</strong> (x{{ item.quantity }})</span>
-                <span>${{ item.get_total }}</span>
+                <span>${{ item.item_total_price }}</span>
             </li>
         {% endfor %}
     </ul>
 
-    <h3 style="color: #b12704; text-align: right; margin-top: 20px;">Total to Pay: ${{ order.get_cart_total }}</h3>
+    <h3 style="color: #b12704; text-align: right; margin-top: 20px;">Total to Pay: ${{ order.total_price }}</h3>
 
     <form method="POST" style="margin-top: 30px;">
         {% csrf_token %}

@@ -10,6 +10,7 @@
             <th>Price</th>
             <th>Quantity</th>
             <th>Total</th>
+            <th>remove</th>
         </tr>
     </thead>
     <tbody>
@@ -18,7 +19,9 @@
             <td>{{ item.product.title }}</td>
             <td>${{ item.product.price }}</td>
             <td>{{ item.quantity }}</td>
-            <td>${{ item.get_total }}</td> </tr>
+            <td>${{ item.item_total_price }}</td>
+            <td><a href="{% url 'remove_item' item.id %}"><span style="color: red;">Remove one</span></a></td>
+        </tr>
         {% empty %}
         <tr>
             <td colspan="4">Your cart is currently empty.</td>
@@ -27,7 +30,7 @@
     </tbody>
 </table>
 
-<h3 style="text-align: right; margin-bottom: 20px;">Cart Total: ${{ order.get_cart_total }}</h3>
+<h3 style="text-align: right; margin-bottom: 20px;">Cart Total: ${{ order.total_price }}</h3>
 
 <div style="text-align: right;">
     <a href="{% url 'product_list' %}" class="btn btn-secondary">Continue Shopping</a>
