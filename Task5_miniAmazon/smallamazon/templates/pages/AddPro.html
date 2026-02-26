@@ -1,0 +1,61 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow" style="border-radius: 15px; border: 2px solid #FFC0CB;">
+                <div class="card-header text-center" style="background: #800000; color: #FFC0CB; border-radius: 13px 13px 0 0;">
+                    <h3 class="mb-0">✨ Add New Product</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% for field in pro_add %}
+                        <div class="mb-3">
+                            <label class="form-label" style="color: #800000; font-weight: bold;">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-lg" style="background: #800000; color: #FFC0CB; font-weight: bold; border-radius: 10px;">
+                                ✅ Save Product
+                            </button>
+                            <a href="{% url 'product_List' %}" class="btn btn-outline-secondary btn-sm border-0">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* دي حتة ستايل زيادة عشان تخلي الـ Inputs شكلها شيك */
+    input, select, textarea {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+        input:focus, select:focus {
+            border-color: #FFC0CB !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 192, 203, 0.25) !important;
+            outline: 0;
+        }
+</style>
+{% endblock content %}

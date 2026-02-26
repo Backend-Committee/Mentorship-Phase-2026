@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<hr>
+{% for x in pro %}
+<div>
+
+    <p>category: {{ x.category }}</p>
+</div>
+<hr> {% endfor %}
+{% endblock content %}

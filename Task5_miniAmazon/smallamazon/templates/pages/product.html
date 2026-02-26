@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mb-4">
+    <form class="d-flex" method="GET">
+        <input name="q" class="form-control me-2" placeholder="Search..." value="{{ request.GET.q }}">
+        <select name="category" class="form-select me-2" style="width: 200px;">
+            <option value="">All Categories</option>
+            <option value="Tea">Tea</option>
+            <option value="coffee">Coffee</option>
+            <option value="Juice">Juice</option>
+        </select>
+        <button class="btn btn-custom" type="submit">Filter</button>
+    </form>
+</div>
+<div class="row">
+    {% for x in pro %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            {% if x.image %}<img src="{{ x.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">{% endif %}
+            <div class="card-body">
+                <h5 class="card-title" style="color: #800000;">{{ x.name }}</h5>
+                <p class="text-muted">{{ x.category }} - ${{ x.price }}</p>
+                <p class="badge bg-secondary">Stock: {{ x.stock }}</p>
+                <form action="{% url 'add_to_cart' x.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="number" name="quantity" value="1" min="1" max="{{ x.stock }}" class="form-control">
+                        <button class="btn btn-custom" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{% url 'update_pro' x.id %}" class="btn btn-sm btn-outline-warning">Update</a>
+                <a href="{% url 'delete_pro' x.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

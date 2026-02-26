@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow" style="max-width: 600px; margin: auto; border: 1px solid #FFC0CB;">
+    <div class="card-header" style="background: #800000; color: #FFC0CB;">
+        <h3>Update Product: {{ product.name }}</h3>
+    </div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ pro_add.as_p }}
+            <button type="submit" class="btn btn-custom w-100">Update Now</button>
+            <a href="{% url 'product_List' %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
