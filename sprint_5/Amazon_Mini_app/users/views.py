@@ -31,3 +31,7 @@ def login(request):
         form = LoginForm()
 
     return render(request, 'users/login.html', {'form': form})
+
+def logout(request):
+    request.session.flush()
+    return redirect('product_list')
