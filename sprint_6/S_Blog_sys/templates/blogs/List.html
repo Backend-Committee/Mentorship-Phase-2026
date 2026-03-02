@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>posts</h1>
+    <br>
+    {% for post in posts %}
+        <h3>{ {{ post.user.username }}-<a href="{% url 'details' post.pk %}">{{ post.title }}</a> </h3>
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ post.title }}<br>
+    {{ post.content }}<br>
+    {{ post.date_posted }}<br>
+    {{ post.user }}
+    <hr>
+    <a href="{% url 'update' post.pk %}">Update the post</a><br>
+    <a href="{% url 'delete' post.pk %}"><span style="color: red">Delete the post</span>></a>
+{% endblock content %}
