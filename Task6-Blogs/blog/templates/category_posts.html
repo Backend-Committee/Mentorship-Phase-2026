@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %} {% block title %}{{ category.name }} - Mini
+Blog{%endblock%} {% block content %}
+<div class="category-posts">
+  <h1 class="page-title">{{ category.name }}</h1>
+
+  {% if category.description %}
+  <p style="margin-bottom: 30px; color: #7f8c8d">{{ category.description }}</p>
+  {% endif %}
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="number">{{ post_count }}</span>
+      <span class="label">Posts in this category</span>
+    </div>
+  </div>
+
+  {% for post in posts %}
+  <div class="blog-post">
+    <h2>
+      <a href="{% url 'blogs:blog_detail' post.slug %}">{{ post.title }}</a>
+    </h2>
+    <div class="meta">
+      <span>👤 By {{ post.author }}</span>
+      <span>📅 {{ post.published_date|date:"F d, Y" }}</span>
+      <span>👁️ {{ post.views_count }} views</span>
+    </div>
+    <p>{{ post.excerpt }}</p>
+    <a href="{% url 'blogs:blog_detail' post.slug %}" class="btn"
+      >Read More →</a
+    >
+  </div>
+  {% empty %}
+  <div class="no-results">
+    <h2>No posts in this category yet</h2>
+    <p>Check back later!</p>
+  </div>
+  {% endfor %}
+
+  <div style="text-align: center; margin-top: 30px">
+    <a href="{% url 'blogs:category_list' %}" class="btn btn-secondary"
+      >← All Categories</a
+    >
+  </div>
+</div>
+{% endblock %}

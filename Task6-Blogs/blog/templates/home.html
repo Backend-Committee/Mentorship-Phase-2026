@@ -1,0 +1,51 @@
+{% extends 'blog/base.html' %} {% block title %}Home - Mini Blog{%endblock%}
+{%block content%}
+<div class="home">
+  <h1 class="page-title">Welcome to Mini Blog</h1>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="number">{{ total_posts }}</span>
+      <span class="label">Blog Posts</span>
+    </div>
+    <div class="stat-item">
+      <span class="number">{{ total_categories }}</span>
+      <span class="label">Categories</span>
+    </div>
+    <div class="stat-item">
+      <span class="number">{{ total_comments }}</span>
+      <span class="label">Comments</span>
+    </div>
+  </div>
+
+  <h2>Latest Posts</h2>
+  {% for post in latest_posts %}
+  <div class="blog-post">
+    <h2>
+      <a href="{% url 'blogs:blog_detail' post.slug %}">{{ post.title }}</a>
+    </h2>
+    <div class="meta">
+      <span>👤 By {{ post.author }}</span>
+      <span>📅 {{ post.published_date|date:"F d, Y" }}</span>
+      <span>👁️ {{ post.views_count }} views</span>
+    </div>
+    <span class="category-badge">{{ post.category.name }}</span>
+    <p>{{ post.excerpt }}</p>
+    <a href="{% url 'blogs:blog_detail' post.slug %}" class="btn"
+      >Read More →</a
+    >
+  </div>
+  {% empty %}
+  <div class="no-results">
+    <h2>No posts yet</h2>
+    <p>Check back later for new content!</p>
+  </div>
+  {% endfor %}
+
+  <div style="text-align: center; margin-top: 30px">
+    <a href="{% url 'blogs:blog_list' %}" class="btn btn-secondary"
+      >View All Posts →</a
+    >
+  </div>
+</div>
+{% endblock %}

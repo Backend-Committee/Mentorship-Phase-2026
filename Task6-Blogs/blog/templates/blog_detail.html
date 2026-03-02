@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %} {% block title %}{{ post.title }} - Mini
+Blog{%endblock%} {% block content %}
+<div class="blog-detail">
+  <h1>{{ post.title }}</h1>
+
+  <div class="meta">
+    <div class="meta-item">
+      <span class="meta-label">👤 Author</span>
+      <span>{{ post.author }}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">📅 Published</span>
+      <span>{{ post.published_date|date:"F d, Y" }}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">🏷️ Category</span>
+      <span
+        ><a href="{% url 'blogs:category_posts' post.category.slug %}"
+          >{{ post.category.name }}</a
+        ></span
+      >
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">👁️ Views</span>
+      <span>{{ post.views_count }}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">💬 Comments</span>
+      <span>{{ comment_count }}</span>
+    </div>
+  </div>
+
+  <div class="content">{{ post.content|linebreaks }}</div>
+
+  <div style="margin-top: 30px">
+    <a href="{% url 'blogs:blog_list' %}" class="btn btn-secondary"
+      >← Back to All Posts</a
+    >
+    <a href="{% url 'blogs:category_posts' post.category.slug %}" class="btn"
+      >More in {{ post.category.name }} →</a
+    >
+  </div>
+
+  {% if comments %}
+  <div class="comments-section">
+    <h3>💬 Comments ({{ comment_count }})</h3>
+    {% for comment in comments %}
+    <div class="comment">
+      <div class="comment-header">
+        <span class="comment-author">{{ comment.name }}</span>
+        <span class="comment-date"
+          >{{ comment.created_at|date:"F d, Y \a\t g:i A" }}</span
+        >
+      </div>
+      <div class="comment-content">{{ comment.content }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

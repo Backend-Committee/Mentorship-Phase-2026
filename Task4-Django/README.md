@@ -546,7 +546,7 @@ INSTALLED_APPS = [
 
 - [ ] **Admin**
   - make an admin
-
+    ........
 - [ ] **User Authentication**
   - User registration and login
   - User profiles
