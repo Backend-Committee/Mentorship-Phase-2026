@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <h1>Welcome to the home page</h1>
-    <br>
+<div class="hero-section">
+    <div class="hero-text">
+        <h1 class="hero-main-title">B Blog</h1>
+        <p class="hero-intro-text">
+            Hi, Welcome To The New Advanced App For Posting Your Blogs
+        </p>        <a href="{% url 'list' %}"><button class="btn btn-primary btn-lg">View Posts</button></a>
+    </div>
+</div>
 {% endblock content %}

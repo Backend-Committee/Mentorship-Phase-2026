@@ -46,7 +46,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         if self.request.user == self.get_object().user:
-            return Trun
+            return True
         return False
 
 

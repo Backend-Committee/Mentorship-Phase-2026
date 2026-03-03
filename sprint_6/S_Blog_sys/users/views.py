@@ -13,7 +13,7 @@ class UserLogin(LoginView):
     next_page = 'index'
 
 class UserLogout(LogoutView):
-    next_page = 'login'
+    next_page = 'list'
 
 class UserSignup(CreateView):
     form_class = UserCreationForm

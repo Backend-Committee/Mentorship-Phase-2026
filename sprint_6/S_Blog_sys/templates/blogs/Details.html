@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {{ post.title }}<br>
-    {{ post.content }}<br>
-    {{ post.date_posted }}<br>
-    {{ post.user }}
+<div class="post-details-container">
+    <h1 class="post-title-details">{{ post.title }}</h1>
+    <p class="post-card-user">Written by: {{ post.user }} on {{ post.date_posted }}</p>
     <hr>
-    <a href="{% url 'update' post.pk %}">Update the post</a><br>
-    <a href="{% url 'delete' post.pk %}"><span style="color: red">Delete the post</span>></a>
+
+    <div class="post-content-details">
+        {{ post.content }}
+    </div>
+
+    <hr>
+    <div class="post-actions">
+        <a href="{% url 'update' post.pk %}" class="btn btn-warning">Edit the post</a>
+        <a href="{% url 'delete' post.pk %}" class="btn btn-danger">Delete the post</a>
+    </div>
+</div>
 {% endblock content %}

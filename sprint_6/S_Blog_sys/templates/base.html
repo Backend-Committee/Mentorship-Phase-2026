@@ -2,14 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>B Blog</title>
+    <title>S Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Playfair+Display:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-{% load static %}
+
 {% include 'parts/navbar.html' %}
 
-{% block content %}
-{% endblock content %}
+<div class="container">
+    {% block content %}
+    {% endblock content %}
+</div>
 
 {% include 'parts/footer.html' %}
 

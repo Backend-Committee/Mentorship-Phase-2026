@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container form-auth-container" style="max-width: 500px; margin: 50px auto; background: white; padding: 30px; border-radius: 8px;">
  <h2>Login to Your Account</h2>
-
+ <br>
   <form method="POST">
       {% csrf_token %}
 
       {{ form.as_p }}
 
-      <button type="submit">Login</button>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
   </form>
-
+</div>
 {% endblock content %}

@@ -1,9 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>posts</h1>
+    <h1>Latest Posts</h1>
     <br>
+
+    <div class="posts-grid">
     {% for post in posts %}
-        <h3>{{ post.user.username }}-<a href="{% url 'details' post.pk %}">{{ post.title }}</a> </h3>
+        <div class="post-card">
+            <div>
+                <a href="{% url 'details' post.pk %}"><h3 class="post-card-title">{{ post.title }}</h3></a>
+                <p class="post-card-user">by: {{ post.user.username }}</p>
+            </div>
+            <a href="{% url 'details' post.pk %}" class="btn btn-auth btn-block btn-sm">Read More</a>
+        </div>
     {% endfor %}
+    </div>
+
 {% endblock content %}

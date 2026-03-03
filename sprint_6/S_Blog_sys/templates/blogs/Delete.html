@@ -1,5 +1,15 @@
-<form method="post">
-    {% csrf_token %}
-    are you sure
-    <button type="submit" >yes</button>
-</form>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="confirm-delete-container">
+    <h1 class="confirm-title">Confirm Delete</h1>
+    <br>
+    <p>Are you sure you want to delete the post: <strong>"{{ post.title }}"</strong>?</p>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-block">Yes, Delete Post</button>
+        <a href="{% url 'details' post.pk %}" class="btn btn-secondary btn-block">Cancel</a>
+    </form>
+</div>
+{% endblock content %}
