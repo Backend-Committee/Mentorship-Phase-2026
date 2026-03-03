@@ -1,0 +1,1164 @@
+{
+  "info": {
+    "_postman_id": "3f04011b-3e95-4093-96c9-3bb9a734c753",
+    "name": "bank system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32950760"
+  },
+  "item": [
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "create user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "username",
+                  "value": "omar",
+                  "type": "text",
+                  "uuid": "3cc4d80f-8fe7-4aa0-b2d2-37a208084619"
+                },
+                {
+                  "key": "password",
+                  "value": "Aa@12345",
+                  "type": "text",
+                  "uuid": "2d7ea23f-36a4-4925-8341-3363fbc9527f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/user/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "user",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api}}/user/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "user",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get single user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api}}/user/1/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "user",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "username",
+                  "value": "omar",
+                  "type": "text",
+                  "uuid": "86e762e6-93b8-43f8-85d8-3d92f533a659"
+                },
+                {
+                  "key": "password",
+                  "value": "Aa@12345",
+                  "type": "text",
+                  "uuid": "1484af49-638d-424b-b012-54fd36b4a606"
+                },
+                {
+                  "key": "email",
+                  "value": "omar@d7k.com",
+                  "type": "text",
+                  "uuid": "14d7864b-d478-425f-a345-fcc5575b6872"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api}}/user/4/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "user",
+                "4",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api}}/user/3/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "user",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "username",
+                  "value": "ZanatyV",
+                  "type": "text",
+                  "uuid": "30a29286-d649-428e-b637-653be9478639"
+                },
+                {
+                  "key": "password",
+                  "value": "Aa@12345",
+                  "type": "text",
+                  "uuid": "50de4a79-ccc3-453b-abc4-7ad1503a3df7"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/token/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "token",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "refresh",
+                  "value": "{{refresh}}",
+                  "type": "text",
+                  "uuid": "3877df10-2b02-4bd3-bb21-7294c96e2c83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/token/refresh/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "token",
+                "refresh",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "create bank account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "e4c87b9a-b2d1-47a6-be1c-03fa9f28aaae"
+                },
+                {
+                  "key": "account_number",
+                  "value": "101",
+                  "type": "text",
+                  "uuid": "d0612038-221d-4098-bb34-cd57edb82016"
+                },
+                {
+                  "key": "balance",
+                  "value": "50",
+                  "type": "text",
+                  "uuid": "cbe9587b-8866-43f0-aad5-aac85c468a07"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api}}/bankaccount/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "bankaccount",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "create bank account",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "user",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "e4c87b9a-b2d1-47a6-be1c-03fa9f28aaae"
+                    },
+                    {
+                      "key": "account_number",
+                      "value": "101",
+                      "type": "text",
+                      "uuid": "d0612038-221d-4098-bb34-cd57edb82016"
+                    },
+                    {
+                      "key": "balance",
+                      "value": "50",
+                      "type": "text",
+                      "uuid": "cbe9587b-8866-43f0-aad5-aac85c468a07"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{api}}/bankaccount/",
+                  "host": [
+                    "{{api}}"
+                  ],
+                  "path": [
+                    "bankaccount",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Mar 2026 14:10:37 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.14.2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "58"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": 6,\n    \"user\": 1,\n    \"account_number\": \"101\",\n    \"balance\": \"50.00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "get all accounts",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api}}/bankaccount/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "bankaccount",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get all accounts",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api}}/bankaccount/",
+                  "host": [
+                    "{{api}}"
+                  ],
+                  "path": [
+                    "bankaccount",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Mar 2026 14:11:27 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.14.2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "175"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n    {\n        \"id\": 6,\n        \"user\": 1,\n        \"account_number\": \"101\",\n        \"balance\": \"50.00\"\n    },\n    {\n        \"id\": 4,\n        \"user\": 1,\n        \"account_number\": \"11\",\n        \"balance\": \"0.00\"\n    },\n    {\n        \"id\": 1,\n        \"user\": 1,\n        \"account_number\": \"20\",\n        \"balance\": \"60.00\"\n    }\n]"
+            }
+          ]
+        },
+        {
+          "name": "get only user account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api}}/bankaccount/me/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "bankaccount",
+                "me",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get only user account",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api}}/bankaccount/me/",
+                  "host": [
+                    "{{api}}"
+                  ],
+                  "path": [
+                    "bankaccount",
+                    "me",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Mar 2026 14:12:01 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.14.2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "175"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n    {\n        \"id\": 6,\n        \"user\": 1,\n        \"account_number\": \"101\",\n        \"balance\": \"50.00\"\n    },\n    {\n        \"id\": 4,\n        \"user\": 1,\n        \"account_number\": \"11\",\n        \"balance\": \"0.00\"\n    },\n    {\n        \"id\": 1,\n        \"user\": 1,\n        \"account_number\": \"20\",\n        \"balance\": \"60.00\"\n    }\n]"
+            }
+          ]
+        },
+        {
+          "name": "get account by id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api}}/bankaccount/1/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "bankaccount",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get account by id",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api}}/bankaccount/1/",
+                  "host": [
+                    "{{api}}"
+                  ],
+                  "path": [
+                    "bankaccount",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Mar 2026 14:12:42 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.14.2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "57"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": 1,\n    \"user\": 1,\n    \"account_number\": \"20\",\n    \"balance\": \"60.00\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "deposit",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "transaction_type",
+                  "value": "deposit",
+                  "type": "text"
+                },
+                {
+                  "key": "receiver",
+                  "value": "6",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "sender",
+                  "value": "6",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api}}/transactions/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "transactions",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "deposit",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "transaction_type",
+                      "value": "deposit",
+                      "type": "text"
+                    },
+                    {
+                      "key": "receiver",
+                      "value": "6",
+                      "type": "text"
+                    },
+                    {
+                      "key": "amount",
+                      "value": "20",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{api}}/transactions/",
+                  "host": [
+                    "{{api}}"
+                  ],
+                  "path": [
+                    "transactions",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Mar 2026 14:20:41 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.14.2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "68"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"id\": 18,\n    \"transaction_type\": \"deposit\",\n    \"amount\": \"20.00\",\n    \"receiver\": 6\n}"
+            }
+          ]
+        },
+        {
+          "name": "Transfer",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "transaction_type",
+                  "value": "transfer",
+                  "type": "text"
+                },
+                {
+                  "key": "sender",
+                  "value": "6",
+                  "type": "text"
+                },
+                {
+                  "key": "receiver",
+                  "value": "4",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": "20",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api}}/transactions/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "transactions",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Transfer",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "",
+                    "value": "",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "transaction_type",
+                      "value": "transfer",
+                      "type": "text"
+                    },
+                    {
+                      "key": "sender",
+                      "value": "6",
+                      "type": "text"
+                    },
+                    {
+                      "key": "receiver",
+                      "value": "4",
+                      "type": "text"
+                    },
+                    {
+                      "key": "amount",
+                      "value": "20",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{api}}/transactions/",
+                  "host": [
+                    "{{api}}"
+                  ],
+                  "path": [
+                    "transactions",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Mar 2026 14:16:00 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.14.2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "80"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": 17,\n    \"transaction_type\": \"transfer\",\n    \"amount\": \"20.00\",\n    \"sender\": 6,\n    \"receiver\": 4\n}"
+            }
+          ]
+        },
+        {
+          "name": "withdraw",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "transaction_type",
+                  "value": "withdraw",
+                  "type": "text"
+                },
+                {
+                  "key": "receiver",
+                  "value": "4",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "amount",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "sender",
+                  "value": "6",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api}}/transactions/",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "transactions",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "withdraw",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "transaction_type",
+                      "value": "withdraw",
+                      "type": "text"
+                    },
+                    {
+                      "key": "amount",
+                      "value": "20",
+                      "type": "text"
+                    },
+                    {
+                      "key": "sender",
+                      "value": "6",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{api}}/transactions/",
+                  "host": [
+                    "{{api}}"
+                  ],
+                  "path": [
+                    "transactions",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Mar 2026 14:22:31 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.14.2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "67"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"id\": 19,\n    \"transaction_type\": \"withdraw\",\n    \"amount\": \"20.00\",\n    \"sender\": 6\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
