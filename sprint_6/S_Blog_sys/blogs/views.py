@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from .models import Post
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Create your views here.
 
 class PostListView(ListView):
@@ -27,17 +27,29 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     template_name = 'blogs/Update.html'
     fields = ['title','content']
     success_url = reverse_lazy('list')
 
+    def test_func(self):
+        if self.request.user == self.get_object().user:
+            return True
+        return False
 
-class PostDeleteView(DeleteView):
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blogs/Delete.html'
     success_url = reverse_lazy('list')
+
+    def test_func(self):
+        if self.request.user == self.get_object().user:
+            return Trun
+        return False
+
+
 
 
 
