@@ -1,0 +1,102 @@
+[
+    {
+        "model": "banks.bankaccount",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "bank": 1,
+            "balance": "1000.00",
+            "card": 1
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "bank": 3,
+            "balance": "5000.00",
+            "card": 2
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "bank": 3,
+            "balance": "750.50",
+            "card": 3
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 4,
+        "fields": {
+            "user": 4,
+            "bank": 1,
+            "balance": "1200.00",
+            "card": 4
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 5,
+        "fields": {
+            "user": 5,
+            "bank": 3,
+            "balance": "3200.75",
+            "card": 5
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 6,
+        "fields": {
+            "user": 6,
+            "bank": 3,
+            "balance": "1500.00",
+            "card": 6
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 7,
+        "fields": {
+            "user": 7,
+            "bank": 1,
+            "balance": "800.00",
+            "card": 7
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 8,
+        "fields": {
+            "user": 8,
+            "bank": 3,
+            "balance": "2750.00",
+            "card": 8
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 9,
+        "fields": {
+            "user": 9,
+            "bank": 3,
+            "balance": "4100.00",
+            "card": 9
+        }
+    },
+    {
+        "model": "banks.bankaccount",
+        "pk": 10,
+        "fields": {
+            "user": 10,
+            "bank": 1,
+            "balance": "999.99",
+            "card": 10
+        }
+    }
+]

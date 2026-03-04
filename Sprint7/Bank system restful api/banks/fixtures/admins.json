@@ -1,0 +1,26 @@
+[
+    {
+        "model": "banks.bankadmin",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "bank": 1
+        }
+    },
+    {
+        "model": "banks.bankadmin",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "bank": 3
+        }
+    },
+    {
+        "model": "banks.bankadmin",
+        "pk": 4,
+        "fields": {
+            "user": 4,
+            "bank": 1
+        }
+    }
+]

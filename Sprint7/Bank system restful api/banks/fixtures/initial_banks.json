@@ -1,0 +1,58 @@
+[
+    {
+        "model": "banks.bank",
+        "pk": 1,
+        "fields": {
+            "name": "National Bank"
+        }
+    },
+    {
+        "model": "banks.bank",
+        "pk": 2,
+        "fields": {
+            "name": "Alexandria Bank"
+        }
+    },
+    {
+        "model": "banks.bank",
+        "pk": 3,
+        "fields": {
+            "name": "QNB"
+        }
+    },
+    {
+        "model": "banks.bank",
+        "pk": 4,
+        "fields": {
+            "name": "CIB"
+        }
+    },
+    {
+        "model": "banks.bank",
+        "pk": 5,
+        "fields": {
+            "name": "Banque Misr"
+        }
+    },
+    {
+        "model": "banks.bank",
+        "pk": 6,
+        "fields": {
+            "name": "HSBC Egypt"
+        }
+    },
+    {
+        "model": "banks.bank",
+        "pk": 7,
+        "fields": {
+            "name": "Arab African International Bank"
+        }
+    },
+    {
+        "model": "banks.bank",
+        "pk": 8,
+        "fields": {
+            "name": "Emirates NBD Egypt"
+        }
+    }
+]

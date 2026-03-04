@@ -1,0 +1,112 @@
+[
+    {
+        "model": "banks.card",
+        "pk": 1,
+        "fields": {
+            "card_number": "1111222233334444",
+            "expiration_date": "2026-12-31",
+            "cvv": "123",
+            "networkProvider": "Visa",
+            "card_holder_name": "User One"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 2,
+        "fields": {
+            "card_number": "5555666677778888",
+            "expiration_date": "2027-06-30",
+            "cvv": "456",
+            "networkProvider": "MasterCard",
+            "card_holder_name": "User Two"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 3,
+        "fields": {
+            "card_number": "9999000011112222",
+            "expiration_date": "2026-11-30",
+            "cvv": "789",
+            "networkProvider": "Visa",
+            "card_holder_name": "User Three"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 4,
+        "fields": {
+            "card_number": "3333444455556666",
+            "expiration_date": "2027-03-31",
+            "cvv": "234",
+            "networkProvider": "MasterCard",
+            "card_holder_name": "User Four"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 5,
+        "fields": {
+            "card_number": "7777888899990000",
+            "expiration_date": "2026-09-30",
+            "cvv": "567",
+            "networkProvider": "Visa",
+            "card_holder_name": "User Five"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 6,
+        "fields": {
+            "card_number": "1234123412341234",
+            "expiration_date": "2027-01-31",
+            "cvv": "890",
+            "networkProvider": "MasterCard",
+            "card_holder_name": "User Six"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 7,
+        "fields": {
+            "card_number": "4321432143214321",
+            "expiration_date": "2026-08-31",
+            "cvv": "345",
+            "networkProvider": "Visa",
+            "card_holder_name": "User Seven"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 8,
+        "fields": {
+            "card_number": "8765876587658765",
+            "expiration_date": "2027-05-31",
+            "cvv": "678",
+            "networkProvider": "MasterCard",
+            "card_holder_name": "User Eight"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 9,
+        "fields": {
+            "card_number": "5678567856785678",
+            "expiration_date": "2026-10-31",
+            "cvv": "901",
+            "networkProvider": "Visa",
+            "card_holder_name": "User Nine"
+        }
+    },
+    {
+        "model": "banks.card",
+        "pk": 10,
+        "fields": {
+            "card_number": "0987098709870987",
+            "expiration_date": "2027-02-28",
+            "cvv": "234",
+            "networkProvider": "MasterCard",
+            "card_holder_name": "User Ten"
+        }
+    }
+]
