@@ -47,7 +47,7 @@ while True:
 print("###############The Bill###############")
 # you should use the formatted string literal (f"{}") to handel printing useful messages
 # print the products the user picked
-# print the total price using the func you did use
+# print the total price using the func you did
 
 
 
