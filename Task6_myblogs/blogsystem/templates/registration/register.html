@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+    <h2 class="text-center fw-bold">Join Our Community</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success w-100 mt-3">Register</button>
+    </form>
+    <p class="text-center mt-3 small">Already member? <a href="{% url 'login' %}">Login here</a></p>
+</div>
+{% endblock %}

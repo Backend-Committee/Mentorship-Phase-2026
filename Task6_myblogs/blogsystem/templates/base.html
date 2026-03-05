@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DevBlog{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --dark-bg: #1a1a2e;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        /* حركات الـ Navbar */
+        .navbar {
+            background: var(--dark-bg) !important;
+            padding: 15px 0;
+            border-bottom: 3px solid #764ba2;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* حركات الـ Cards */
+        .card {
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            background: white;
+        }
+
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+            }
+
+        /* حركات الزراير */
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            transition: 0.3s;
+        }
+
+            .btn-primary:hover {
+                opacity: 0.9;
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+            }
+
+        /* حركة الـ Welcome Message */
+        .welcome-text {
+            color: #e0e0e0;
+            font-size: 0.95rem;
+        }
+
+        .username-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* شكل الـ Alerts */
+        .alert {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'blogs' %}">DEV<span style="color: #fff;">BLOG</span></a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="ms-auto d-flex align-items-center gap-3">
+                    {% if user.is_authenticated %}
+                    <div class="welcome-text">
+                        Welcome, <span class="username-badge fw-bold">{{ user.username }}</span>
+                    </div>
+                    <form action="{% url 'logout' %}" method="post" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">Logout</button>
+                    </form>
+                    {% else %}
+                    <span class="welcome-text">Welcome, Guest</span>
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm rounded-pill px-3">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary btn-sm shadow-sm">Get Started</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <main class="animate__animated animate__fadeIn">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

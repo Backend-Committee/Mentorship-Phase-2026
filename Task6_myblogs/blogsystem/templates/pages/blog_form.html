@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow p-5 mx-auto animate__animated animate__fadeInRight" style="max-width: 700px; border-radius: 20px;">
+    <h2 class="fw-bold mb-4">{% if object %}Edit Post{% else %}New Post{% endif %}</h2>
+    <hr>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success px-5 rounded-pill shadow">Save Post</button>
+            <a href="{% url 'blogs' %}" class="btn btn-link text-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

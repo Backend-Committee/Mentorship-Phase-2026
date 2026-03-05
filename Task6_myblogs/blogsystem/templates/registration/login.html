@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow p-4 mx-auto" style="max-width: 400px;">
+    <h2 class="text-center fw-bold">Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100 mt-3">Login</button>
+    </form>
+    <p class="text-center mt-3 small">New user? <a href="{% url 'register' %}">Register here</a></p>
+</div>
+{% endblock %}

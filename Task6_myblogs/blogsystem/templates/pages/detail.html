@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow border-0 mx-auto animate__animated animate__zoomIn" style="max-width: 900px; border-radius: 25px;">
+    {% if blog.image %}
+    <img src="{{ blog.image.url }}" class="card-img-top" style="max-height: 500px; object-fit: cover; border-radius: 25px 25px 0 0;" alt="{{ blog.title }}">
+    {% endif %}
+
+    <div class="card-body p-5">
+        <h1 class="display-4 fw-bold mb-3">{{ blog.title }}</h1>
+        <p class="text-muted border-bottom pb-3 mb-4">
+            <i class="fa-solid fa-calendar-days me-2"></i> {{ blog.date_posted|date:"F d, Y" }} |
+            <i class="fa-solid fa-circle-user me-2"></i><strong>{{ blog.author.username }}</strong>
+        </p>
+
+        <div class="fs-4 text-dark mb-5" style="line-height: 1.9;">
+            {{ blog.content|linebreaks }}
+        </div>
+
+        <div class="d-flex gap-3 mt-5">
+            {% if user == blog.author %}
+            <a href="{% url 'blog-update' blog.id %}" class="btn btn-warning px-4 rounded-pill">Update</a>
+            <a href="{% url 'blog-delete' blog.id %}" class="btn btn-danger px-4 rounded-pill">Delete</a>
+            {% endif %}
+            <a href="{% url 'blogs' %}" class="btn btn-secondary px-4 rounded-pill">Back to Feed</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
