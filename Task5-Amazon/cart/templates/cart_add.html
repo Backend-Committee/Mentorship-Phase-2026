@@ -1,5 +1,6 @@
-{% extends 'store/base.html' %} {% block title %}Add to Cart{% endblock %}
-{%block content %}
+{% extends 'base.html' %}
+{% block title %}Add to Cart{% endblock %}
+{% block content %}
 <div class="row justify-content-center">
   <div class="col-md-5">
     <div class="card p-4">
@@ -21,10 +22,11 @@
         {% csrf_token %}
         <div class="mb-3">
           <label class="form-label fw-semibold">Quantity</label>
-          {{ form.quantity }} {% if form.quantity.errors %} {% for error in
-          form.quantity.errors %}
+          {{ form.quantity }} {% if form.quantity.errors %} 
+          {% for error in form.quantity.errors %}
           <div class="text-danger small mt-1">{{ error }}</div>
-          {% endfor %} {% endif %}
+          {% endfor %} 
+          {% endif %}
         </div>
         <div class="d-flex gap-2">
           <button type="submit" class="btn btn-primary">Add to Cart</button>

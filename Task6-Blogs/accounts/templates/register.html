@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block title %}{{ post.title }} Register {%endblock%} {% block content %}
+<div class="register-container">
+  <h1>Register</h1>
+  {% comment %} we don't need this since the errors are already handled inside the form {% endcomment %}
+  {% comment %} {%if form.errors%}
+    <div class="alert alert-danger">
+      <strong>Please correct the following errors:</strong>
+      {{ form.errors }}
+    </div>
+  {%endif%} {% endcomment %}
+  <form action="" method="POST">
+   {% csrf_token%}
+
+   {% comment %} all of them need a name {% endcomment %}
+   {% comment %} <input name="username" type="text" placeholder="Username" required />
+   <input
+   name="password"
+   type="password"
+   placeholder="Password"
+   required
+   /> {% endcomment %}
+
+   {% comment %} as paragraph {% endcomment %}
+   {{form.as_p}}
+   <input type = "submit" value = "Submit" class="btn"> 
+  </form>
+</div>
+{% endblock %}

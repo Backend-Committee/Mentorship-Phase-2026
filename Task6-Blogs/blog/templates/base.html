@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Mini Blog{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
   </head>
   <body>
     <div class="container">
@@ -14,9 +14,23 @@
 
         <nav>
           <ul>
-            <li><a href="{% url 'blogs:home' %}">Home</a></li>
-            <li><a href="{% url 'blogs:blog_list' %}">All Blogs</a></li>
-            <li><a href="{% url 'blogs:category_list' %}">Categories</a></li>
+            <li><a href="{% url 'blog:home' %}">Home</a></li>
+            <li><a href="{% url 'blog:blog_list' %}">All Blogs</a></li>
+            <li><a href="{% url 'blog:category_list' %}">Categories</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'blog:blog_create' %}">New Post</a></li>
+            <li>
+              <form action="{% url 'accounts:logout' %}" method="post" style="display: inline">
+                {% csrf_token %}
+              <button type="submit" id="logoutNav">Logout</button>
+              </form>
+            </li>
+            {% else %}
+            {% comment %} you can't logout through a normal a link, because a link is a get request, and logout should be only a post request {% endcomment %}
+            {% comment %} <li><a href="{% url 'accounts:login' %}">Login</a></li> {% endcomment %}
+            <li><a href="{% url 'accounts:login' %}">Login</a></li>
+            <li><a href="{% url 'accounts:register' %}">Register</a></li>
+            {% endif %}
           </ul>
         </nav>
       </header>

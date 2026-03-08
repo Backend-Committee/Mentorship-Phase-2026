@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %} {% block title %}{{ category.name }} - Mini
+{% extends 'base.html' %} {% block title %}{{ category.name }} - Mini
 Blog{%endblock%} {% block content %}
 <div class="category-posts">
   <h1 class="page-title">{{ category.name }}</h1>
@@ -17,7 +17,7 @@ Blog{%endblock%} {% block content %}
   {% for post in posts %}
   <div class="blog-post">
     <h2>
-      <a href="{% url 'blogs:blog_detail' post.slug %}">{{ post.title }}</a>
+      <a href="{% url 'blog:blog_detail' post.slug %}">{{ post.title }}</a>
     </h2>
     <div class="meta">
       <span>👤 By {{ post.author }}</span>
@@ -25,7 +25,7 @@ Blog{%endblock%} {% block content %}
       <span>👁️ {{ post.views_count }} views</span>
     </div>
     <p>{{ post.excerpt }}</p>
-    <a href="{% url 'blogs:blog_detail' post.slug %}" class="btn"
+    <a href="{% url 'blog:blog_detail' post.slug %}" class="btn"
       >Read More →</a
     >
   </div>
@@ -37,7 +37,7 @@ Blog{%endblock%} {% block content %}
   {% endfor %}
 
   <div style="text-align: center; margin-top: 30px">
-    <a href="{% url 'blogs:category_list' %}" class="btn btn-secondary"
+    <a href="{% url 'blog:category_list' %}" class="btn btn-secondary"
       >← All Categories</a
     >
   </div>

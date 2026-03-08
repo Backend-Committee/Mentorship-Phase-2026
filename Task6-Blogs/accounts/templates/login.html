@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block title %}{{ post.title }} Login{%endblock%} {% block content %}
+<div class="login-container">
+  <h1>Login</h1>
+  {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+          </div>
+      {% endfor %}
+  {% endif %}
+  <form action="" method="POST">
+   {% csrf_token%}
+
+   {% comment %} all of them need a name {% endcomment %}
+   <input 
+   class="theFields"
+   name="username" type="text" placeholder="Username" required />
+   <input
+   class="theFields"
+   name="password"
+   type="password"
+   placeholder="Password"
+   required
+   />
+   <input type = "submit" value = "Submit" class="btn"> 
+  </form>
+</div>
+{% endblock %}

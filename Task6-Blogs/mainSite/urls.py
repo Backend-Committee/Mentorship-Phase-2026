@@ -19,7 +19,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/', include('blog.urls'))
+    path('accounts/', include('accounts.urls')),
+    # a bunch of urls for the accounts app, we will be using the built-in auth views for login and logout
+    # path('accounts/', include('django.contrib.auth.urls')), 
+    path('', include('blog.urls'))
 ]
 
 # this would be the main page for our studying for this project

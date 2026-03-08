@@ -1,8 +1,10 @@
 from django.db import models
 
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -25,7 +27,8 @@ class Category(models.Model):
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
-    author = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
+    # author = models.CharField(max_length=100)
     content = models.TextField()
     category = models.ForeignKey(
         Category, 
@@ -57,6 +60,9 @@ class BlogPost(models.Model):
         self.views_count += 1
         self.save(update_fields=['views_count'])
 
+    def get_absolute_url(self):
+        return reverse("blog:blog_detail", kwargs={"slug": self.slug})
+    
 
 class Comment(models.Model):
     post = models.ForeignKey(

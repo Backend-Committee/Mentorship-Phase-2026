@@ -27,6 +27,9 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
+    
+    def get_subtotal(self):
+        return self.product.price * self.quantity
 
 class Cart (models.Model):
     # id = models.AutoField(primary_key=True)
@@ -35,7 +38,7 @@ class Cart (models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"Cart of {self.user}"
+        return f"Cart of {self.id}"
     
     def total_price(self):
         total = 0
