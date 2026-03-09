@@ -1,0 +1,80 @@
+Submission Instructions:
+1- Create a single Python file named (week1_assignment_yourname.py)
+2- Ensure your code is clean and well-commented.
+
+
+Your task is to build a single, interactive Command-Line Application: A Mini E-Library Management System.
+You will use all the concepts covered in the session to make it work.
+
+Project Requirements (Build it step-by-step):
+
+Step 1: The Data Structures
+
+Create a dictionary named library_catalog.
+The keys should be book titles (Strings).
+The values should be Lists containing the author's name and the number of available copies:
+["Author Name", Copies_Count].
+Example: {"Harry Potter": ["JK Rowling", 3], "1984": ["George Orwell", 0]}
+Create an empty list named borrowed_books to store the titles of the books the user borrows.
+
+Step 2: Functions and Conditions
+
+Write the following functions to handle library operations:
+display_books(): Uses a for loop to iterate over library_catalog and print each book,
+its author, and available copies.
+borrow_book(book_name): Uses if/else conditions to check if the book exists in the catalog.
+Checks if there is at least 1 copy available.
+If available, decrease the number of copies by 1, add the book to the borrowed_books list, and print a success message.
+If not available or doesn't exist, print an appropriate error message.
+return_book(book_name):
+Checks if the book is in the borrowed_books list.
+If yes, remove it from the list, increase the library's copies by 1, and print a success message.
+
+Step 3: The Decorator Challenge
+
+We need a way for the librarian to add new books, but it must be secured!
+Create a decorator named @admin_only.
+Inside the decorator, ask the user to input() an Admin PIN.
+If the PIN is "1234", allow the function to run. If not, print "Access Denied!".
+Create a function named add_new_book(title, author, copies) and apply your @admin_only decorator to it.
+This function should add a new key-value pair to the library_catalog dictionary.
+
+Step 4: The Interactive Menu
+
+Wrap your program in a while True loop to create an interactive menu for the user.
+It should look like this:
+
+--- Welcome to the Mini Library ---
+1. View all books
+2. Borrow a book
+3. Return a book
+4. Add a new book (Admin Only)
+5. Exit
+
+Use if/elif statements to call the correct function based on the user's input.
+If the user chooses 5, break the loop to end the program.
+
+the output should look like this:
+
+--- Welcome to the Mini Library ---
+1. View all books
+2. Borrow a book
+3. Return a book
+4. Add a new book (Admin Only)
+5. Exit
+Choose an option: 1
+
+Available Books:
+- Harry Potter by J.K. Rowling (3 copies)
+- 1984 by George Orwell (0 copies)
+
+Choose an option: 2
+Enter the name of the book to borrow: 1984
+Sorry, '1984' is currently out of stock.
+
+Choose an option: 4
+Enter Admin PIN: 0000
+Access Denied!
+
+Choose an option: 5
+Goodbye!
