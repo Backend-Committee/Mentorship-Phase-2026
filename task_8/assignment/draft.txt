@@ -1,0 +1,21 @@
+Khazna Storage Company
+
+Khazna is a storage company that provides Safe Storage Service to its customers, 
+it has many warehouses accross the country in which it saves customers' goods.
+
+They want to create a computer system to manage the whole thing, and they have entrusted you for this task.
+
+Here is what they need:
+* They want to save all their customers personal info.
+* They want to save all their workers personal info plus other administrial stuff like salary and work hours
+* ِ Any item have an id, name, weight, size, quantity and it is owned by a customer
+
+Requirements:
+you program should contain menu that allow its users to
+* List all customers, see specifc ones details, add or delete them
+* The same goes for workes like customers
+* The same goes for items
+* The program should have validation for the input and operations
+* use the oop principles
+Notes:
+* You are not required to use any form of database or file storage, it is fine if all data is wiped out after the program finishes
