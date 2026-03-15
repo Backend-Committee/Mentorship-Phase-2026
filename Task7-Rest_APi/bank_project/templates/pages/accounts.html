@@ -1,0 +1,46 @@
+{% extends 'bank/base.html' %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block content %}
+<h2>Accounts List</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for account in accounts %}
+        <tr>
+            <td>{{ account.customer.name }}</td>
+            <td>{{ account.balance }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% extends 'bank/base.html' %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block content %}
+<h2>Accounts List</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for account in accounts %}
+        <tr>
+            <td>{{ account.customer.name }}</td>
+            <td>{{ account.balance }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
