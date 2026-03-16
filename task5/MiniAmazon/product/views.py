@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from .models import Product, CartItem
 from .forms import ProductForm,AddCategoryForm
 
@@ -30,21 +31,24 @@ def add_to_cart(request, product_id):
         product = get_object_or_404(Product, id=product_id)
         quantity = int(request.POST.get('quantity', 1))
 
-        # Check if product is available and has enough stock
-        if product.is_Available and product.stock >= quantity:
-            # Create or update cart item
+        if not product.is_Available:
+            messages.error(request, f'"{product.name}" is not available.')
+        elif product.stock <= 0:
+            messages.error(request, f'"{product.name}" is out of stock.')
+        elif product.stock < quantity:
+            messages.error(request, f'Only {product.stock} item(s) of "{product.name}" left in stock.')
+        else:
             cart_item, created = CartItem.objects.get_or_create(
                 product=product,
                 defaults={'price': product.price, 'quantity': quantity}
             )
             if not created:
-                # If item already exists, update quantity
                 cart_item.quantity += quantity
                 cart_item.save()
 
-            # Optionally reduce stock
             product.stock -= quantity
             product.save()
+            messages.success(request, f'"{product.name}" x{quantity} added to cart!')
 
     return redirect('product_list')
 

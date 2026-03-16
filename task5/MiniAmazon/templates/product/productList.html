@@ -3,6 +3,12 @@
 {% block content %}
 <h1>Product List</h1>
 
+{% if messages %}
+    {% for message in messages %}
+        <p><strong>{{ message }}</strong></p>
+    {% endfor %}
+{% endif %}
+
 {% if products %}
     <ul>
     {% for product in products %}

@@ -38,6 +38,7 @@ def select_users():
     users = session.query(User).all()
     return users
 def update_user(id, name=None, email=None):
+    ##get
     user = session.query(User).filter(User.id == id).first()
     if user:
         if name:
