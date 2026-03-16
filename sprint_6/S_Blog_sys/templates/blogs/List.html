@@ -9,7 +9,7 @@
         <div class="post-card">
             <div>
                 <a href="{% url 'details' post.pk %}"><h3 class="post-card-title">{{ post.title }}</h3></a>
-                <p class="post-card-user">by: {{ post.user.username }}</p>
+                <p class="post-card-user">by: {{ post.user.username|capfirst }}</p>
             </div>
             <a href="{% url 'details' post.pk %}" class="btn btn-auth btn-block btn-sm">Read More</a>
         </div>
