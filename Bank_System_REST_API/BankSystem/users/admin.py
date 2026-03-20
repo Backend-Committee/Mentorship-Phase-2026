@@ -4,12 +4,11 @@ from .models import User
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = list(UserAdmin.fieldsets) + [
         (None, {'fields': ('role',)}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
+    ]
+    add_fieldsets = list(UserAdmin.add_fieldsets) + [
         (None, {'fields': ('role',)}),
-    )
-    list_display = UserAdmin.list_display + ('role',)
-    list_filter = UserAdmin.list_filter + ('role',)
-
+    ]
+    list_display = list(UserAdmin.list_display) + ['role']
+    list_filter = list(UserAdmin.list_filter) + ['role']

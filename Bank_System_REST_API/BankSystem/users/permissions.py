@@ -1,7 +1,6 @@
 from rest_framework import permissions
-from django.contrib.auth import get_user_model
+from users.models import User
 
-User = get_user_model()
 
 class IsCustomer(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -34,3 +33,12 @@ class IsOfficeStaff(permissions.BasePermission):
             User.Role.ADMIN,
             User.Role.AUDITOR
         ]
+
+class IsOwnerOrAdmin(permissions.BasePermission):
+    """
+    Object-level permission to only allow owners of an object (user profile) or admins to edit it.
+    """
+    def has_object_permission(self, request, view, obj):
+        if request.user.role == User.Role.ADMIN:
+            return True
+        return obj == request.user

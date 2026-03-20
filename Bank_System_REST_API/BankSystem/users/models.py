@@ -20,3 +20,5 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
 
+    def get_role_display(self):
+        return self.Role(self.role).label
