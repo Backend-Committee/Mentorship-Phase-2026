@@ -1,0 +1,229 @@
+# Software Requirements Specification (SRS)
+
+## Food Waste Reduction System – "Tawfeer"
+
+---
+
+## 1. Introduction
+
+### 1.1 Purpose
+
+This document provides a detailed description of the requirements for the "Tawfeer" system, a platform designed to reduce food waste by connecting restaurants and hotels that have surplus food with charities and users who can benefit from it at discounted prices.
+
+### 1.2 Scope
+
+The system enables:
+
+* Restaurants and hotels to publish surplus food offers.
+* Users and charities to find nearby food offers using location-based services.
+* Real-time updates to ensure food availability and freshness.
+* Efficient handling of high traffic during peak hours.
+
+"Tawfeer" aims to minimize food waste, support communities, and promote sustainability.
+
+### 1.3 Definitions, Acronyms, and Abbreviations
+
+* API: Application Programming Interface
+* GPS: Global Positioning System
+* LBS: Location-Based Services
+* DB: Database
+* Admin: System Administrator
+
+---
+
+## 2. Overall Description
+
+### 2.1 Product Perspective
+
+"Tawfeer" is a web/mobile-based platform consisting of:
+
+* Frontend (Mobile/Web Interface)
+* Backend (Server & APIs)
+* Database System
+* Real-time communication service
+
+### 2.2 Product Functions
+
+* User registration and authentication
+* Posting food surplus offers
+* Searching nearby offers using location
+* Real-time updates for food availability
+* Booking/reserving food items
+* Notifications system
+* Admin dashboard
+
+### 2.3 User Classes and Characteristics
+
+* **Admin:** Manages system, users, and reports
+* **Restaurant/Hotel:** Uploads food offers
+* **User:** Browses and reserves food
+* **Charity:** Accesses bulk offers
+
+### 2.4 Operating Environment
+
+* Backend: Django / Node.js
+* Database: PostgreSQL / MongoDB
+* APIs: RESTful APIs
+* Hosting: Cloud (AWS / Heroku)
+
+### 2.5 Constraints
+
+* Real-time performance is required
+* Food expiration must be strictly handled
+* High traffic handling during peak hours
+* Secure authentication and data protection
+
+---
+
+## 3. System Features
+
+### 3.1 User Registration & Authentication
+
+* Users must register using email/phone
+* Secure login using JWT authentication
+* Password encryption required
+
+### 3.2 Food Offer Management (Restaurants)
+
+* Add food items (name, quantity, expiry time, price)
+* Update or delete offers
+* Mark offers as expired automatically
+
+### 3.3 Location-Based Search
+
+* Users can find nearby offers using GPS
+* Results sorted by distance and expiry time
+* Map integration for visualization
+
+### 3.4 Real-Time Updates
+
+* Offers updated instantly when reserved
+* Expired items removed automatically
+* Use WebSockets or Firebase for real-time sync
+
+### 3.5 Reservation System
+
+* Users can reserve food items
+* Prevent overbooking
+* Reservation expiration timer
+
+### 3.6 Notifications System
+
+* Notify users about nearby offers
+* Alerts for expiring food
+* Reservation confirmations
+
+### 3.7 Admin Dashboard
+
+* Monitor users and restaurants
+* View reports and analytics
+* Manage complaints
+
+---
+
+## 4. External Interface Requirements
+
+### 4.1 User Interfaces
+
+* Mobile-friendly UI
+* Map-based interface
+* Dashboard for admins
+
+### 4.2 Hardware Interfaces
+
+* GPS-enabled devices (mobile phones)
+
+### 4.3 Software Interfaces
+
+* Google Maps API (for location services)
+* Payment Gateway (optional)
+
+### 4.4 Communication Interfaces
+
+* Internet connection required
+* REST APIs over HTTP/HTTPS
+
+---
+
+## 5. Non-Functional Requirements
+
+### 5.1 Performance
+
+* System should handle high concurrent users
+* Response time < 2 seconds
+* Real-time updates within milliseconds
+
+### 5.2 Scalability
+
+* Should support increasing number of users
+* Use load balancing and caching
+
+### 5.3 Security
+
+* Data encryption (HTTPS)
+* JWT Authentication
+* Input validation and protection from attacks
+
+### 5.4 Reliability
+
+* System uptime ≥ 99%
+* Automatic failure recovery
+
+### 5.5 Usability
+
+* Easy navigation
+* Simple and clear UI
+
+---
+
+## 6. Database Requirements
+
+### Main Entities:
+
+* Users
+* Restaurants
+* Food Items
+* Reservations
+* Notifications
+
+### Example Tables:
+
+* User (id, name, email, password, role, location)
+* Food (id, name, quantity, expiry_time, price, restaurant_id)
+* Reservation (id, user_id, food_id, status)
+
+---
+
+## 7. Back-End System Design Considerations
+
+### APIs:
+
+* Authentication API
+* Food Management API
+* Location Search API
+* Reservation API
+* Notification API
+
+### Key Features for Backend:
+
+* Real-time system using WebSockets
+* Geolocation queries (PostGIS or MongoDB GeoJSON)
+* Load handling using caching (Redis)
+* Queue system for heavy tasks (RabbitMQ)
+
+---
+
+## 8. Future Enhancements
+
+* AI-based food demand prediction
+* Integration with delivery services
+* Rating and review system
+* Multi-language support
+
+---
+
+## 9. Conclusion
+
+The "Tawfeer" system provides an efficient and scalable solution to reduce food waste by leveraging modern technologies such as real-time updates, location-based services, and robust backend APIs. It serves both businesses and communities while promoting sustainability.
+
+---
