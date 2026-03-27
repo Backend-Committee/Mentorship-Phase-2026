@@ -1,0 +1,137 @@
+📄 Software Requirements Specification (SRS)
+🎯 Smart Event Management System
+1. Introduction
+1.1 Purpose
+
+The purpose of this document is to provide a detailed description of the requirements for the Smart Event Management System. This system is designed to allow users to create event requests and enable administrators to review, approve, or reject these requests. Approved events are displayed to all users for participation.
+
+1.2 Scope
+
+The system is a web-based application that facilitates event creation, approval, and participation. It provides a structured workflow where events must be approved before becoming visible to the public. The system also allows users to browse and join upcoming events.
+
+1.3 Definitions, Acronyms, and Abbreviations
+SRS: Software Requirements Specification
+UI: User Interface
+GPS: Global Positioning System
+API: Application Programming Interface
+2. Overall Description
+2.1 Product Perspective
+
+The Smart Event Management System is a standalone web application developed using Django for the backend and a modern frontend framework such as React. It may integrate with external services such as Google Maps API for location selection.
+
+2.2 Product Functions
+
+The system provides the following main functions:
+
+User registration and authentication
+Event request creation
+Event approval and rejection by admin
+Display of approved (upcoming) events
+Event participation and booking
+2.3 User Classes and Characteristics
+2.3.1 User
+Can register and log in
+Can create event requests
+Can view and join approved events
+2.3.2 Administrator
+Has full access to the system
+Reviews and manages event requests
+Approves or rejects events
+Manages users and system data
+2.4 Operating Environment
+Web browsers (Google Chrome, Microsoft Edge, etc.)
+Backend server (Linux/Windows)
+Database systems (PostgreSQL or MySQL)
+2.5 Design and Implementation Constraints
+The system must be web-based
+Authentication is required for all users
+Events must be approved before publication
+2.6 Assumptions and Dependencies
+Users have stable internet access
+Location services may be enabled for event mapping
+External APIs (e.g., maps services) are available
+3. System Features
+3.1 User Registration and Authentication
+
+Description:
+The system allows users to create accounts and log in securely.
+
+Functional Requirements:
+
+Users can register using email and password
+Users can log in and log out
+The system validates user credentials
+3.2 Event Request Creation
+
+Description:
+Users can submit event requests by providing event details.
+
+Functional Requirements:
+
+Users can enter event name, description, date, and location
+The system stores the event with a “Pending” status
+Users can edit or delete their requests before approval
+3.3 Event Approval System
+
+Description:
+Administrators review and manage event requests.
+
+Functional Requirements:
+
+Admin can view all pending events
+Admin can approve or reject events
+Approved events are marked as “Approved”
+Rejected events are marked as “Rejected”
+3.4 Upcoming Events Display
+
+Description:
+The system displays approved events to all users.
+
+Functional Requirements:
+
+Only approved events are visible
+Events are sorted by date
+Users can view event details
+3.5 Event Participation
+
+Description:
+Users can register or join events.
+
+Functional Requirements:
+
+Users can join events
+The system records user participation
+The system prevents duplicate registrations
+3.6 Notifications (Optional Feature)
+
+Description:
+The system may notify users about important updates.
+
+Functional Requirements:
+
+Notify users when events are approved
+Send reminders before events
+4. Non-Functional Requirements
+4.1 Performance
+The system should handle multiple users simultaneously without delay
+4.2 Security
+User authentication is required
+Sensitive data must be protected
+4.3 Usability
+The interface should be simple and user-friendly
+4.4 Reliability
+The system should be available and functional at all times
+5. Database Design
+5.1 Entities
+User
+Event
+Booking
+5.2 Relationships
+A user can create multiple events
+A user can book multiple events
+An admin manages and approves events
+6. Future Enhancements
+Ticketing system (paid/free events)
+Event ratings and reviews
+Advanced analytics dashboard
+Integration with maps and GPS services
