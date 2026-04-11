@@ -132,6 +132,8 @@ Notifications
 | is_enabled       |
 | last_sent_at     |
 +------------------+
+ERD Link:https://lucid.app/lucidchart/c4cd0041-0f49-43a6-83b7-5523d51749c9/edit?viewport_loc=-736%2C-1615%2C2264%2C1198%2C0_0&invitationId=inv_989f7311-6bb5-401e-9ee6-ba577bd7de44
+
 7. System Idea Summary
 Each Adhkar = points
 Points increase with each completion
