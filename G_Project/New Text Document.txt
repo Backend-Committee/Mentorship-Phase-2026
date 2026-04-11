@@ -1,0 +1,140 @@
+📄 Software Requirements Specification (SRS)
+Adhkar Backend Web Application
+1. Introduction
+1.1 Purpose
+
+This project is a backend web application that helps users track Morning, Evening, and Free Adhkar (Islamic remembrances). The system includes a gamification feature based on points and motivational rewards represented by a “Ketkot 🐥” character when users achieve specific milestones.
+
+1.2 Scope
+
+The system provides:
+
+User registration and authentication
+Display of Adhkar based on categories
+User progress tracking
+Points system for each completed Adhkar
+Rewards and levels system
+Daily notification system for Adhkar
+1.3 Users
+Regular User
+Admin (optional for content management)
+2. Functional Requirements
+2.1 Authentication
+Create new account
+Login and logout
+Secure password storage (hashed passwords)
+2.2 Adhkar Management
+Predefined Adhkar in the system
+Categories:
+Morning Adhkar
+Evening Adhkar
+Free Adhkar
+2.3 Progress Tracking
+Users can mark Adhkar as completed
+Each completion is recorded in the system
+Points are added for each completed Adhkar
+2.4 Gamification System
+Users earn points for each completed Adhkar
+Rewards are unlocked at milestones (10 - 50 - 100 points)
+A “Ketkot 🐥” character appears upon achievement
+Levels and badges system
+2.5 Dashboard
+Display total points
+Show number of completed Adhkar
+Show current level
+Show unlocked rewards
+2.6 Notification System
+Notifications for Morning and Evening Adhkar
+Enable/disable notifications
+Set custom notification time
+Daily recurring notifications
+3. Non-Functional Requirements
+High security for users
+Fast system performance
+RESTful API design
+Scalable architecture
+Well-structured database design
+4. System Components
+Django REST Framework API
+JSON data format
+Web and mobile support
+5. Use Cases
+User:
+Register account
+Login
+View Adhkar
+Complete Adhkar
+Track points
+Unlock rewards
+Enable notifications
+Admin:
+Add Adhkar
+Edit Adhkar
+Delete Adhkar
+Manage categories
+6. Data Requirements
+Users
+Adhkar
+Categories
+User Progress
+Points
+Rewards
+Notifications
+🧩 ERD (Database Design)
+                +------------------+
+                |      User        |
+                +------------------+
+                | id (PK)          |
+                | username         |
+                | email            |
+                | password         |
+                | total_points     |
+                | created_at       |
+                +--------+---------+
+                         |
+        -----------------+-----------------
+        |                                   |
++------------------+              +----------------------+
+|  UserProgress    |              |     UserReward       |
++------------------+              +----------------------+
+| id (PK)          |              | id (PK)              |
+| user_id (FK)     |              | user_id (FK)         |
+| adhkar_id (FK)   |              | reward_id (FK)       |
+| is_completed     |              | unlocked_at          |
+| completed_at     |              +----------+-----------+
+| points_earned    |                         |
++--------+---------+                         |
+         |                                   |
+         |                                   |
++--------v---------+              +----------v-----------+
+|      Adhkar      |              |       Reward         |
++------------------+              +----------------------+
+| id (PK)          |              | id (PK)              |
+| text             |              | name                 |
+| category_id (FK) |              | required_points      |
++--------+---------+              | description          |
+         |                        +----------------------+
+         |
++--------v---------+
+|    Category      |
++------------------+
+| id (PK)          |
+| name             |
++------------------+
+
++------------------+
+|  Notification    |
++------------------+
+| id (PK)          |
+| user_id (FK)     |
+| morning_time     |
+| evening_time     |
+| is_enabled       |
+| last_sent_at     |
++------------------+
+7. System Idea Summary
+Each Adhkar = points
+Points increase with each completion
+Rewards unlocked at milestones
+Ketkot appears as motivation
+Notifications help users stay consistent daily
