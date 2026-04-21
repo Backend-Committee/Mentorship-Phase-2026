@@ -1,0 +1,25 @@
+{
+    "data": {
+        "weight": 78.4,
+        "bmi": 23.5,
+        "body_fat_percentage": 19.1,
+        "muscle_mass": 59.8,
+        "skeletal_muscle_mass": 35.3,
+        "total_body_water": 46.5,
+        "fat_mass": 14.9,
+        "lean_body_mass": 63.5,
+        "basal_metabolic_rate": 1740.0,
+        "visceral_fat_level": null,
+        "bone_mineral_content": 4.1,
+        "age": 33,
+        "gender": "Male",
+        "height_cm": 182.5,
+        "segmental_lean_analysis": {
+            "right_arm": 3.4,
+            "left_arm": 3.5,
+            "trunk": 27.6,
+            "right_leg": 10.0,
+            "left_leg": 10.2
+        }
+    }
+}

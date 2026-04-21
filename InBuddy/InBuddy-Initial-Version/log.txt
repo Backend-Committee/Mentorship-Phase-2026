@@ -1,0 +1,92 @@
+2026-04-21 23:10:28,716 - root - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:10:28,717 - PIL.Image - DEBUG - Importing JpegImagePlugin
+2026-04-21 23:10:28,738 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: short (3) - value: b'\x00\x01'
+2026-04-21 23:10:28,738 - PIL.TiffImagePlugin - DEBUG - tag: XResolution (282) - type: rational (5) Tag Location: 34 - Data Location: 98 - value: b"\x00\n\xfc\x80\x00\x00'\x10"
+2026-04-21 23:10:28,738 - PIL.TiffImagePlugin - DEBUG - tag: YResolution (283) - type: rational (5) Tag Location: 46 - Data Location: 106 - value: b"\x00\n\xfc\x80\x00\x00'\x10"
+2026-04-21 23:10:28,739 - PIL.TiffImagePlugin - DEBUG - tag: ResolutionUnit (296) - type: short (3) - value: b'\x00\x02'
+2026-04-21 23:10:28,739 - PIL.TiffImagePlugin - DEBUG - tag: Software (305) - type: string (2) Tag Location: 70 - Data Location: 114 - value: b'Adobe Photoshop CS6 (Windows)\x00'
+2026-04-21 23:10:28,739 - PIL.TiffImagePlugin - DEBUG - tag: DateTime (306) - type: string (2) Tag Location: 82 - Data Location: 144 - value: b'2022:07:27 13:52:14\x00'
+2026-04-21 23:10:28,739 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00\xa4'
+2026-04-21 23:10:28,740 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-04-21 23:10:28,842 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-04-21 23:10:28,897 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000029FC95CD010>
+2026-04-21 23:10:28,897 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000029FC934AA80> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-04-21 23:10:28,977 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000029FC946B610>
+2026-04-21 23:10:28,977 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-04-21 23:10:28,978 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-04-21 23:10:28,978 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-04-21 23:10:29,757 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-04-21 23:10:29,757 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-04-21 23:10:34,197 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'X-Gemini-Service-Tier', b'standard'), (b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Tue, 21 Apr 2026 21:10:33 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=5168'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-04-21 23:10:34,198 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-21 23:10:34,201 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-04-21 23:10:34,202 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-04-21 23:10:34,203 - httpcore.http11 - DEBUG - response_closed.started
+2026-04-21 23:10:34,203 - httpcore.http11 - DEBUG - response_closed.complete
+2026-04-21 23:12:30,603 - root - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:12:30,605 - PIL.Image - DEBUG - Importing JpegImagePlugin
+2026-04-21 23:12:30,624 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: short (3) - value: b'\x00\x01'
+2026-04-21 23:12:30,624 - PIL.TiffImagePlugin - DEBUG - tag: XResolution (282) - type: rational (5) Tag Location: 34 - Data Location: 98 - value: b"\x00\n\xfc\x80\x00\x00'\x10"
+2026-04-21 23:12:30,625 - PIL.TiffImagePlugin - DEBUG - tag: YResolution (283) - type: rational (5) Tag Location: 46 - Data Location: 106 - value: b"\x00\n\xfc\x80\x00\x00'\x10"
+2026-04-21 23:12:30,625 - PIL.TiffImagePlugin - DEBUG - tag: ResolutionUnit (296) - type: short (3) - value: b'\x00\x02'
+2026-04-21 23:12:30,625 - PIL.TiffImagePlugin - DEBUG - tag: Software (305) - type: string (2) Tag Location: 70 - Data Location: 114 - value: b'Adobe Photoshop CS6 (Windows)\x00'
+2026-04-21 23:12:30,625 - PIL.TiffImagePlugin - DEBUG - tag: DateTime (306) - type: string (2) Tag Location: 82 - Data Location: 144 - value: b'2022:07:27 13:52:14\x00'
+2026-04-21 23:12:30,625 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00\xa4'
+2026-04-21 23:12:30,626 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-04-21 23:12:30,801 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-04-21 23:12:30,951 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002405E619010>
+2026-04-21 23:12:30,951 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002405E38AA80> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-04-21 23:12:31,040 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002405E4AB610>
+2026-04-21 23:12:31,041 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-04-21 23:12:31,041 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-04-21 23:12:31,041 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-04-21 23:12:31,784 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-04-21 23:12:31,784 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-04-21 23:12:50,223 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'X-Gemini-Service-Tier', b'standard'), (b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Tue, 21 Apr 2026 21:12:49 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=18985'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-04-21 23:12:50,224 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-21 23:12:50,252 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-04-21 23:12:50,254 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-04-21 23:12:50,254 - httpcore.http11 - DEBUG - response_closed.started
+2026-04-21 23:12:50,254 - httpcore.http11 - DEBUG - response_closed.complete
+2026-04-21 23:14:38,484 - root - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:14:38,485 - PIL.Image - DEBUG - Importing JpegImagePlugin
+2026-04-21 23:14:38,501 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: short (3) - value: b'\x00\x01'
+2026-04-21 23:14:38,501 - PIL.TiffImagePlugin - DEBUG - tag: XResolution (282) - type: rational (5) Tag Location: 34 - Data Location: 98 - value: b"\x00\n\xfc\x80\x00\x00'\x10"
+2026-04-21 23:14:38,501 - PIL.TiffImagePlugin - DEBUG - tag: YResolution (283) - type: rational (5) Tag Location: 46 - Data Location: 106 - value: b"\x00\n\xfc\x80\x00\x00'\x10"
+2026-04-21 23:14:38,501 - PIL.TiffImagePlugin - DEBUG - tag: ResolutionUnit (296) - type: short (3) - value: b'\x00\x02'
+2026-04-21 23:14:38,502 - PIL.TiffImagePlugin - DEBUG - tag: Software (305) - type: string (2) Tag Location: 70 - Data Location: 114 - value: b'Adobe Photoshop CS6 (Windows)\x00'
+2026-04-21 23:14:38,502 - PIL.TiffImagePlugin - DEBUG - tag: DateTime (306) - type: string (2) Tag Location: 82 - Data Location: 144 - value: b'2022:07:27 13:52:14\x00'
+2026-04-21 23:14:38,502 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00\xa4'
+2026-04-21 23:14:38,502 - google_genai.models - INFO - AFC is enabled with max remote calls: 10.
+2026-04-21 23:14:38,598 - httpcore.connection - DEBUG - connect_tcp.started host='generativelanguage.googleapis.com' port=443 local_address=None timeout=None socket_options=None
+2026-04-21 23:14:38,672 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001874B455010>
+2026-04-21 23:14:38,672 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001874B1CAA80> server_hostname='generativelanguage.googleapis.com' timeout=None
+2026-04-21 23:14:38,743 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001874B2EB610>
+2026-04-21 23:14:38,743 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-04-21 23:14:38,743 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-04-21 23:14:38,744 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-04-21 23:14:39,383 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-04-21 23:14:39,383 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-04-21 23:14:47,464 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'X-Gemini-Service-Tier', b'standard'), (b'Content-Type', b'application/json; charset=UTF-8'), (b'Vary', b'Origin'), (b'Vary', b'X-Origin'), (b'Vary', b'Referer'), (b'Content-Encoding', b'gzip'), (b'Date', b'Tue, 21 Apr 2026 21:14:46 GMT'), (b'Server', b'scaffolding on HTTPServer2'), (b'X-XSS-Protection', b'0'), (b'X-Frame-Options', b'SAMEORIGIN'), (b'X-Content-Type-Options', b'nosniff'), (b'Server-Timing', b'gfet4t7; dur=8604'), (b'Alt-Svc', b'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'), (b'Transfer-Encoding', b'chunked')])
+2026-04-21 23:14:47,466 - httpx - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-21 23:14:47,468 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-04-21 23:14:47,469 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-04-21 23:14:47,469 - httpcore.http11 - DEBUG - response_closed.started
+2026-04-21 23:14:47,469 - httpcore.http11 - DEBUG - response_closed.complete
+2026-04-21 23:18:32,524 - extraction - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:18:48,196 - main - INFO - Successfully saved to output.json
+2026-04-21 23:21:28,796 - extraction - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:21:46,038 - main - INFO - Successfully saved to output.json
+2026-04-21 23:22:47,074 - extraction - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:23:04,440 - main - INFO - Successfully saved to output.json
+2026-04-21 23:36:04,633 - BodyCompositionExtractor - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:36:14,598 - BodyCompositionExtractor - ERROR - Server Busy (503) for gemini-3-flash-preview. Trying fallback...
+2026-04-21 23:36:14,599 - BodyCompositionExtractor - INFO - Attempting extraction with gemini-2.5-flash...
+2026-04-21 23:36:27,265 - main - INFO - Successfully saved to output.json
+2026-04-21 23:47:54,106 - main - ERROR - File not found.
+2026-04-21 23:50:34,691 - BodyCompositionExtractor - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:50:34,719 - BodyCompositionExtractor - ERROR - Error with gemini-3-flash-preview: name 'client' is not defined
+2026-04-21 23:50:34,720 - BodyCompositionExtractor - INFO - Attempting extraction with gemini-2.5-flash...
+2026-04-21 23:50:34,721 - BodyCompositionExtractor - ERROR - Error with gemini-2.5-flash: name 'client' is not defined
+2026-04-21 23:52:00,889 - BodyCompositionExtractor - INFO - Attempting extraction with gemini-3-flash-preview...
+2026-04-21 23:52:14,078 - main - INFO - Successfully saved to output.json

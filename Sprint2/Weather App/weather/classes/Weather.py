@@ -5,25 +5,27 @@ import sys
 
 class Weather:
     def __init__(self, city=""):
-        self._setAPI_KEY()
+        self._getAPIKeyFromENV()
         self.city = city
 
-    def _setAPI_KEY(self):
-        load_dotenv()   
+    def _getAPIKeyFromENV(self):
+        load_dotenv()
         self.__API_KEY = os.getenv('API_KEY')
     def setCity(self, city):
         self.city = city.lower().strip()
-    def getWeather(self):
-        location = requests.get(f'http://api.openweathermap.org/geo/1.0/direct?q={self.city}&appid={self.__API_KEY}')
-        if location:
-            data = location.json()[0]
-            lat, lon = data["lat"], data["lon"]
 
-            weather = requests.get(f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={self.__API_KEY}')
-            if weather:
-                return weather.json()
-            else:
-                sys.exit("Error in getting Weather")
+    def _getCoordinatesFromCityName(self):
+        coordinates = requests.get(f'http://api.openweathermap.org/geo/1.0/direct?q={self.city}&appid={self.__API_KEY}')
+        if coordinates:
+            data = coordinates.json()[0]
+            return data["lat", "lon"]
 
+        sys.exit("Unable to get coordinates")
+
+    def getForecast(self):
+        lat, lon = self._getCoordinatesFromCityName()
+        weather = requests.get(f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={self.__API_KEY}')
+        if weather:
+            return weather.json()
         else:
-            sys.exit("Error in getting city location")
+            sys.exit("Error in getting Weather")
