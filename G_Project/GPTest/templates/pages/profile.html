@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="settings-section">
+    <h4>Notification Settings</h4>
+    <form method="POST" action="{% url 'save_reminder' %}">
+        {% csrf_token %}
+        <div>
+            <label>Choose Category:</label>
+            <select name="category_id" class="form-control">
+                {% for cat in all_categories %}
+                    <option value="{{ cat.id }}" {% if user_reminder.category.id == cat.id %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                {% empty %}
+                    <option disabled>No categories found</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Reminder Time:</label>
+            <input type="time" name="reminder_time" class="form-control" 
+                   value="{{ user_reminder.reminder_time|time:'H:i' }}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Save Reminder</button>
+    </form>
+</div>
+
+<div class="rewards-container">
+    {% for ur in my_rewards %}
+        <div class="reward-card">
+            {% if ur.reward.photo %}
+                <img src="{{ ur.reward.photo.url }}" style="width: 80px;">
+            {% endif %}
+            <p>Congratulations! You unlocked: {{ ur.reward.title }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

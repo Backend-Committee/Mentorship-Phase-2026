@@ -1,0 +1,21 @@
+<h1>أذكار المساء</h1>
+<ul>
+    {% for dhikr in adhkars2 %}
+        <li style="margin-bottom: 20px; list-style: none; border-right: 5px solid #28a745; padding-right: 15px;">
+            <strong>{{ dhikr.title }}</strong>: {{ dhikr.content }} 
+            <br> 
+            <span style="color: #666;">Points: {{ dhikr.points_value }}</span>
+
+            <form action="{% url 'complete_adhkar' dhikr.id %}" method="POST" style="margin-top: 10px;">
+                {% csrf_token %}
+                <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 5px 15px; cursor: pointer; border-radius: 5px;">
+                    Done ✅
+                </button>
+            </form>
+        </li>
+        <hr>
+    {% empty %}
+        <li>لا توجد أذكار مضافة حالياً.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'home' %}">Back To Home</a>

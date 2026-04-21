@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adhkar Website</title>
+</head>
+
+<body>
+
+<h1>Welcome To Our Adhkar Website</h1>
+
+<p>Your Total Points: {{ total }}</p>
+
+<a href="{% url 'morning' %}">Morning Adhkar</a>
+<hr>
+<a href="{% url 'evening' %}">Evening Adhkar</a>
+<hr>
+<a href="{% url 'sleep' %}">Sleep Adhkar</a>
+<hr>
+<a href="{% url 'profile' %}">Your Progress😍</a>
+</body>
+</html>

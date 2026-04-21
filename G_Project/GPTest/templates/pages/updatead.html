@@ -1,0 +1,16 @@
+<h2>Update Adhkar</h2>
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Title</label>
+    {{ form.title }}
+
+    <label>Content</label>
+    {{ form.content }}
+
+    <label>points_value</label>
+    {{ form.points_value}}
+    <label>Category</label>
+    {{form.Category}}
+    <button type="submit">Save</button>
+</form>

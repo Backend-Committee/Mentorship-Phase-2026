@@ -1,0 +1,12 @@
+{% for adkar in adhkarL %}
+    <p>{{ adkar.title }}</p>
+    <p>{{ adkar.content}}</p>
+    {% if user.is_superuser %}
+        <a href="{% url 'adhkar_update' adkar.pk %}">Update</a>
+        <a href="{% url 'adhkar_delete' adkar.pk %}">Delete</a>
+    {% endif %}
+    <a href="{% url 'adhkar_detail' adkar.pk %}">Detail</a>
+
+{% empty %}
+    <p>No Adhkar found</p>
+{% endfor %}
