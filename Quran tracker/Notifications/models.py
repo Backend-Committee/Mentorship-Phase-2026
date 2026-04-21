@@ -1,6 +1,4 @@
 from django.db import models
-# from User.models import User
-# from Room.models import Room
 
 
 class Notification(models.Model):

@@ -1,8 +1,5 @@
 from django.db import models
-from rest_framework.fields import DecimalField
 
-# from User.models import User
-# from Room.models import Room
 # Create your models here.
 
 class Reading (models.Model):
