@@ -34,14 +34,14 @@ Blog{%endblock%} {% block content %}
 
   {% if request.user == post.author %}
   <div style="margin-top: 20px">
-      <a href="{% url 'blog:post_update' post.slug %}" class="btn">✏️ Edit Post</a>
-      <a href="{% url 'blog:post_delete' post.slug %}" class="btn btn-danger">🗑️ Delete Post</a>
+      <a href="{% url 'blog:blog_edit' post.slug %}" class="btn">✏️ Edit Post</a>
+      <a href="{% url 'blog:blog_delete' post.slug %}" class="btn btn-danger">🗑️ Delete Post</a>
   </div>
   {% endif %}
 
   <div style="margin-top: 30px">
     <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary"
-      >← Back to All Posts</a
+      >← Back to All blogs</a
     >
     <a href="{% url 'blog:category_posts' post.category.slug %}" class="btn"
       >More in {{ post.category.name }} →</a
