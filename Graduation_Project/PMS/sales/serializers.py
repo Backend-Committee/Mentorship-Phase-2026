@@ -15,12 +15,13 @@ class InvoiceItemSerializer(serializers.ModelSerializer):
         med = data.get('medicine')
         q = data.get('quantity')
         if med:
-            if q > med.quantity:
-                raise serializers.ValidationError({'quantity', "Quantity cannot be greater than medicine."})
+            if q > med.stock_quantity:
+                raise serializers.ValidationError({'quantity': "Quantity cannot be greater than medicine."})
         return data
 
 
 class InvoiceSerializer(serializers.ModelSerializer):
+    customer_name = serializers.CharField(source='customer.name', read_only=True)
     items = InvoiceItemSerializer(many=True)
 
     class Meta:
@@ -32,13 +33,23 @@ class InvoiceSerializer(serializers.ModelSerializer):
         items = data.get('items', [])
         if not items:
             raise serializers.ValidationError({'items': "cant be empty"})
+        method = data.get('payment_method')
+        customer = data.get('customer')
+        if method == 'Debt' and not customer:
+            raise serializers.ValidationError({'customer': "cant be empty while the invoice is Debt"})
+
         return data
 
     @transaction.atomic
     def create(self, validated_data):
         items_data = validated_data.pop('items')
-        total_price = sum(item[quantity] * item[unit_price] for item in items_data)
+        total_price = sum(item['quantity'] * item['unit_price'] for item in items_data)
         invoice = Invoice.objects.create(total_price=total_price, **validated_data)
+
+        if invoice.payment_method == 'Debt':
+            invoice.customer.total_debt += invoice.total_price
+            invoice.customer.save()
+
 
         for item in items_data:
             medicine = item['medicine']
