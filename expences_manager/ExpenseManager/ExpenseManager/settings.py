@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x-c)-evm_r(t7+aew1+p!yl+to3b@t52f34jrm2bm5oc-d)&yd'
+SECRET_KEY = 'django-insecure-ex1)bj@i(kzry1d0$hth+4-!00uwsf!uz8t(o3y2z1cv*x^s$_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'expenses',
+    'accounts.apps.AccountsConfig',
+    'panels.apps.PanelsConfig',
+    'transactions.apps.TransactionsConfig',
+    'notifications.apps.NotificationsConfig',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +103,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -118,4 +127,5 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-AUTH_USER_MODEL = 'expenses.User'
+# Use the custom user model provided by the accounts app
+AUTH_USER_MODEL = 'accounts.User'
