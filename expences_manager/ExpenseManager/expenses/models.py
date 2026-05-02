@@ -186,3 +186,45 @@ class Notification(models.Model):
         indexes = [
             models.Index(fields=["user", "is_read"]),
         ]
+
+
+class NotificationPreference(models.Model):
+    class Delivery(models.TextChoices):
+        IN_APP = "in_app", "In-App"
+        EMAIL = "email", "Email"
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notification_preferences")
+    panel = models.ForeignKey(Panel, on_delete=models.CASCADE, related_name="notification_preferences")
+    type = models.CharField(max_length=30, choices=Notification.Type.choices)
+    enabled = models.BooleanField(default=True)
+    delivery = models.CharField(max_length=20, choices=Delivery.choices, default=Delivery.IN_APP)
+
+    class Meta:
+        db_table = "notification_preferences"
+        constraints = [
+            models.UniqueConstraint(fields=["user", "panel", "type"], name="uq_user_panel_notification_type"),
+        ]
+
+
+class Invitation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    panel = models.ForeignKey(Panel, on_delete=models.CASCADE, related_name="invitations")
+    email = models.EmailField()
+    token = models.CharField(max_length=64, unique=True)
+    role = models.CharField(max_length=20, choices=PanelUser.Role.choices, default=PanelUser.Role.VIEWER)
+    invited_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="sent_invitations",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)
+    accepted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="accepted_invitations")
+
+    class Meta:
+        db_table = "invitations"
+
+    def __str__(self) -> str:
+        return f"Invite {self.email} to {self.panel.name} ({self.role})"

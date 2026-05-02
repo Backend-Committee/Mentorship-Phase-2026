@@ -3,7 +3,17 @@ from decimal import Decimal
 
 from rest_framework import serializers
 
-from .models import Budget, Category, Expense, Notification, Panel, PanelUser, User
+from .models import (
+    Budget,
+    Category,
+    Expense,
+    Invitation,
+    Notification,
+    NotificationPreference,
+    Panel,
+    PanelUser,
+    User,
+)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -184,3 +194,17 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = ["id", "user", "panel", "type", "message", "is_read", "created_at"]
         read_only_fields = ["id", "created_at"]
+
+
+class NotificationPreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationPreference
+        fields = ["id", "user", "panel", "type", "enabled", "delivery"]
+        read_only_fields = ["id"]
+
+
+class InvitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Invitation
+        fields = ["id", "panel", "email", "token", "role", "invited_by", "created_at", "accepted_at", "accepted_by"]
+        read_only_fields = ["id", "token", "created_at", "accepted_at", "accepted_by"]

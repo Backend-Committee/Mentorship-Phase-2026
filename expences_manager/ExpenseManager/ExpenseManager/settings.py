@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ex1)bj@i(kzry1d0$hth+4-!00uwsf!uz8t(o3y2z1cv*x^s$_'
+SECRET_KEY = 'django-insecure-x-c)-evm_r(t7+aew1+p!yl+to3b@t52f34jrm2bm5oc-d)&yd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,10 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'accounts.apps.AccountsConfig',
-    'panels.apps.PanelsConfig',
-    'transactions.apps.TransactionsConfig',
-    'notifications.apps.NotificationsConfig',
+    'drf_spectacular',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'expenses',
 ]
 
 MIDDLEWARE = [
@@ -103,12 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -127,5 +122,57 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Use the custom user model provided by the accounts app
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'expenses.User'
+
+# Django REST Framework configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+}
+
+# OpenAPI / Swagger configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Expense Manager API',
+    'DESCRIPTION': 'Multi-tenant expense management API with panel-scoped access control.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api',
+    'SECURITY': [{'bearerAuth': []}],
+    'APPEND_COMPONENTS': {
+        'securitySchemes': {
+            'bearerAuth': {
+                'type': 'http',
+                'scheme': 'bearer',
+                'bearerFormat': 'JWT',
+            }
+        }
+    },
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}
+
+# Basic cache configuration (use Redis in production by replacing backend)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-expense-manager-cache',
+    }
+}
+
+# Development email backend (console). Configure SMTP in production.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

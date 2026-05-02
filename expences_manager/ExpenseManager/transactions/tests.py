@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .models import Expense, Budget
+from expenses.models import Expense, Budget
 
 
 class TransactionsModelsTest(TestCase):

@@ -63,7 +63,7 @@ class BudgetSerializer(serializers.ModelSerializer):
             "created_at",
             "budget_status",
         ]
-        read_only_fields = ["id", "created_by", "created_at", "budget_status"]
+        read_only_fields = ["id", "created_at", "budget_status"]
 
     def validate_limit_amount(self, value):
         if value <= Decimal("0"):

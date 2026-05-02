@@ -1,16 +1,13 @@
 from django.test import TestCase
-from django.apps import apps
-from django.conf import settings
 
-from .models import Panel, Category, PanelUser
+from expenses.models import Panel, Category, PanelUser, User
 
 
 class PanelsModelsTest(TestCase):
     def test_panel_meta_and_owner_relation(self):
         self.assertEqual(Panel._meta.db_table, "panels")
-        user_model = apps.get_model(settings.AUTH_USER_MODEL)
         owner_field = Panel._meta.get_field("owner")
-        self.assertEqual(owner_field.related_model, user_model)
+        self.assertEqual(owner_field.related_model, User)
 
     def test_category_constraints(self):
         constraint_names = [c.name for c in Category._meta.constraints]
