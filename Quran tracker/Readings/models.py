@@ -16,3 +16,6 @@ class Reading (models.Model):
         if self.room and not self.room_name:
             self.room_name = self.room.name
         super().save(*args , **kwargs)
+
+    def __str__(self):
+        return f"{self.user} - {self.room_name} - {self.reading_date_time}"
