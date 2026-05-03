@@ -14,10 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
     def validate_username(self, value):
-        if ' ' in value:
-            raise serializers.ValidationError(
-                "Username cannot contain spaces"
-            )
         if len(value) < 4:
             raise serializers.ValidationError(
                 "Username must be at least 4 characters"

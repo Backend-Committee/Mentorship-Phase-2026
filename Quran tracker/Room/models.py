@@ -9,7 +9,7 @@ class Room(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    reading_deadline = models.DateTimeField()
+    reading_deadline = models.TimeField()
     daily_fine = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
