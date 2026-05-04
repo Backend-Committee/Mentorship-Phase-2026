@@ -7,7 +7,7 @@ class Reading (models.Model):
     room = models.ForeignKey("Room.Room" , on_delete= models.SET_NULL, null=True)
     room_name = models.CharField(max_length= 255)
     reading_date_time = models.DateTimeField()
-    reading_amount = models.DecimalField(max_digits=4,decimal_places=2)
+    reading_amount = models.DecimalField(max_digits=4,decimal_places=2, default=0)
     fine_amount = models.DecimalField(max_digits= 5, decimal_places= 2)
     updated_at = models.DateTimeField()
 

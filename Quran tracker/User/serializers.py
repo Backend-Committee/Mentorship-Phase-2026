@@ -45,3 +45,13 @@ class UserSerializer(serializers.ModelSerializer):
         newUser.set_password(validated_data['password'])
         newUser.save()
         return newUser
+
+
+class ViewProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+            'profile_image'
+        )

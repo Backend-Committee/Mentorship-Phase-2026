@@ -1,14 +1,31 @@
 from rest_framework import serializers
 from .models import Reading
-from datetime import date
 
 class LogReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Reading
-        fields = ['id', 'reading_amount', 'fine_amount', 'reading_date_time', 'room_name']
-        read_only_fields = ['reading_date_time', 'room_name', 'fine_amount']
+        fields = [
+            'id',
+            'user',
+            'room',
+            'room_name',
+            'reading_date_time',
+            'reading_amount',
+            'fine_amount',
+            'updated_at'
+        ]
+        read_only_fields = [
+            'user',
+            'room',
+            'room_name',
+            'reading_date_time',
+            'fine_amount',
+            'updated_at'
+        ]
 
-    def validate_amount(self, value):
+    def validate_reading_amount(self, value):
         if value <= 0:
-            raise serializers.ValidationError("Amount must be a positive value")
+            raise serializers.ValidationError(
+                "Reading amount must be a positive value and greater than or equal to 1"
+            )
         return value
