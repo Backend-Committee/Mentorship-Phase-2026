@@ -266,7 +266,44 @@
 - **Authentication**: Required
 - **Optional Query Params**: `date_from=YYYY-MM-DD`, `date_to=YYYY-MM-DD`
 - **Response**: Panel summary with expense totals, category breakdown, and budget snapshot
-- **CSV Export**: add `export=csv` to return CSV instead of JSON
+- **Export**: add `export=csv|pdf|xlsx` to return file output instead of JSON
+
+### Monthly Report
+- **GET** `/api/reports/monthly/?panel_id=uuid`
+- **Authentication**: Required
+- **Optional Query Params**: `date_from=YYYY-MM-DD`, `date_to=YYYY-MM-DD`
+- **Response**: Monthly buckets with `month`, `expense_count`, `total_spent`
+- **Export**: add `export=csv|pdf|xlsx` to return file output instead of JSON
+
+### Trends Report (Category by Month)
+- **GET** `/api/reports/trends/?panel_id=uuid`
+- **Authentication**: Required
+- **Optional Query Params**: `date_from=YYYY-MM-DD`, `date_to=YYYY-MM-DD`, `category_id=uuid`
+- **Response**: Trend rows with `month`, `category_name`, counts, totals, and month share percentage
+- **Export**: add `export=csv|pdf|xlsx` to return file output instead of JSON
+
+### Report Schedules
+- **GET/POST** `/api/report-schedules/`
+- **Authentication**: Required
+- **Description**: Create recurring schedules for `summary`, `monthly`, and `trends` reports.
+- **Request Body**:
+  ```json
+  {
+    "panel": "uuid-of-panel",
+    "report_type": "trends",
+    "export_format": "xlsx",
+    "frequency": "weekly",
+    "category": "uuid-of-category",
+    "date_from": "2026-01-01",
+    "date_to": "2026-12-31",
+    "next_run_at": "2026-05-10T09:00:00Z"
+  }
+  ```
+
+### Run Scheduled Report Now
+- **POST** `/api/report-schedules/{id}/run_now/`
+- **Authentication**: Required
+- **Description**: Marks schedule as executed and advances `next_run_at` based on frequency.
 
 ---
 
@@ -277,6 +314,7 @@
 - **Authentication**: Required (owner only)
 - **Request Body**: `{ "email": "invitee@example.com", "role": "viewer" }`
 - **Response**: Invitation object (contains `token`)
+- **Email Delivery**: enable SMTP with `USE_SMTP_EMAIL=1` and set `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, and optional `EMAIL_USE_TLS` / `EMAIL_USE_SSL`.
 
 ### Accept Invitation
 - **POST** `/api/invitations/accept/`
@@ -291,7 +329,15 @@
 - **GET/POST/PATCH/DELETE** `/api/notification-preferences/`
 - **Authentication**: Required
 - **Description**: Per-user, per-panel preferences for notification types and delivery methods (in-app, email).
+---
 
+## Audit Trail
+
+### List Audit Logs
+- **GET** `/api/audit-logs/`
+- **Authentication**: Required
+- **Query Params**: `?panel_id=uuid` (optional)
+- **Description**: Read-only audit trail for actions such as panel changes, expenses, budgets, invitations, logins, logouts, and password resets.
 ---
 
 ## Auth Utilities

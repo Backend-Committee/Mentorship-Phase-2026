@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from .models import (
     Budget,
+    AuditLog,
     Category,
     Expense,
     Invitation,
@@ -12,6 +13,7 @@ from .models import (
     NotificationPreference,
     Panel,
     PanelUser,
+    ReportSchedule,
     User,
 )
 
@@ -52,7 +54,7 @@ class PanelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Panel
         fields = ["id", "name", "owner", "created_at", "updated_at"]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = ["id", "owner", "created_at", "updated_at"]
 
 
 class PanelUserSerializer(serializers.ModelSerializer):
@@ -99,7 +101,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at", "deleted_at"]
+        read_only_fields = ["id", "created_by", "created_at", "updated_at", "deleted_at"]
 
     def validate_amount(self, value):
         if value <= Decimal("0"):
@@ -208,3 +210,133 @@ class InvitationSerializer(serializers.ModelSerializer):
         model = Invitation
         fields = ["id", "panel", "email", "token", "role", "invited_by", "created_at", "accepted_at", "accepted_by"]
         read_only_fields = ["id", "token", "created_at", "accepted_at", "accepted_by"]
+
+
+class AuditLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuditLog
+        fields = [
+            "id",
+            "actor",
+            "panel",
+            "action",
+            "entity_type",
+            "entity_id",
+            "description",
+            "metadata",
+            "ip_address",
+            "user_agent",
+            "created_at",
+        ]
+        read_only_fields = fields
+
+
+class ReportScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReportSchedule
+        fields = [
+            "id",
+            "panel",
+            "created_by",
+            "report_type",
+            "export_format",
+            "frequency",
+            "category",
+            "date_from",
+            "date_to",
+            "is_active",
+            "next_run_at",
+            "last_run_at",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "created_by", "last_run_at", "created_at", "updated_at"]
+
+    def validate(self, attrs):
+        report_type = attrs.get("report_type") or getattr(self.instance, "report_type", None)
+        panel = attrs.get("panel") or getattr(self.instance, "panel", None)
+        category = attrs.get("category") if "category" in attrs else getattr(self.instance, "category", None)
+        date_from = attrs.get("date_from") if "date_from" in attrs else getattr(self.instance, "date_from", None)
+        date_to = attrs.get("date_to") if "date_to" in attrs else getattr(self.instance, "date_to", None)
+
+        if report_type != ReportSchedule.ReportType.TRENDS and category is not None:
+            raise serializers.ValidationError({"category": "category is only allowed for trends reports."})
+
+        if report_type == ReportSchedule.ReportType.TRENDS and category and panel and category.panel_id != panel.id:
+            raise serializers.ValidationError({"category": "Category must belong to the same panel."})
+
+        if date_from and date_to and date_from > date_to:
+            raise serializers.ValidationError("date_from cannot be after date_to.")
+
+        return attrs
+
+
+class WebhookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = None
+        fields = [
+            "id",
+            "panel",
+            "name",
+            "url",
+            "events",
+            "secret",
+            "is_active",
+            "last_attempt_at",
+            "failure_count",
+            "created_at",
+        ]
+        read_only_fields = ["id", "last_attempt_at", "failure_count", "created_at"]
+
+    def __init__(self, *args, **kwargs):
+        # lazy import to avoid circular imports
+        from .models import Webhook
+
+        self.Meta.model = Webhook
+        super().__init__(*args, **kwargs)
+
+
+class RecurringExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = None
+        fields = [
+            "id",
+            "panel",
+            "category",
+            "created_by",
+            "amount",
+            "description",
+            "frequency",
+            "start_date",
+            "end_date",
+            "last_created_at",
+            "is_active",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "created_by", "last_created_at", "created_at", "updated_at"]
+
+    def __init__(self, *args, **kwargs):
+        from .models import RecurringExpense
+
+        self.Meta.model = RecurringExpense
+        super().__init__(*args, **kwargs)
+
+    def validate_amount(self, value):
+        if value <= Decimal("0"):
+            raise serializers.ValidationError("Amount must be greater than zero.")
+        return value
+
+    def validate(self, attrs):
+        panel = attrs.get("panel") or getattr(self.instance, "panel", None)
+        category = attrs.get("category") or getattr(self.instance, "category", None)
+        end_date = attrs.get("end_date") if "end_date" in attrs else getattr(self.instance, "end_date", None)
+        start_date = attrs.get("start_date") or getattr(self.instance, "start_date", None)
+
+        if panel and category and category.panel_id != panel.id:
+            raise serializers.ValidationError({"category": "Category must belong to the same panel."})
+
+        if start_date and end_date and start_date > end_date:
+            raise serializers.ValidationError("start_date cannot be after end_date.")
+
+        return attrs

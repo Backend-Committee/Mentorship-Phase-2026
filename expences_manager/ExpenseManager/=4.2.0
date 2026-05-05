@@ -1,0 +1,15 @@
+Collecting openpyxl
+  Downloading openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+Collecting reportlab
+  Downloading reportlab-4.5.0-py3-none-any.whl.metadata (1.7 kB)
+Collecting et-xmlfile (from openpyxl)
+  Downloading et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+Requirement already satisfied: pillow>=9.0.0 in /home/mahmoudadam/Desktop/Star/Mentorship-Phase-2026/.venv/lib/python3.12/site-packages (from reportlab) (12.1.1)
+Requirement already satisfied: charset-normalizer in /home/mahmoudadam/Desktop/Star/Mentorship-Phase-2026/.venv/lib/python3.12/site-packages (from reportlab) (3.4.4)
+Downloading openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 250.9/250.9 kB 958.3 kB/s eta 0:00:00
+Downloading reportlab-4.5.0-py3-none-any.whl (2.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 3.9 MB/s eta 0:00:00
+Downloading et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+Installing collected packages: reportlab, et-xmlfile, openpyxl
+Successfully installed et-xmlfile-2.0.0 openpyxl-3.1.5 reportlab-4.5.0

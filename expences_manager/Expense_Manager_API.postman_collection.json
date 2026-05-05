@@ -1,0 +1,1602 @@
+{
+  "info": {
+    "name": "Expense Manager API - Intensive Test Suite",
+    "description": "Comprehensive API test collection for Expense Manager with authentication, CRUD operations, reports, webhooks, and advanced features.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const payload = JSON.parse(pm.request.body.raw);",
+                  "    pm.environment.set('username', payload.username);",
+                  "    pm.environment.set('email', payload.email);",
+                  "    pm.environment.set('password', payload.password);",
+                  "    if (pm.response.json().access) { pm.environment.set('access_token', pm.response.json().access); }",
+                  "    if (pm.response.json().refresh) { pm.environment.set('refresh_token', pm.response.json().refresh); }",
+                  "}",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser{{$timestamp}}\",\n  \"email\": \"test{{$timestamp}}@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login returned 200', function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "    pm.environment.set('access_token', pm.response.json().access);",
+                  "    pm.environment.set('refresh_token', pm.response.json().refresh);",
+                  "    pm.environment.set('panel_id', pm.response.json().panel_id);",
+                  "    pm.environment.set('user_id', pm.response.json().user_id);",
+                  "} else {",
+                  "    console.log('Login failed body:', pm.response.text());",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\",\n  \"panel_id\": \"{{panel_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/refresh/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Password Reset Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/password_reset/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "password_reset"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Panels",
+      "item": [
+        {
+          "name": "Create Panel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('panel_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Business Panel {{$timestamp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/panels/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "panels"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Panels",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/panels/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "panels"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Panel Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/panels/{{panel_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "panels",
+                "{{panel_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Panel",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Panel Name {{$timestamp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/panels/{{panel_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "panels",
+                "{{panel_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Panel Members",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/panels/{{panel_id}}/members/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "panels",
+                "{{panel_id}}",
+                "members"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Invite User by Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"invitee{{$timestamp}}@example.com\",\n  \"role\": \"viewer\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/panels/{{panel_id}}/invite_user/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "panels",
+                "{{panel_id}}",
+                "invite_user"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categories/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('category_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"panel\": \"{{panel_id}}\",\n  \"name\": \"Custom Category {{$timestamp}}\",\n  \"color_hex\": \"#FF5733\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categories/{{category_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{category_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"color_hex\": \"#00FF00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/{{category_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{category_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/categories/{{category_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{category_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Expenses",
+      "item": [
+        {
+          "name": "Create Expense",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('expense_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"panel\": \"{{panel_id}}\",\n  \"category\": \"{{category_id}}\",\n  \"amount\": \"149.99\",\n  \"date\": \"2026-05-05\",\n  \"description\": \"Test expense {{$timestamp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/expenses/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "expenses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Expenses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/expenses/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "expenses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Expense",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/expenses/{{expense_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "expenses",
+                "{{expense_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Expense",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"199.99\",\n  \"description\": \"Updated expense\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/expenses/{{expense_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "expenses",
+                "{{expense_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Expenses by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/expenses/by_category/?panel_id={{panel_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "expenses",
+                "by_category",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Expense (Soft Delete)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/expenses/{{expense_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "expenses",
+                "{{expense_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Budgets",
+      "item": [
+        {
+          "name": "Create Budget",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('budget_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"panel\": \"{{panel_id}}\",\n  \"category\": \"{{category_id}}\",\n  \"limit_amount\": \"500.00\",\n  \"period\": \"monthly\",\n  \"alert_threshold\": 80\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/budgets/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "budgets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Budgets",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/budgets/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "budgets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Budget",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/budgets/{{budget_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "budgets",
+                "{{budget_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check Budget Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/budgets/check_status/?panel_id={{panel_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "budgets",
+                "check_status"
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Budget",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limit_amount\": \"750.00\",\n  \"alert_threshold\": 75\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/budgets/{{budget_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "budgets",
+                "{{budget_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Budget",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/budgets/{{budget_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "budgets",
+                "{{budget_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Report Summary (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reports/summary/?panel_id={{panel_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Report Summary (CSV Export)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reports/summary/?panel_id={{panel_id}}&export=csv",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                },
+                {
+                  "key": "export",
+                  "value": "csv"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Report Summary (XLSX Export)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reports/summary/?panel_id={{panel_id}}&export=xlsx",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                },
+                {
+                  "key": "export",
+                  "value": "xlsx"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Report Summary (PDF Export)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reports/summary/?panel_id={{panel_id}}&export=pdf",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                },
+                {
+                  "key": "export",
+                  "value": "pdf"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Report Monthly (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reports/monthly/?panel_id={{panel_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "monthly"
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Report Trends (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reports/trends/?panel_id={{panel_id}}&category_id={{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "trends"
+              ],
+              "query": [
+                {
+                  "key": "panel_id",
+                  "value": "{{panel_id}}"
+                },
+                {
+                  "key": "category_id",
+                  "value": "{{category_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recurring Expenses",
+      "item": [
+        {
+          "name": "Create Recurring Expense",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('recurring_expense_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"panel\": \"{{panel_id}}\",\n  \"category\": \"{{category_id}}\",\n  \"amount\": \"99.99\",\n  \"description\": \"Monthly subscription\",\n  \"frequency\": \"monthly\",\n  \"start_date\": \"2026-05-04\",\n  \"end_date\": \"2026-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/recurring-expenses/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recurring-expenses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Recurring Expenses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/recurring-expenses/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recurring-expenses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Recurring Expense",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/recurring-expenses/{{recurring_expense_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recurring-expenses",
+                "{{recurring_expense_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Recurring Expense",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"149.99\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/recurring-expenses/{{recurring_expense_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recurring-expenses",
+                "{{recurring_expense_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Recurring Expense",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/recurring-expenses/{{recurring_expense_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recurring-expenses",
+                "{{recurring_expense_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Create Webhook",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('webhook_id', pm.response.json().id);",
+                  "    pm.environment.set('webhook_secret', pm.response.json().secret);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"panel\": \"{{panel_id}}\",\n  \"name\": \"Test Webhook\",\n  \"url\": \"https://webhook.site/{{$randomUUID}}\",\n  \"events\": [\"expense.created\", \"budget.exceeded\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "webhooks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Webhooks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/webhooks/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "webhooks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Webhook",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/webhooks/{{webhook_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "webhooks",
+                "{{webhook_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Test Send Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payload\": {\n    \"event\": \"test\",\n    \"timestamp\": \"{{$isoTimestamp}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks/{{webhook_id}}/test_send/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "webhooks",
+                "{{webhook_id}}",
+                "test_send"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Webhook",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"events\": [\"expense.created\", \"expense.updated\", \"budget.exceeded\"],\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks/{{webhook_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "webhooks",
+                "{{webhook_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Webhook",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/webhooks/{{webhook_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "webhooks",
+                "{{webhook_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Report Schedules",
+      "item": [
+        {
+          "name": "Create Report Schedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.environment.set('schedule_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"panel\": \"{{panel_id}}\",\n  \"report_type\": \"monthly\",\n  \"export_format\": \"pdf\",\n  \"frequency\": \"weekly\",\n  \"next_run_at\": \"{{$isoTimestamp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/report-schedules/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "report-schedules"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Report Schedules",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/report-schedules/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "report-schedules"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Report Schedule",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/report-schedules/{{schedule_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "report-schedules",
+                "{{schedule_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Run Schedule Now",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/report-schedules/{{schedule_id}}/run_now/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "report-schedules",
+                "{{schedule_id}}",
+                "run_now"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Report Schedule",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": true,\n  \"frequency\": \"daily\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/report-schedules/{{schedule_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "report-schedules",
+                "{{schedule_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Report Schedule",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/report-schedules/{{schedule_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "report-schedules",
+                "{{schedule_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List Notifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/notifications/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Unread Notifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/notifications/unread/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "unread"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/notifications/{{notification_id}}/mark_as_read/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notification_id}}",
+                "mark_as_read"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark All Notifications as Read",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/notifications/mark_all_as_read/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "mark_all_as_read"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Preferences",
+      "item": [
+        {
+          "name": "List Notification Preferences",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/notification-preferences/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notification-preferences"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Notification Preference",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": \"{{user_id}}\",\n  \"panel\": \"{{panel_id}}\",\n  \"type\": \"budget_warning\",\n  \"enabled\": true,\n  \"delivery\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/notification-preferences/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notification-preferences"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Audit Logs",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/audit-logs/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "audit-logs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Audit Log",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/audit-logs/{{audit_log_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "audit-logs",
+                "{{audit_log_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invitations",
+      "item": [
+        {
+          "name": "Accept Invitation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{invitation_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/invitations/accept/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invitations",
+                "accept"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Profile",
+      "item": [
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/users/me/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"updated{{$timestamp}}@example.com\",\n  \"username\": \"updateduser{{$timestamp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/update_profile/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "update_profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Panel",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/panels/{{panel_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "panels",
+                "{{panel_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "panel_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "category_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "expense_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "budget_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "webhook_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "webhook_secret",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "schedule_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "recurring_expense_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "notification_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "audit_log_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "testuser",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "SecurePass123",
+      "type": "string"
+    },
+    {
+      "key": "email",
+      "value": "test@example.com",
+      "type": "string"
+    },
+    {
+      "key": "invitation_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

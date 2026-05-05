@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
+from importlib.util import find_spec
 from datetime import timedelta
 from pathlib import Path
 
@@ -124,6 +126,27 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'expenses.User'
 
+# Celery configuration. Redis is reused for broker/result backend so background
+# jobs work with the same infrastructure as caching.
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', os.getenv('REDIS_URL', 'redis://127.0.0.1:6379/0'))
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', CELERY_BROKER_URL)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_ALWAYS_EAGER = os.getenv('CELERY_TASK_ALWAYS_EAGER', '0').lower() in {'1', 'true', 'yes'}
+CELERY_TASK_EAGER_PROPAGATES = True
+CELERY_BEAT_SCHEDULE = {
+    'process-due-report-schedules': {
+        'task': 'expenses.tasks.process_due_report_schedules',
+        'schedule': 300.0,
+    },
+    'process-due-recurring-expenses': {
+        'task': 'expenses.tasks.process_due_recurring_expenses',
+        'schedule': 3600.0,  # hourly
+    },
+}
+
 # Django REST Framework configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -135,6 +158,14 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/hour',
+        'user': '1000/hour',
+    },
 }
 
 # OpenAPI / Swagger configuration
@@ -162,17 +193,102 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
+    # Default to RS256; will fall back to HS256 if RSA keys are not found.
+    'ALGORITHM': 'RS256',
+    'SIGNING_KEY': None,  # filled from keys/private.pem if present
+    'VERIFYING_KEY': None,  # filled from keys/public.pem if present
 }
 
-# Basic cache configuration (use Redis in production by replacing backend)
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-expense-manager-cache',
+# Try to load RSA keypair from project keys/ directory. If not present,
+# fall back to HMAC using SECRET_KEY (keeps existing behavior).
+try:
+    # Validate keys using cryptography to ensure PyJWT/simplejwt can use them.
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.backends import default_backend
+
+    key_dir = BASE_DIR / 'keys'
+    private_key_file = key_dir / 'private.pem'
+    public_key_file = key_dir / 'public.pem'
+    if private_key_file.exists() and public_key_file.exists():
+        with open(private_key_file, 'rb') as f:
+            private_bytes = f.read()
+        with open(public_key_file, 'rb') as f:
+            public_bytes = f.read()
+
+        # Try to load keys to validate them; if this fails we'll fallback.
+        try:
+            serialization.load_pem_private_key(private_bytes, password=None, backend=default_backend())
+            serialization.load_pem_public_key(public_bytes, backend=default_backend())
+            SIMPLE_JWT['SIGNING_KEY'] = private_bytes.decode('utf-8')
+            SIMPLE_JWT['VERIFYING_KEY'] = public_bytes.decode('utf-8')
+        except Exception:
+            # Parsing failed — fallback to HS256
+            SIMPLE_JWT['ALGORITHM'] = 'HS256'
+            SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY
+            SIMPLE_JWT.pop('VERIFYING_KEY', None)
+    else:
+        SIMPLE_JWT['ALGORITHM'] = 'HS256'
+        SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY
+        SIMPLE_JWT.pop('VERIFYING_KEY', None)
+except Exception:
+    SIMPLE_JWT['ALGORITHM'] = 'HS256'
+    SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY
+    SIMPLE_JWT.pop('VERIFYING_KEY', None)
+
+# Stronger password hashers. Install `argon2-cffi` to enable Argon2.
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+]
+
+# Cache configuration: Redis (production) with opt-in flag and safe local fallback.
+USE_REDIS_CACHE = os.getenv('USE_REDIS_CACHE', '0').lower() in {'1', 'true', 'yes'}
+REDIS_URL = os.getenv('REDIS_URL', 'redis://127.0.0.1:6379/1')
+HAS_DJANGO_REDIS = find_spec('django_redis') is not None
+
+if USE_REDIS_CACHE and HAS_DJANGO_REDIS:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': REDIS_URL,
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+                'IGNORE_EXCEPTIONS': True,
+            },
+            'TIMEOUT': 300,
+        }
     }
-}
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-expense-manager-cache',
+            'TIMEOUT': 300,
+        }
+    }
 
 # Development email backend (console). Configure SMTP in production.
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+USE_SMTP_EMAIL = os.getenv('USE_SMTP_EMAIL', '0').lower() in {'1', 'true', 'yes'}
+EMAIL_BACKEND = (
+    'django.core.mail.backends.smtp.EmailBackend'
+    if USE_SMTP_EMAIL
+    else 'django.core.mail.backends.console.EmailBackend'
+)
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'localhost')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '25'))
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', '0').lower() in {'1', 'true', 'yes'}
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', '0').lower() in {'1', 'true', 'yes'}
+EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', '10'))
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'no-reply@expense-manager.local')
+
+# By default Django will try to append a trailing slash and redirect requests
+# when `APPEND_SLASH` is True. That redirect cannot preserve POST/PATCH
+# request bodies and raises a RuntimeError (seen in dev logs). For APIs we
+# prefer to accept both forms or to require explicit trailing slashes from
+# clients. To avoid the RuntimeError for clients that omit trailing slashes
+# in POST/PATCH requests during development/testing, set APPEND_SLASH=False.
+# In production you can change this behavior if desired.
+APPEND_SLASH = False

@@ -1,11 +1,14 @@
 import csv
+from datetime import timedelta
 from decimal import Decimal
-from io import StringIO
+from io import BytesIO, StringIO
 
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models import Count, Max, Min, Sum
+from django.db.models.functions import TruncMonth
+from django.urls import reverse
 from django.http import HttpResponse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.dateparse import parse_date
@@ -20,8 +23,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from .models import Budget, Category, Expense, Notification, Panel, PanelUser, User
+from .models import AuditLog, Budget, Category, Expense, Notification, Panel, PanelUser, ReportSchedule, User
 from .models import Invitation, NotificationPreference
+from .audit import log_audit_event
 from .permissions import IsPanelMember, IsPanelMemberReadOnly, IsPanelOwner, IsPanelOwnerOrEditor, ViewerReadOnly
 from .serializers import (
     BudgetSerializer,
@@ -32,8 +36,88 @@ from .serializers import (
     PanelUserSerializer,
     UserSerializer,
     NotificationPreferenceSerializer,
+    AuditLogSerializer,
+    ReportScheduleSerializer,
     InvitationSerializer,
 )
+from .tasks import advance_report_schedule, send_notification_email, notify_webhooks
+
+
+def _export_rows_as_csv(filename, headers, rows):
+    buffer = StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(headers)
+    writer.writerows(rows)
+    response = HttpResponse(buffer.getvalue(), content_type="text/csv")
+    response["Content-Disposition"] = f'attachment; filename="{filename}.csv"'
+    return response
+
+
+def _export_rows_as_xlsx(filename, headers, rows):
+    from openpyxl import Workbook
+
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Report"
+    worksheet.append(headers)
+    for row in rows:
+        worksheet.append(row)
+
+    output = BytesIO()
+    workbook.save(output)
+    output.seek(0)
+
+    response = HttpResponse(
+        output.getvalue(),
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}.xlsx"'
+    return response
+
+
+def _export_rows_as_pdf(filename, title, headers, rows):
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+
+    output = BytesIO()
+    pdf = canvas.Canvas(output, pagesize=letter)
+    width, height = letter
+
+    y = height - 40
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(40, y, title)
+    y -= 24
+
+    pdf.setFont("Helvetica-Bold", 10)
+    pdf.drawString(40, y, " | ".join(str(h) for h in headers))
+    y -= 16
+    pdf.setFont("Helvetica", 9)
+
+    for row in rows:
+        line = " | ".join(str(value) for value in row)
+        if y < 40:
+            pdf.showPage()
+            y = height - 40
+            pdf.setFont("Helvetica", 9)
+        pdf.drawString(40, y, line[:140])
+        y -= 14
+
+    pdf.save()
+    output.seek(0)
+
+    response = HttpResponse(output.getvalue(), content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="{filename}.pdf"'
+    return response
+
+
+def _build_export_response(filename, title, headers, rows, export_format):
+    if export_format == "csv":
+        return _export_rows_as_csv(filename, headers, rows)
+    if export_format == "xlsx":
+        return _export_rows_as_xlsx(filename, headers, rows)
+    if export_format == "pdf":
+        return _export_rows_as_pdf(filename, title, headers, rows)
+    return None
 
 
 class UserRegistrationView(APIView):
@@ -46,6 +130,13 @@ class UserRegistrationView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
+            log_audit_event(
+                actor=user,
+                action=AuditLog.Action.CREATE,
+                instance=user,
+                description="User registered",
+                request=request,
+            )
             return Response(
                 {
                     "user": UserSerializer(user).data,
@@ -108,6 +199,15 @@ class CustomTokenObtainPairView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = CustomTokenObtainPairSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
+        user = serializer.user
+        log_audit_event(
+            actor=user,
+            action=AuditLog.Action.LOGIN,
+            entity_type="user",
+            entity_id=str(user.id),
+            description="User logged in",
+            request=request,
+        )
         return Response(serializer.validated_data)
 
 
@@ -278,31 +378,279 @@ class ReportSummaryView(APIView):
         return self._render_report(report_payload, export_format)
 
     def _render_report(self, payload, export_format):
-        if export_format == "csv":
-            return self._render_csv(payload)
+        if export_format in {"csv", "pdf", "xlsx"}:
+            return self._render_export(payload, export_format)
         return Response(payload)
 
-    def _render_csv(self, payload):
-        buffer = StringIO()
-        writer = csv.writer(buffer)
-        writer.writerow(["section", "name", "value"])
-        writer.writerow(["panel", "id", payload["panel"]["id"]])
-        writer.writerow(["panel", "name", payload["panel"]["name"]])
-        writer.writerow(["expenses", "count", payload["expenses"]["count"]])
-        writer.writerow(["expenses", "total_spent", payload["expenses"]["total_spent"]])
-        writer.writerow(["expenses", "first_expense_date", payload["expenses"]["first_expense_date"]])
-        writer.writerow(["expenses", "last_expense_date", payload["expenses"]["last_expense_date"]])
-        for row in payload["expenses"]["by_category"]:
-            writer.writerow(["category", row["category_name"], row["total_spent"]])
-        for row in payload["budgets"]:
-            writer.writerow(["budget", row["budget_id"], row["status"]])
+    def _render_export(self, payload, export_format):
+        rows = [
+            ["panel", "id", payload["panel"]["id"]],
+            ["panel", "name", payload["panel"]["name"]],
+            ["expenses", "count", payload["expenses"]["count"]],
+            ["expenses", "total_spent", payload["expenses"]["total_spent"]],
+            ["expenses", "first_expense_date", payload["expenses"]["first_expense_date"]],
+            ["expenses", "last_expense_date", payload["expenses"]["last_expense_date"]],
+        ]
 
-        response = HttpResponse(buffer.getvalue(), content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="report-summary.csv"'
-        return response
+        for row in payload["expenses"]["by_category"]:
+            rows.append(["category", row["category_name"], row["total_spent"]])
+        for row in payload["budgets"]:
+            rows.append(["budget", row["budget_id"], row["status"]])
+
+        return _build_export_response(
+            filename="report-summary",
+            title="Summary Report",
+            headers=["section", "name", "value"],
+            rows=rows,
+            export_format=export_format,
+        )
 
     def _build_cache_key(self, user_id, panel_id, date_from, date_to, export_format):
         return f"report-summary:{user_id}:{panel_id}:{date_from or ''}:{date_to or ''}:{export_format}"
+
+    def _user_has_panel_access(self, user, panel):
+        if panel.owner == user:
+            return True
+        return PanelUser.objects.filter(user=user, panel=panel).exists()
+
+
+class ReportMonthlyView(APIView):
+    """Panel-scoped monthly expense totals."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        panel_id = request.query_params.get("panel_id")
+        export_format = request.query_params.get("export", "json").lower()
+        if not panel_id:
+            return Response(
+                {"detail": "panel_id query param required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        date_from = parse_date(request.query_params.get("date_from") or "")
+        date_to = parse_date(request.query_params.get("date_to") or "")
+        if request.query_params.get("date_from") and not date_from:
+            return Response(
+                {"detail": "date_from must be YYYY-MM-DD"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if request.query_params.get("date_to") and not date_to:
+            return Response(
+                {"detail": "date_to must be YYYY-MM-DD"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if date_from and date_to and date_from > date_to:
+            return Response(
+                {"detail": "date_from cannot be after date_to"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            panel = Panel.objects.get(id=panel_id)
+        except Panel.DoesNotExist:
+            return Response(
+                {"detail": "Panel not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if not self._user_has_panel_access(request.user, panel):
+            return Response(
+                {"detail": "Access denied"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        cache_key = f"report-monthly:{request.user.id}:{panel_id}:{date_from or ''}:{date_to or ''}:{export_format}"
+        cached_payload = cache.get(cache_key)
+        if cached_payload is not None:
+            return self._render_report(cached_payload, export_format)
+
+        expenses = Expense.objects.filter(panel=panel, deleted_at__isnull=True)
+        if date_from:
+            expenses = expenses.filter(date__gte=date_from)
+        if date_to:
+            expenses = expenses.filter(date__lte=date_to)
+
+        monthly_rows = expenses.annotate(month=TruncMonth("date")).values("month").annotate(
+            expense_count=Count("id"),
+            total_spent=Sum("amount"),
+        ).order_by("month")
+
+        monthly = [
+            {
+                "month": row["month"].strftime("%Y-%m") if row["month"] else None,
+                "expense_count": row["expense_count"],
+                "total_spent": row["total_spent"] or Decimal("0"),
+            }
+            for row in monthly_rows
+        ]
+
+        report_payload = {
+            "panel": {
+                "id": panel.id,
+                "name": panel.name,
+            },
+            "date_range": {
+                "from": date_from,
+                "to": date_to,
+            },
+            "monthly": monthly,
+        }
+
+        cache.set(cache_key, report_payload, 300)
+        return self._render_report(report_payload, export_format)
+
+    def _render_report(self, payload, export_format):
+        if export_format in {"csv", "pdf", "xlsx"}:
+            rows = [[row["month"], row["expense_count"], row["total_spent"]] for row in payload["monthly"]]
+            return _build_export_response(
+                filename="report-monthly",
+                title="Monthly Report",
+                headers=["month", "expense_count", "total_spent"],
+                rows=rows,
+                export_format=export_format,
+            )
+        return Response(payload)
+
+    def _user_has_panel_access(self, user, panel):
+        if panel.owner == user:
+            return True
+        return PanelUser.objects.filter(user=user, panel=panel).exists()
+
+
+class ReportTrendsView(APIView):
+    """Panel-scoped category trend report by month."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        panel_id = request.query_params.get("panel_id")
+        category_id = request.query_params.get("category_id")
+        export_format = request.query_params.get("export", "json").lower()
+        if not panel_id:
+            return Response(
+                {"detail": "panel_id query param required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        date_from = parse_date(request.query_params.get("date_from") or "")
+        date_to = parse_date(request.query_params.get("date_to") or "")
+        if request.query_params.get("date_from") and not date_from:
+            return Response(
+                {"detail": "date_from must be YYYY-MM-DD"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if request.query_params.get("date_to") and not date_to:
+            return Response(
+                {"detail": "date_to must be YYYY-MM-DD"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if date_from and date_to and date_from > date_to:
+            return Response(
+                {"detail": "date_from cannot be after date_to"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            panel = Panel.objects.get(id=panel_id)
+        except Panel.DoesNotExist:
+            return Response(
+                {"detail": "Panel not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if not self._user_has_panel_access(request.user, panel):
+            return Response(
+                {"detail": "Access denied"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        cache_key = (
+            f"report-trends:{request.user.id}:{panel_id}:{category_id or ''}:"
+            f"{date_from or ''}:{date_to or ''}:{export_format}"
+        )
+        cached_payload = cache.get(cache_key)
+        if cached_payload is not None:
+            return self._render_report(cached_payload, export_format)
+
+        expenses = Expense.objects.filter(panel=panel, deleted_at__isnull=True)
+        if category_id:
+            expenses = expenses.filter(category_id=category_id)
+        if date_from:
+            expenses = expenses.filter(date__gte=date_from)
+        if date_to:
+            expenses = expenses.filter(date__lte=date_to)
+
+        trend_rows = expenses.annotate(month=TruncMonth("date")).values(
+            "month",
+            "category_id",
+            "category__name",
+        ).annotate(
+            expense_count=Count("id"),
+            total_spent=Sum("amount"),
+        ).order_by("month", "category__name")
+
+        month_totals = {}
+        for row in trend_rows:
+            month_key = row["month"]
+            month_totals[month_key] = month_totals.get(month_key, Decimal("0")) + (row["total_spent"] or Decimal("0"))
+
+        trends = []
+        for row in trend_rows:
+            month_key = row["month"]
+            month_total = month_totals.get(month_key, Decimal("0"))
+            total_spent = row["total_spent"] or Decimal("0")
+            share_pct = Decimal("0")
+            if month_total > 0:
+                share_pct = (total_spent * Decimal("100")) / month_total
+
+            trends.append(
+                {
+                    "month": month_key.strftime("%Y-%m") if month_key else None,
+                    "category_id": row["category_id"],
+                    "category_name": row["category__name"],
+                    "expense_count": row["expense_count"],
+                    "total_spent": total_spent,
+                    "share_of_month_pct": round(share_pct, 2),
+                }
+            )
+
+        report_payload = {
+            "panel": {
+                "id": panel.id,
+                "name": panel.name,
+            },
+            "date_range": {
+                "from": date_from,
+                "to": date_to,
+            },
+            "category_id": category_id,
+            "trends": trends,
+        }
+
+        cache.set(cache_key, report_payload, 300)
+        return self._render_report(report_payload, export_format)
+
+    def _render_report(self, payload, export_format):
+        if export_format in {"csv", "pdf", "xlsx"}:
+            rows = [
+                [
+                    row["month"],
+                    row["category_name"],
+                    row["expense_count"],
+                    row["total_spent"],
+                    row["share_of_month_pct"],
+                ]
+                for row in payload["trends"]
+            ]
+            return _build_export_response(
+                filename="report-trends",
+                title="Trends Report",
+                headers=["month", "category_name", "expense_count", "total_spent", "share_of_month_pct"],
+                rows=rows,
+                export_format=export_format,
+            )
+        return Response(payload)
 
     def _user_has_panel_access(self, user, panel):
         if panel.owner == user:
@@ -320,24 +668,50 @@ class PanelViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Return panels where user is a member."""
         user_panels = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
-        return Panel.objects.filter(id__in=user_panels) | Panel.objects.filter(owner=self.request.user)
+        user_owned_panels = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
+        all_panel_ids = set(list(user_panels) + list(user_owned_panels))
+        return Panel.objects.filter(id__in=all_panel_ids).order_by('-created_at')
 
     def perform_create(self, serializer):
         """Set owner to current user."""
         serializer.save(owner=self.request.user)
         panel = serializer.instance
         PanelUser.objects.create(user=self.request.user, panel=panel, role=PanelUser.Role.OWNER, joined_at=now())
+        log_audit_event(
+            actor=self.request.user,
+            panel=panel,
+            action=AuditLog.Action.CREATE,
+            instance=panel,
+            description="Panel created",
+            request=self.request,
+        )
 
     def perform_update(self, serializer):
         """Only owner can update."""
         if serializer.instance.owner != self.request.user:
             raise serializers.ValidationError("Only panel owner can update.")
         serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=serializer.instance,
+            action=AuditLog.Action.UPDATE,
+            instance=serializer.instance,
+            description="Panel updated",
+            request=self.request,
+        )
 
     def perform_destroy(self, instance):
         """Only owner can delete."""
         if instance.owner != self.request.user:
             raise serializers.ValidationError("Only panel owner can delete.")
+        log_audit_event(
+            actor=self.request.user,
+            panel=instance,
+            action=AuditLog.Action.DELETE,
+            instance=instance,
+            description="Panel deleted",
+            request=self.request,
+        )
         instance.delete()
 
     @action(detail=True, methods=["get"])
@@ -379,6 +753,17 @@ class PanelViewSet(viewsets.ModelViewSet):
                 membership.role = role
                 membership.save()
 
+            self._send_invitation_email(panel, user.email, role, inviter=request.user, token=None)
+            log_audit_event(
+                actor=request.user,
+                panel=panel,
+                action=AuditLog.Action.INVITE,
+                instance=membership,
+                description=f"Direct invite for {user.email}",
+                metadata={"mode": "direct", "role": role},
+                request=request,
+            )
+
             return Response(PanelUserSerializer(membership).data, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
 
         if email:
@@ -398,9 +783,41 @@ class PanelViewSet(viewsets.ModelViewSet):
                 message=f"Invitation sent to {email} for panel {panel.name}",
             )
 
+            self._send_invitation_email(panel, email, role, inviter=request.user, token=token)
+            log_audit_event(
+                actor=request.user,
+                panel=panel,
+                action=AuditLog.Action.INVITE,
+                instance=invitation,
+                description=f"Email invite sent to {email}",
+                metadata={"mode": "email", "role": role, "token": token},
+                request=request,
+            )
+
             return Response(InvitationSerializer(invitation).data, status=status.HTTP_201_CREATED)
 
         return Response({"detail": "user_id or email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def _send_invitation_email(self, panel, recipient_email, role, inviter, token):
+        accept_path = reverse("invitation-accept")
+        invite_details = [
+            f"You have been invited to join the panel '{panel.name}' as {role}.",
+            f"Invited by: {inviter.username} ({inviter.email})",
+        ]
+        if token:
+            invite_details.append(f"Invitation token: {token}")
+            invite_details.append(f"Accept endpoint: {accept_path}")
+            invite_details.append("Use the token with the accept endpoint after logging in with this email address.")
+        else:
+            invite_details.append("You were added directly to the panel and can log in to access it immediately.")
+
+        send_mail(
+            subject=f"Expense Manager invitation to {panel.name}",
+            message="\n".join(invite_details),
+            from_email=None,
+            recipient_list=[recipient_email],
+            fail_silently=False,
+        )
 
 
 class PanelUserViewSet(viewsets.ModelViewSet):
@@ -446,6 +863,14 @@ class PanelUserViewSet(viewsets.ModelViewSet):
 
         membership.role = new_role
         membership.save()
+        log_audit_event(
+            actor=request.user,
+            panel=membership.panel,
+            action=AuditLog.Action.CHANGE_ROLE,
+            instance=membership,
+            description=f"Changed role to {new_role}",
+            request=request,
+        )
         return Response(PanelUserSerializer(membership).data)
 
     @action(detail=True, methods=["delete"])
@@ -459,6 +884,14 @@ class PanelUserViewSet(viewsets.ModelViewSet):
             )
 
         membership.delete()
+        log_audit_event(
+            actor=request.user,
+            panel=membership.panel,
+            action=AuditLog.Action.DELETE,
+            instance=membership,
+            description="Removed panel member",
+            request=request,
+        )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -489,6 +922,14 @@ class InvitationAcceptView(APIView):
         invitation.accepted_at = now()
         invitation.accepted_by = request.user
         invitation.save()
+        log_audit_event(
+            actor=request.user,
+            panel=invitation.panel,
+            action=AuditLog.Action.ACCEPT,
+            instance=invitation,
+            description="Accepted invitation",
+            request=request,
+        )
 
         Notification.objects.create(
             user=request.user,
@@ -510,6 +951,14 @@ class LogoutView(APIView):
         try:
             token = RefreshToken(refresh_token)
             token.blacklist()
+            log_audit_event(
+                actor=request.user,
+                action=AuditLog.Action.LOGOUT,
+                entity_type="user",
+                entity_id=str(request.user.id),
+                description="User logged out",
+                request=request,
+            )
             return Response({"detail": "Logged out"})
         except Exception:
             return Response({"detail": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
@@ -538,6 +987,15 @@ class PasswordResetRequestView(APIView):
             from_email=None,
             recipient_list=[user.email],
         )
+        log_audit_event(
+            actor=user,
+            action=AuditLog.Action.PASSWORD_RESET,
+            entity_type="user",
+            entity_id=str(user.id),
+            description="Password reset requested",
+            metadata={"email": user.email},
+            request=request,
+        )
 
         return Response({"detail": "If the email exists, a reset link will be sent."})
 
@@ -562,6 +1020,14 @@ class PasswordResetConfirmView(APIView):
 
         user.set_password(new_password)
         user.save()
+        log_audit_event(
+            actor=user,
+            action=AuditLog.Action.PASSWORD_RESET,
+            entity_type="user",
+            entity_id=str(user.id),
+            description="Password reset completed",
+            request=request,
+        )
         return Response({"detail": "Password has been reset"})
 
 
@@ -577,11 +1043,247 @@ class NotificationPreferenceViewSet(viewsets.ModelViewSet):
         user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
         user_owned_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
         all_panel_ids = list(user_panel_ids) + list(user_owned_panel_ids)
-        return NotificationPreference.objects.filter(user=self.request.user, panel_id__in=all_panel_ids)
+        return NotificationPreference.objects.filter(user=self.request.user, panel_id__in=all_panel_ids).order_by(
+            "panel_id",
+            "user_id",
+            "type",
+        )
 
     def perform_create(self, serializer):
         # Ensure the preference belongs to the requesting user
         serializer.save(user=self.request.user)
+
+
+class AuditLogViewSet(viewsets.ReadOnlyModelViewSet):
+    """Read-only audit trail for accessible panels."""
+
+    serializer_class = AuditLogSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = "id"
+
+    def get_queryset(self):
+        user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
+        owned_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
+        panel_ids = list(user_panel_ids) + list(owned_panel_ids)
+        queryset = AuditLog.objects.filter(panel_id__in=panel_ids)
+        panel_id = self.request.query_params.get("panel_id")
+        if panel_id:
+            queryset = queryset.filter(panel_id=panel_id)
+        return queryset.order_by("-created_at")
+
+
+class ReportScheduleViewSet(viewsets.ModelViewSet):
+    """Manage recurring report export schedules."""
+
+    serializer_class = ReportScheduleSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = "id"
+
+    def get_queryset(self):
+        user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
+        owned_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
+        panel_ids = list(user_panel_ids) + list(owned_panel_ids)
+        return ReportSchedule.objects.filter(panel_id__in=panel_ids).order_by("-created_at")
+
+    def perform_create(self, serializer):
+        panel = serializer.validated_data.get("panel")
+        if not self._user_has_panel_access(panel):
+            raise serializers.ValidationError("User cannot create schedules for this panel")
+        schedule = serializer.save(created_by=self.request.user)
+        log_audit_event(
+            actor=self.request.user,
+            panel=panel,
+            action=AuditLog.Action.CREATE,
+            instance=schedule,
+            description="Report schedule created",
+            request=self.request,
+        )
+
+    def perform_update(self, serializer):
+        panel = serializer.instance.panel
+        if not self._user_has_panel_access(panel):
+            raise serializers.ValidationError("User cannot update schedules for this panel")
+        schedule = serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=panel,
+            action=AuditLog.Action.UPDATE,
+            instance=schedule,
+            description="Report schedule updated",
+            request=self.request,
+        )
+
+    def perform_destroy(self, instance):
+        if not self._user_has_panel_access(instance.panel):
+            raise serializers.ValidationError("User cannot delete schedules for this panel")
+        log_audit_event(
+            actor=self.request.user,
+            panel=instance.panel,
+            action=AuditLog.Action.DELETE,
+            instance=instance,
+            description="Report schedule deleted",
+            request=self.request,
+        )
+        instance.delete()
+
+    @action(detail=True, methods=["post"])
+    def run_now(self, request, id=None):
+        schedule = self.get_object()
+        if not self._user_has_panel_access(schedule.panel):
+            return Response({"detail": "Access denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        advance_report_schedule(schedule, executed_at=now())
+        log_audit_event(
+            actor=request.user,
+            panel=schedule.panel,
+            action=AuditLog.Action.RUN_SCHEDULE,
+            instance=schedule,
+            description="Report schedule run manually",
+            request=request,
+        )
+
+        return Response(
+            {
+                "detail": "Schedule marked as executed",
+                "schedule_id": schedule.id,
+                "last_run_at": schedule.last_run_at,
+                "next_run_at": schedule.next_run_at,
+            }
+        )
+
+    def _user_has_panel_access(self, panel):
+        if panel.owner == self.request.user:
+            return True
+        return PanelUser.objects.filter(user=self.request.user, panel=panel).exists()
+
+
+class WebhookViewSet(viewsets.ModelViewSet):
+    """Manage webhooks for panels."""
+
+    serializer_class = None
+    permission_classes = [IsAuthenticated, IsPanelOwnerOrEditor]
+    lookup_field = "id"
+
+    def __init__(self, *args, **kwargs):
+        from .serializers import WebhookSerializer
+
+        self.serializer_class = WebhookSerializer
+        super().__init__(*args, **kwargs)
+
+    def get_queryset(self):
+        # return webhooks for panels where the user is a member or owner
+        user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
+        owner_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
+        panels = list(user_panel_ids) + list(owner_panel_ids)
+        from .models import Webhook
+
+        return Webhook.objects.filter(panel_id__in=panels).order_by("-created_at")
+
+    def perform_create(self, serializer):
+        panel = serializer.validated_data.get("panel")
+        if not self._user_can_edit_panel(panel):
+            raise serializers.ValidationError("User cannot create webhooks for this panel")
+        # generate secret if not provided
+        w = serializer.save()
+        if not w.secret:
+            import secrets
+
+            w.secret = secrets.token_urlsafe(32)
+            w.save(update_fields=["secret"]) 
+
+    def _user_can_edit_panel(self, panel):
+        if panel.owner == self.request.user:
+            return True
+        try:
+            membership = PanelUser.objects.get(user=self.request.user, panel=panel)
+            return membership.role == PanelUser.Role.EDITOR
+        except PanelUser.DoesNotExist:
+            return False
+
+    @action(detail=True, methods=["post"])
+    def test_send(self, request, id=None):
+        """Send a test payload to the webhook asynchronously."""
+        webhook = self.get_object()
+        payload = request.data.get("payload") or {"test": True}
+        from .tasks import send_webhook_event
+
+        task = send_webhook_event.delay(str(webhook.id), payload)
+        return Response({"task_id": task.id})
+
+
+class RecurringExpenseViewSet(viewsets.ModelViewSet):
+    """Recurring expense management within panels."""
+
+    serializer_class = None
+    permission_classes = [IsAuthenticated, IsPanelMemberReadOnly, ViewerReadOnly]
+    lookup_field = "id"
+
+    def __init__(self, *args, **kwargs):
+        from .serializers import RecurringExpenseSerializer
+
+        self.serializer_class = RecurringExpenseSerializer
+        super().__init__(*args, **kwargs)
+
+    def get_queryset(self):
+        """Return recurring expenses for user's panels."""
+        user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
+        user_owned_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
+        all_panel_ids = list(user_panel_ids) + list(user_owned_panel_ids)
+        from .models import RecurringExpense
+
+        return RecurringExpense.objects.filter(panel_id__in=all_panel_ids).order_by("-created_at")
+
+    def perform_create(self, serializer):
+        """Set created_by to current user."""
+        panel = serializer.validated_data.get("panel")
+        if not self._user_can_edit_panel(panel):
+            raise serializers.ValidationError("User cannot create recurring expenses in this panel")
+        recurring = serializer.save(created_by=self.request.user)
+        log_audit_event(
+            actor=self.request.user,
+            panel=panel,
+            action=AuditLog.Action.CREATE,
+            instance=recurring,
+            description="Recurring expense created",
+            request=self.request,
+        )
+
+    def perform_update(self, serializer):
+        """Allow editor/owner to update."""
+        if not self._user_can_edit_panel(serializer.instance.panel):
+            raise serializers.ValidationError("User cannot update recurring expenses in this panel")
+        recurring = serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=recurring.panel,
+            action=AuditLog.Action.UPDATE,
+            instance=recurring,
+            description="Recurring expense updated",
+            request=self.request,
+        )
+
+    def perform_destroy(self, instance):
+        """Allow editor/owner to delete."""
+        if not self._user_can_edit_panel(instance.panel):
+            raise serializers.ValidationError("User cannot delete recurring expenses in this panel")
+        log_audit_event(
+            actor=self.request.user,
+            panel=instance.panel,
+            action=AuditLog.Action.DELETE,
+            instance=instance,
+            description="Recurring expense deleted",
+            request=self.request,
+        )
+        instance.delete()
+
+    def _user_can_edit_panel(self, panel):
+        if panel.owner == self.request.user:
+            return True
+        try:
+            membership = PanelUser.objects.get(user=self.request.user, panel=panel)
+            return membership.role == PanelUser.Role.EDITOR
+        except PanelUser.DoesNotExist:
+            return False
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -596,25 +1298,49 @@ class CategoryViewSet(viewsets.ModelViewSet):
         user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
         user_owned_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
         all_panel_ids = list(user_panel_ids) + list(user_owned_panel_ids)
-        return Category.objects.filter(panel_id__in=all_panel_ids)
+        return Category.objects.filter(panel_id__in=all_panel_ids).order_by("-created_at", "name")
 
     def perform_create(self, serializer):
         """Ensure panel belongs to user."""
         panel = serializer.validated_data.get("panel")
         if not self._user_can_edit_panel(panel):
             raise serializers.ValidationError("User cannot create categories in this panel")
-        serializer.save()
+        category = serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=panel,
+            action=AuditLog.Action.CREATE,
+            instance=category,
+            description="Category created",
+            request=self.request,
+        )
 
     def perform_update(self, serializer):
         """Ensure user has permission."""
         if not self._user_can_edit_panel(serializer.instance.panel):
             raise serializers.ValidationError("User cannot update categories in this panel")
-        serializer.save()
+        category = serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=category.panel,
+            action=AuditLog.Action.UPDATE,
+            instance=category,
+            description="Category updated",
+            request=self.request,
+        )
 
     def perform_destroy(self, instance):
         """Ensure user has permission."""
         if not self._user_can_edit_panel(instance.panel):
             raise serializers.ValidationError("User cannot delete categories in this panel")
+        log_audit_event(
+            actor=self.request.user,
+            panel=instance.panel,
+            action=AuditLog.Action.DELETE,
+            instance=instance,
+            description="Category deleted",
+            request=self.request,
+        )
         instance.delete()
 
     def _user_can_edit_panel(self, panel):
@@ -639,7 +1365,7 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
         user_owned_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
         all_panel_ids = list(user_panel_ids) + list(user_owned_panel_ids)
-        return Expense.objects.filter(panel_id__in=all_panel_ids, deleted_at__isnull=True)
+        return Expense.objects.filter(panel_id__in=all_panel_ids, deleted_at__isnull=True).order_by("-created_at")
 
     def perform_create(self, serializer):
         """Set created_by to current user."""
@@ -647,6 +1373,14 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         if not self._user_can_edit_panel(panel):
             raise serializers.ValidationError("User cannot create expenses in this panel")
         expense = serializer.save(created_by=self.request.user)
+        log_audit_event(
+            actor=self.request.user,
+            panel=panel,
+            action=AuditLog.Action.CREATE,
+            instance=expense,
+            description="Expense created",
+            request=self.request,
+        )
 
         # After saving expense, evaluate budgets and create notifications if thresholds crossed.
         try:
@@ -673,32 +1407,57 @@ class ExpenseViewSet(viewsets.ModelViewSet):
                     # notify panel members who opted in
                     prefs = NotificationPreference.objects.filter(panel=panel, type=Notification.Type.BUDGET_WARNING, enabled=True)
                     for pref in prefs:
-                        Notification.objects.create(
+                        notification = Notification.objects.create(
                             user=pref.user,
                             panel=panel,
                             type=Notification.Type.BUDGET_WARNING,
                             message=f"Budget '{budget}' reached {budget.alert_threshold}% ({spent}/{budget.limit_amount})",
                         )
+                        if pref.delivery == NotificationPreference.Delivery.EMAIL:
+                            send_notification_email.delay(str(notification.id))
 
                 # Budget exceeded
                 if previous_spent < budget.limit_amount <= spent:
                     prefs = NotificationPreference.objects.filter(panel=panel, type=Notification.Type.BUDGET_EXCEEDED, enabled=True)
                     for pref in prefs:
-                        Notification.objects.create(
+                        notification = Notification.objects.create(
                             user=pref.user,
                             panel=panel,
                             type=Notification.Type.BUDGET_EXCEEDED,
                             message=f"Budget '{budget}' exceeded ({spent}/{budget.limit_amount})",
                         )
+                        if pref.delivery == NotificationPreference.Delivery.EMAIL:
+                            send_notification_email.delay(str(notification.id))
         except Exception:
             # Do not block expense creation on notification errors
+            pass
+        # enqueue webhook notifications for expense.created
+        try:
+            payload = {
+                "event": "expense.created",
+                "expense_id": str(expense.id),
+                "panel_id": str(panel.id),
+                "amount": str(expense.amount),
+                "date": expense.date.isoformat(),
+                "created_by": str(expense.created_by.id),
+            }
+            notify_webhooks.delay(str(panel.id), "expense.created", payload)
+        except Exception:
             pass
 
     def perform_update(self, serializer):
         """Allow editor/owner to update."""
         if not self._user_can_edit_panel(serializer.instance.panel):
             raise serializers.ValidationError("User cannot update expenses in this panel")
-        serializer.save()
+        expense = serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=expense.panel,
+            action=AuditLog.Action.UPDATE,
+            instance=expense,
+            description="Expense updated",
+            request=self.request,
+        )
 
     def perform_destroy(self, instance):
         """Soft delete expense."""
@@ -706,6 +1465,14 @@ class ExpenseViewSet(viewsets.ModelViewSet):
             raise serializers.ValidationError("User cannot delete expenses in this panel")
         instance.deleted_at = now()
         instance.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=instance.panel,
+            action=AuditLog.Action.DELETE,
+            instance=instance,
+            description="Expense soft-deleted",
+            request=self.request,
+        )
 
     @action(detail=False, methods=["get"])
     def by_category(self, request):
@@ -766,25 +1533,49 @@ class BudgetViewSet(viewsets.ModelViewSet):
         user_panel_ids = PanelUser.objects.filter(user=self.request.user).values_list("panel_id", flat=True)
         user_owned_panel_ids = Panel.objects.filter(owner=self.request.user).values_list("id", flat=True)
         all_panel_ids = list(user_panel_ids) + list(user_owned_panel_ids)
-        return Budget.objects.filter(panel_id__in=all_panel_ids)
+        return Budget.objects.filter(panel_id__in=all_panel_ids).order_by("-created_at")
 
     def perform_create(self, serializer):
         """Ensure user has editor+ permissions."""
         panel = serializer.validated_data.get("panel")
         if not self._user_can_edit_panel(panel):
             raise serializers.ValidationError("User cannot create budgets in this panel")
-        serializer.save()
+        budget = serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=panel,
+            action=AuditLog.Action.CREATE,
+            instance=budget,
+            description="Budget created",
+            request=self.request,
+        )
 
     def perform_update(self, serializer):
         """Allow editor/owner to update."""
         if not self._user_can_edit_panel(serializer.instance.panel):
             raise serializers.ValidationError("User cannot update budgets in this panel")
-        serializer.save()
+        budget = serializer.save()
+        log_audit_event(
+            actor=self.request.user,
+            panel=budget.panel,
+            action=AuditLog.Action.UPDATE,
+            instance=budget,
+            description="Budget updated",
+            request=self.request,
+        )
 
     def perform_destroy(self, instance):
         """Allow editor/owner to delete."""
         if not self._user_can_edit_panel(instance.panel):
             raise serializers.ValidationError("User cannot delete budgets in this panel")
+        log_audit_event(
+            actor=self.request.user,
+            panel=instance.panel,
+            action=AuditLog.Action.DELETE,
+            instance=instance,
+            description="Budget deleted",
+            request=self.request,
+        )
         instance.delete()
 
     @action(detail=False, methods=["get"])
@@ -866,12 +1657,12 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return notifications for current user."""
-        return Notification.objects.filter(user=self.request.user)
+        return Notification.objects.filter(user=self.request.user).order_by("-created_at")
 
     @action(detail=False, methods=["get"])
     def unread(self, request):
         """Get unread notifications."""
-        notifications = Notification.objects.filter(user=request.user, is_read=False)
+        notifications = Notification.objects.filter(user=request.user, is_read=False).order_by("-created_at")
         serializer = self.get_serializer(notifications, many=True)
         return Response(serializer.data)
 

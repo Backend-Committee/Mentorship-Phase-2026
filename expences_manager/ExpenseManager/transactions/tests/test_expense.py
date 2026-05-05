@@ -44,7 +44,7 @@ class ExpenseModelSerializerTests(TestCase):
         }
         serializer = ExpenseSerializer(data=data, context={"request": request})
         self.assertFalse(serializer.is_valid())
-        self.assertIn("Amount can have at most two decimal places", str(serializer.errors))
+        self.assertIn("no more than 2 decimal places", str(serializer.errors))
 
         data["amount"] = "0"
         serializer = ExpenseSerializer(data=data, context={"request": request})
@@ -65,7 +65,7 @@ class ExpenseModelSerializerTests(TestCase):
         }
         serializer = ExpenseSerializer(data=data, context={"request": request})
         self.assertTrue(serializer.is_valid(), msg=str(serializer.errors))
-        expense = serializer.save()
+        expense = serializer.save(created_by=self.user)
         self.assertIsNotNone(expense.id)
         self.assertEqual(expense.created_by, self.user)
         self.assertEqual(expense.amount, Decimal("12.50"))
@@ -109,7 +109,7 @@ class BudgetModelSerializerTests(TestCase):
 
     def test_category_panel_mismatch_rejected(self):
         other_panel = Panel.objects.create(name="OtherTeam", owner=self.user)
-        other_cat = Category.objects.create(panel=other_panel, name="Other")
+        other_cat = Category.objects.create(panel=other_panel, name="SpecialTravel")
         b = Budget(panel=self.panel, category=other_cat, limit_amount=Decimal("100"), period=Budget.Period.MONTHLY)
         with self.assertRaises(ValidationError):
             b.full_clean()
