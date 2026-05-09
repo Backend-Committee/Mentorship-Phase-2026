@@ -237,6 +237,16 @@ The API will be available at `http://127.0.0.1:8000/`.
 
 ---
 
+## 📮 Postman Collection
+
+A ready-to-use Postman collection is available with all endpoints pre-configured, including auto-saving tokens on login.
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/join-team?invite_code=4b32be0e8a09797e85fa0466d4aa14bb19f0431e70ab8a7b15bc8aaf8c5e6f7f&target_code=8cc49f5924bd804ec52e5916efddc51b)
+
+The collection includes collection-level variables (`base_url`, `access_token`, `refresh_token`). After hitting **Login**, the access and refresh tokens are saved automatically — no manual copying needed.
+
+---
+
 ## 🔐 Authentication Flow
 
 All protected endpoints require a `Bearer` token in the `Authorization` header:
