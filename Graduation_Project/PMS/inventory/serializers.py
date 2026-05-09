@@ -10,9 +10,10 @@ class MedicineSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError('Price cannot be negative')
         return value
-    def validate_stock(self, value):
+    def validate_stock_quantity(self, value):
         if value < 0:
             raise serializers.ValidationError('Stock cannot be negative')
+        return value
     def validate_min_stock(self, value):
         if value < 0:
             raise serializers.ValidationError('Minimum stock cannot be negative')

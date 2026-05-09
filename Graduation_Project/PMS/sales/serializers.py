@@ -11,13 +11,6 @@ class InvoiceItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['total_price']
 
-    def validate(self, data):
-        med = data.get('medicine')
-        q = data.get('quantity')
-        if med:
-            if q > med.stock_quantity:
-                raise serializers.ValidationError({'quantity': "Quantity cannot be greater than medicine."})
-        return data
 
 
 class InvoiceSerializer(serializers.ModelSerializer):
@@ -43,23 +36,38 @@ class InvoiceSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         items_data = validated_data.pop('items')
+        invoice_type = validated_data.get('type', 'Sale')
+
         total_price = sum(item['quantity'] * item['unit_price'] for item in items_data)
         invoice = Invoice.objects.create(total_price=total_price, **validated_data)
 
         if invoice.payment_method == 'Debt':
-            invoice.customer.total_debt += invoice.total_price
+            if invoice_type == 'Sale':
+                invoice.customer.total_debt += invoice.total_price
+            else:
+                invoice.customer.total_debt -= invoice.total_price
             invoice.customer.save()
-
 
         for item in items_data:
             medicine = item['medicine']
             quantity = item['quantity']
             item_total = quantity * item['unit_price']
+
+            if invoice_type == 'Sale' and quantity > medicine.stock_quantity:
+                raise serializers.ValidationError({
+                    'quantity': f"Quantity {quantity} cannot be greater than stock for {medicine.name}."
+                })
+
             InvoiceItem.objects.create(
                 invoice=invoice,
                 total_price=item_total,
                 **item
             )
-            medicine.stock_quantity -= quantity
+
+            if invoice_type == 'Sale':
+                medicine.stock_quantity -= quantity
+            else:
+                medicine.stock_quantity += quantity
             medicine.save()
+
         return invoice
