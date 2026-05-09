@@ -1,11 +1,12 @@
 from rest_framework import viewsets, permissions
 from rest_framework.exceptions import ValidationError
-from .models import Invoice, InvoiceItem, Shift
+from .models import Invoice, InvoiceItem
 from .serializers import InvoiceSerializer, InvoiceItemSerializer
 from accounts import permissions as account_permissions
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import status
+from shifts.models import Shift
 
 
 # Create your views here.

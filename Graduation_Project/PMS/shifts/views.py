@@ -1,8 +1,8 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.exceptions import ValidationError
 from .models import Shift, Expense
 from .serializers import ShiftSerializer, ExpenseSerializer
-from accounts import permissions
+from accounts import permissions as account_permissions
 from rest_framework.decorators import action
 from django.utils import timezone
 from rest_framework.response import Response
@@ -16,7 +16,7 @@ class ShiftView(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['list', 'destroy']:
-            permission_classes = [permissions.IsManger]
+            permission_classes = [account_permissions.IsManger]
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]

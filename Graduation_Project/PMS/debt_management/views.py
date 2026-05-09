@@ -1,9 +1,8 @@
 from rest_framework.exceptions import PermissionDenied, ValidationError
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from .models import Customer, CustomerDebts, DebtPayment
 from shifts.models import Shift
 from .serializers import CustomerSerializer, CustomerDebtsSerializer, DebtPaymentSerializer
-from ..accounts import permissions
 
 
 # Create your views here.

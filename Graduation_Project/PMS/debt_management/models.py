@@ -1,6 +1,5 @@
 from django.db import models
-from sales.models import Invoice
-from shifts.models import Shift
+
 # Create your models here.
 
 class Customer(models.Model):
@@ -13,15 +12,16 @@ class Customer(models.Model):
 
 class CustomerDebts(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
-    invoice = models.ForeignKey(Invoice,on_delete=models.CASCADE)
+    invoice = models.ForeignKey('sales.Invoice',on_delete=models.CASCADE)
 
     def __str__(self):
         return f"invoice {self.invoice.id} for {self.customer.name} "
 
 
 class DebtPayment(models.Model):
-    customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
-    shift = models.ForeignKey(Shift, on_delete= models.RESTRICT)
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE, null=True, blank=True)
+    invoice = models.ForeignKey('sales.Invoice',on_delete=models.RESTRICT)
+    shift = models.ForeignKey('shifts.Shift', on_delete= models.RESTRICT)
     amount = models.DecimalField(max_digits=10,decimal_places=2)
     payment_date = models.DateField(auto_now_add=True)
 
