@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>My Nutrition Log</h1>
+    <a href="{% url 'nutrition_add' %}">Log Food</a>
+    <table>
+        <tr>
+            <th>Date</th><th>Food</th><th>Quantity (g)</th>
+            <th>Total Calories</th><th>Total Protein</th><th>Actions</th>
+        </tr>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.date }}</td>
+            <td>{{ log.food_name }}</td>
+            <td>{{ log.quantity_grams }}</td>
+            <td>{{ log.total_calories }}</td>
+            <td>{{ log.total_protein }}</td>
+            <td>
+                <a href="{% url 'nutrition_edit' log.pk %}">Edit</a>
+                <a href="{% url 'nutrition_delete' log.pk %}">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No nutrition logs yet.</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

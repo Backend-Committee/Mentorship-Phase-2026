@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Delete Nutrition Log</h1>
+    <p>Are you sure you want to delete this entry?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'nutrition_list' %}">Cancel</a>
+</body>
+</html>

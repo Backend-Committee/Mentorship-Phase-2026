@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Delete Workout</h1>
+    <p>Are you sure you want to delete this workout?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'workout_list' %}">Cancel</a>
+</body>
+</html>

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'nutrition_tracker',
     'dashboards',
     'templates',
+    'coaches',
 ]
 
 MIDDLEWARE = [
