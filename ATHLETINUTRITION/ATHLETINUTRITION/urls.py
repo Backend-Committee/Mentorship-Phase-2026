@@ -23,4 +23,6 @@ urlpatterns = [
     path('dashboard/', include('dashboards.urls')),
     path('workouts/',include('workouts.urls')),
     path('nutrition/', include('nutrition_tracker.urls')),
+    path('coaches/', include('coaches.urls')),
+    path('api/v1/', include('ATHLETINUTRITION.api_urls')),
 ]

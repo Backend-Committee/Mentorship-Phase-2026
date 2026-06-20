@@ -2,5 +2,21 @@
 <html>
 <body>
     <h1>Welcome, {{ request.user.username }}!</h1>
+    <h2>This Week</h2>
+    <p>Workouts: {{ weekly_workouts }}</p>
+    <p>Total minutes: {{ weekly_minutes }}</p>
+    <h2>Today's Nutrition</h2>
+    <p>Calories: {{ today_calories }}</p>
+    <p>Protein: {{ today_protein }}g</p>
+    <h2>Quick Actions</h2>
+    <a href="{% url 'workout_add' %}">Log Workout</a> |
+    <a href="{% url 'nutrition_add' %}">Log Food</a> |
+    <a href="{% url 'workout_list' %}">My Workouts</a> |
+    <a href="{% url 'nutrition_list' %}">My Nutrition</a> |
+    <a href="{% url 'coach_list' %}">Find a Coach</a>
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Incoming Requests</h1>
+    {% for req in requests %}
+    <div>
+        <p>{{ req.athlete.user.username }} wants you as their coach</p>
+        <form method="POST" action="{% url 'accept_request' req.pk %}">
+            {% csrf_token %}
+            <button type="submit">Accept</button>
+        </form>
+        <form method="POST" action="{% url 'decline_request' req.pk %}">
+            {% csrf_token %}
+            <button type="submit">Decline</button>
+        </form>
+    </div>
+    {% empty %}
+    <p>No pending requests.</p>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Available Coaches</h1>
+    {% if athlete_profile.coach %}
+        <p>Your current coach: <strong>{{ athlete_profile.coach.user.username }}</strong></p>
+    {% endif %}
+    {% for coach in coaches %}
+    <div>
+        <h3>{{ coach.user.username }}</h3>
+        <p>{{ coach.specialty }}</p>
+        <p>{{ coach.bio }}</p>
+        {% if not athlete_profile.coach %}
+        <form method="POST" action="{% url 'send_request' coach.id %}">
+            {% csrf_token %}
+            <button type="submit">Request Coach</button>
+        </form>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p>No coaches available.</p>
+    {% endfor %}
+</body>
+</html>

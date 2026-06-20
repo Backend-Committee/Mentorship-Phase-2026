@@ -3,6 +3,8 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import NutritionLog
+from rest_framework import viewsets, permissions
+from .serializers import NutritionLogSerializer
 
 class NutritionListView(LoginRequiredMixin, generic.ListView):
     model = NutritionLog
@@ -34,3 +36,16 @@ class NutritionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = NutritionLog
     template_name = 'nutrition_tracker/nutrition_confirm_delete.html'
     success_url = reverse_lazy('nutrition_list')
+
+
+
+
+class NutritionLogViewSet(viewsets.ModelViewSet):
+    serializer_class = NutritionLogSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return NutritionLog.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

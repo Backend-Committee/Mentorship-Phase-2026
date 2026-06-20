@@ -2,6 +2,9 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import Workout
+from rest_framework import viewsets, permissions
+from .serializers import WorkoutSerializer
+
 
 class WorkoutListView(LoginRequiredMixin, generic.ListView):
     model = Workout
@@ -31,3 +34,15 @@ class WorkoutDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Workout
     template_name = 'workouts/workout_confirm_delete.html'
     success_url = reverse_lazy('workout_list')
+
+
+
+class WorkoutViewSet(viewsets.ModelViewSet):
+    serializer_class = WorkoutSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Workout.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

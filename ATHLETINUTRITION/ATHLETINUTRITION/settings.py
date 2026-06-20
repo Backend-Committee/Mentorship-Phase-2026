@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'dashboards',
     'templates',
     'coaches',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

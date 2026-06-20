@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>{{ athlete.user.username }}'s Profile</h1>
+    <p>Sport: {{ athlete.sport_type }}</p>
+    <p>Weight: {{ athlete.weight_kg }} kg</p>
+    <p>Height: {{ athlete.height_cm }} cm</p>
+    <h2>Workouts</h2>
+    {% for workout in athlete.user.workout_set.all %}
+    <div>
+        <p>{{ workout.date }} - {{ workout.workout_type }} - {{ workout.duration_minutes }} mins</p>
+        <a href="{% url 'add_feedback' workout.id %}">Add Feedback</a>
+    </div>
+    {% empty %}
+    <p>No workouts logged.</p>
+    {% endfor %}
+</body>
+</html>
