@@ -1,0 +1,70 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs/
+*.log
+
+# Runtime files
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Environment
+.env
+.env.*
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Databases
+*.sqlite3
+*.db
+
+# Misc
+*.tgz
+*.tar.gz
+*.log.gz
+
+# Optional caches
+.cache/
+.parcel-cache/
+
+# Ignore local secret/key files
+*.key
+*.pem
+
+# Windows thumbnail cache
+Thumbs.db
+
+# End of .gitignore

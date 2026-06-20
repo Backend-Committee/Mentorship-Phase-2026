@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="blog-detail">
+        <h2>{{ blog.title }}</h2>
+        <p>{{ blog.content }}</p>
+        <p><strong>Author:</strong> {{ blog.author }}</p>
+    </div>
+{% endblock %}
