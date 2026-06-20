@@ -5,4 +5,6 @@ from .views import *
 urlpatterns = [
     path('adhkar/',ListCreateAdhkar.as_view()),
     path('adhkar/<int:pk>/',GetUpdateDeleteAdhkar.as_view()),
+    path('categories/',ListCreateCategory.as_view()),
+    path('categories/<int:pk>/',CategoryDetail.as_view()),
 ]
