@@ -1,0 +1,216 @@
+
+@base_url=http://localhost:8000
+
+@admin_email=hamza.hindawyy@gmail.com
+@admin_password=Ham@za
+
+@patient_email=patient@example.com
+@patient_password=Patient@123
+
+@doctor_email=doctor@example.com
+@doctor_password=Doctor@123
+
+@lab_admin_email=admin@lab.com
+@lab_admin_password=Admin@lab123
+
+### #Obtain Admin JWT Token
+POST {{base_url}}/api/token/
+Content-Type: application/json
+
+{
+    "email": "{{admin_email}}",
+    "password": "{{admin_password}}"
+}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("auth.access_token", body.access)
+  ctx.set("auth.refresh_token", body.refresh)
+--%}
+
+
+### #Obtain User JWT Token
+POST {{base_url}}/api/token/
+Content-Type: application/json
+
+{
+    "email": "doctor@example.com",
+    "password": "Doctor@123"
+}
+
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("auth.access_token", body.access)
+  ctx.set("auth.refresh_token", body.refresh)
+--%}
+
+
+### #Obtain Doctor JWT Token
+POST {{base_url}}/api/token/
+Content-Type: application/json
+
+{
+    "email": "{{doctor_email}}",
+    "password": "{{doctor_password}}"
+}
+
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("auth.access_token", body.access)
+  ctx.set("auth.refresh_token", body.refresh)
+--%}
+
+### #Obtain LabAdmin JWT Token
+POST {{base_url}}/api/token/
+Content-Type: application/json
+
+{
+    "email": "{{lab_admin_email}}",
+    "password": "{{lab_admin_password}}"
+}
+
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("auth.access_token", body.access)
+  ctx.set("auth.refresh_token", body.refresh)
+--%}
+
+### #Refresh Access Token
+POST {{base_url}}/api/token/refresh/
+Content-Type: application/json
+
+{
+    "refresh": "{{auth.refresh_token}}"
+}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("auth.access_token", body.access)
+--%}
+
+
+### #Register New User
+POST {{base_url}}/api/users/register/
+Content-Type: application/json
+
+{
+    "email": "doctor71@gmail.com",
+    "username": "Doctor71",
+    "is_doctor": true,
+    "is_lab_admin": false,
+    "password": "Doctor@123",
+    "specialization": "Cardiology",
+    "is_staff": false
+}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("users.new_user_id", body.id)
+--%}
+
+
+### #List All Users (Admin Only)
+GET {{base_url}}/api/users/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Get Current Authenticated User
+GET {{base_url}}/api/users/me/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Get User Detail by ID
+GET {{base_url}}/api/users/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+### #List All Doctors (Admin Only)
+GET {{base_url}}/api/users/doctors/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Get Doctor Detail by ID
+GET {{base_url}}/api/users/doctors/10/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Doctor Profile (Admin Only)
+PATCH {{base_url}}/api/users/doctors/10/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "specialization": "Neurology"
+}
+
+### #Delete Doctor Profile (Admin Only)
+DELETE {{base_url}}/api/users/doctors/10/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #List All Lab Admins (Admin Only)
+GET {{base_url}}/api/users/lab-admins/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Get Lab Admin Detail by ID
+GET {{base_url}}/api/users/lab-admins/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+### #Delete Lab Admin Profile (Admin Only)
+DELETE {{base_url}}/api/users/lab-admins/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+
+### #Upload File (Authenticated)
+POST http://127.0.0.1:8000/api/upload/
+
+@cfg.form = file=@$HOME/test.pdf
+@cfg.form = receiver=5
+
+###
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test_report.pdf"
+Content-Type: application/pdf
+
+< ./test.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="receiver"
+
+2
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("files.upload_id", body.id)
+  ctx.set("files.file_id", body.file)
+--%}
+
+
+### #Upload File as Regular User
+POST {{base_url}}/api/upload/
+Authorization: Bearer {{user.access_token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="lab_result.jpg"
+Content-Type: image/jpeg
+
+< ./lab_result.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="receiver"
+
+3
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

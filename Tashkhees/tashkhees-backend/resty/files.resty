@@ -1,0 +1,30 @@
+# ============================================================
+# Files API Tests — File Upload & Management
+# Base URL and tokens are defined as variables below.
+# Run auth.resty first to populate the token variables.
+# ============================================================
+
+@base_url=http://localhost:8000
+
+###
+#List Unapproved Files for Current User
+GET {{base_url}}/api/upload/unapproved/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+###
+#List Approved Files for Current User
+GET {{base_url}}/api/upload/approved/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+###
+#Approve File by ID
+POST {{base_url}}/api/upload/1/approve/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+# Only the receiver of the file can approve it.
+# Response: { "id": 1, "file": 1, "receiver": 2, "approved": true }

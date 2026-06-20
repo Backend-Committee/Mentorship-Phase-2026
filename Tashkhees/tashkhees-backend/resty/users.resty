@@ -1,0 +1,195 @@
+# ============================================================
+# Users API Tests — User Management, Profiles & Roles
+# Base URL and tokens are defined as variables below.
+# Run auth.resty first to populate the token variables.
+# ============================================================
+
+@base_url=http://localhost:8000
+
+
+### #Register New User
+POST {{base_url}}/api/users/register/
+Content-Type: application/json
+
+{
+    "email": "user3@example.com",
+    "username": "user3",
+    "password": "user@123",
+    "is_staff": false
+}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("users.new_user_id", body.id)
+--%}
+
+
+### #List All Users (Admin Only)
+GET {{base_url}}/api/users/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Get Current Authenticated User
+GET {{base_url}}/api/users/me/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Get User Detail by ID
+GET {{base_url}}/api/users/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #List All Patients (Admin Only)
+GET {{base_url}}/api/users/patients/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Create New Patient Profile (Admin Only)
+POST {{base_url}}/api/users/patients/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "user": 1,
+    "history": "Patient has a history of hypertension."
+}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("users.patient_user_id", body.user)
+--%}
+
+
+### #Get Patient Detail by ID
+GET {{base_url}}/api/users/patients/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Patient Profile (Admin Only)
+PUT {{base_url}}/api/users/patients/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "user": 1,
+    "history": "Updated patient history: hypertension and diabetes."
+}
+
+
+### #Partial Update Patient Profile (Admin Only)
+PATCH {{base_url}}/api/users/patients/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "history": "Partial update: only hypertension."
+}
+
+
+### #Delete Patient Profile (Admin Only)
+DELETE {{base_url}}/api/users/patients/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #List All Doctors (Admin Only)
+GET {{base_url}}/api/users/doctors/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Create New Doctor Profile (Admin Only)
+POST {{base_url}}/api/users/doctors/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "user": 1,
+    "specialization": "Cardiology"
+}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("users.doctor_user_id", body.user)
+--%}
+
+
+### #Get Doctor Detail by ID
+GET {{base_url}}/api/users/doctors/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Doctor Profile (Admin Only)
+PUT {{base_url}}/api/users/doctors/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "user": 1,
+    "specialization": "Neurology"
+}
+
+
+### #Partial Update Doctor Profile (Admin Only)
+PATCH {{base_url}}/api/users/doctors/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "specialization": "Orthopedics"
+}
+
+
+### #Delete Doctor Profile (Admin Only)
+DELETE {{base_url}}/api/users/doctors/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #List All Lab Admins (Admin Only)
+GET {{base_url}}/api/users/lab-admins/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Create New Lab Admin Profile (Admin Only)
+POST {{base_url}}/api/users/lab-admins/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "user": 1
+}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("users.labadmin_user_id", body.user)
+--%}
+
+
+### #Get Lab Admin Detail by ID
+GET {{base_url}}/api/users/lab-admins/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Lab Admin Profile (Admin Only)
+PUT {{base_url}}/api/users/lab-admins/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "user": 1
+}
+
+
+### #Delete Lab Admin Profile (Admin Only)
+DELETE {{base_url}}/api/users/lab-admins/1/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
