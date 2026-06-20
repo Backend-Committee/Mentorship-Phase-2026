@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import ShiftView, ExpenseView
 
 router = DefaultRouter()
-router.register(r'shifts', ShiftView)
+router.register(r'', ShiftView, basename='shift')
 router.register(r'expenses', ExpenseView)
 
 urlpatterns = [

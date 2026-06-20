@@ -23,6 +23,7 @@ class MedicineView(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+        new_stock = request.data.get('stock_quantity')
         if request.user.role != 'Manager' and new_stock is not None:
             if int(new_stock) < instance.stock_quantity:
                 raise ValidationError({"stock_quantity": "Stock quantity can't be decreased manually"})

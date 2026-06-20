@@ -21,7 +21,7 @@ class ShiftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shift
         fields = '__all__'
-        read_only_fields = ('id', 'start_time', 'end_time', 'total_sales', 'total_expenses', 'expected_cash',
+        read_only_fields = ('id','user', 'start_time', 'end_time', 'total_sales', 'total_expenses', 'expected_cash',
                             'difference', 'expenses')
 
     def get_total_sales(self, obj):

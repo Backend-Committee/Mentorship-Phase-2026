@@ -14,7 +14,7 @@ class CustomerSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'phone': 'Phone number must be digits!'})
         elif len(value) != 11:
             raise serializers.ValidationError({'phone': 'Phone number must be 11!'})
-        elif value.startswith('011', '012', '015', '010'):
+        elif not value.startswith(('011', '012', '015', '010')):
             raise serializers.ValidationError({'phone': 'not an Egyptian phone number!'})
         return value
 

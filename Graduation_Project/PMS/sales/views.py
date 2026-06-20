@@ -20,7 +20,7 @@ class InvoiceView(viewsets.ModelViewSet):
         current_shift = Shift.objects.filter(is_closed=False).last()
         if not current_shift:
             raise ValidationError({'shift':"No shift is opened"})
-        serializer.save(shift=current_shift.last())
+        serializer.save(shift=current_shift)
     @transaction.atomic
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
