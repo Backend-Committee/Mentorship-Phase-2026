@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Amazon.com — Deals, Electronics, Books &amp; More{% endblock %}</title>
+
+  <!-- {# Bootstrap 5 (used by search/cart/confirm pages) #} -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+  <!-- {# HTMX — used by product_card.html for the "Add to Cart" action #} -->
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+  <!-- {# Site design system (tokens, layout, components) #} -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+  <!-- {# Page-specific CSS overrides (e.g. search_results.html) #} -->
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+
+<!-- {# ==============================================================
+   HEADER
+   The header has two layers:
+     1. Main navbar  — logo, search, account actions
+     2. Sub-navbar   — category department links
+   Both use `categories` from context for dynamic links/options.
+   Shared across every page that extends base.html.
+   ============================================================== #} -->
+<header class="site-header">
+
+<!--   {# ── Layer 1: Main Navbar ── #}
+ -->  <nav class="navbar" aria-label="Main navigation">
+    <div class="navbar__inner">
+
+<!--       {# Logo #}
+ -->      <a href="{% url 'home' %}" class="navbar__logo" aria-label="Amazon home">
+        <span class="logo-text">amazon</span>
+        <span class="logo-tld">.com</span>
+      </a>
+
+      <!-- {# Deliver to (static UI chrome — no model data needed) #} -->
+      <div class="navbar__location">
+        <span class="location__icon">📍</span>
+        <div class="location__text">
+          <span class="location__label">Deliver to</span>
+          <span class="location__city">Cairo</span>
+        </div>
+      </div>
+
+      <!-- {# ── Search Bar ──
+         The category dropdown is populated from the `categories` QuerySet.
+         This way, adding a new category in the admin automatically
+         appears here without any template changes.                  #} -->
+      <div class="navbar__search">
+        <form method="GET" action="{% url 'search' %}">
+    
+          <div class="search-bar">
+      
+            <select class="search-bar__category" name="category" aria-label="Search category">
+              <option value="">All</option>
+              {% for category in categories %}
+                <option value="{{ category.slug }}">{{ category.name }}</option>
+              {% endfor %}
+            </select>
+
+            <input
+              type="text"
+              name="q"
+              class="search-bar__input"
+              placeholder="Search Amazon"
+              aria-label="Search Amazon"
+            />
+
+            <button class="search-bar__btn" type="submit" aria-label="Search">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+            </button>
+
+          </div>
+
+        </form>
+      </div>
+
+<!--       {# Right Action Links (static UI chrome) #}
+ -->      <div class="navbar__actions">
+        <a href="#" class="nav-action">
+          <span class="nav-action__label">Hello, Sign in</span>
+          <span class="nav-action__main">Account &amp; Lists ▾</span>
+        </a>
+        <a href="#" class="nav-action">
+          <span class="nav-action__label">Returns</span>
+          <span class="nav-action__main">&amp; Orders</span>
+        </a>
+        <a href="{% url 'cart' %}" class="nav-action nav-action--cart">
+          <div id="cart-count">
+  {{ cart_count }}
+</div>
+          <svg class="cart-icon" width="38" height="32" viewBox="0 0 38 32">
+            <path d="M4 2H2M4 2l3 16h22l3-16H4z"
+                  stroke="currentColor" stroke-width="2"
+                  fill="none" stroke-linejoin="round"/>
+            <circle cx="13" cy="30" r="2" fill="currentColor"/>
+            <circle cx="25" cy="30" r="2" fill="currentColor"/>
+          </svg>
+          <span class="nav-action__main">Cart</span>
+        </a>
+      </div>
+
+    </div>
+  </nav><!-- {# /navbar #} -->
+
+    <!-- {# ── Layer 2: Sub Navigation ──
+      Dynamic category links built from the same `categories` QuerySet.
+      Each link's href uses `#{{ category.slug }}` to scroll to the
+      matching product section on the page.                          #} -->
+  <nav class="sub-nav" aria-label="Department navigation">
+    <div class="sub-nav__inner">
+      <a href="#" class="sub-nav__link sub-nav__link--menu">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="currentColor">
+          <rect y="0" width="18" height="2"/>
+          <rect y="6" width="18" height="2"/>
+          <rect y="12" width="18" height="2"/>
+        </svg>
+        &nbsp;All
+      </a>
+
+      {% for category in categories %}
+        <a href="#{{ category.slug }}" class="sub-nav__link">
+          {{ category.name }}
+        </a>
+      {% endfor %}
+
+<!--       {# Static UI links that are not driven by the Category model #}
+ -->      <a href="#" class="sub-nav__link">Today's Deals</a>
+      <a href="#" class="sub-nav__link">Amazon Basics</a>
+      <a href="#" class="sub-nav__link">Prime</a>
+      <a href="#" class="sub-nav__link sub-nav__link--highlight">New Arrivals</a>
+    </div>
+  </nav><!-- {# /sub-nav #} -->
+
+</header>
+<!-- {# /HEADER #}
+ -->
+
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+<!-- {# /MAIN #} -->
+
+
+<!-- {# ==============================================================
+   FOOTER
+   All footer content is static UI chrome — no model data needed.
+   Shared across every page that extends base.html.
+   ============================================================== #} -->
+<footer class="site-footer">
+
+  <a href="#" class="footer-back-top">Back to top</a>
+
+  <div class="footer-links">
+    <div class="footer-links__inner">
+
+      <div class="footer-col">
+        <h4 class="footer-col__heading">Get to Know Us</h4>
+        <ul class="footer-col__list">
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">About Amazon</a></li>
+          <li><a href="#">Investor Relations</a></li>
+          <li><a href="#">Amazon Devices</a></li>
+          <li><a href="#">Amazon Science</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col__heading">Make Money with Us</h4>
+        <ul class="footer-col__list">
+          <li><a href="#">Sell products on Amazon</a></li>
+          <li><a href="#">Sell on Amazon Business</a></li>
+          <li><a href="#">Sell apps on AWS</a></li>
+          <li><a href="#">Become an Affiliate</a></li>
+          <li><a href="#">Advertise Your Products</a></li>
+          <li><a href="#">Self-Publish with Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col__heading">Amazon Payment Products</h4>
+        <ul class="footer-col__list">
+          <li><a href="#">Amazon Business Card</a></li>
+          <li><a href="#">Shop with Points</a></li>
+          <li><a href="#">Reload Your Balance</a></li>
+          <li><a href="#">Amazon Currency Converter</a></li>
+          <li><a href="#">Amazon Cash</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col__heading">Let Us Help You</h4>
+        <ul class="footer-col__list">
+          <li><a href="#">Amazon and COVID-19</a></li>
+          <li><a href="#">Your Account</a></li>
+          <li><a href="#">Your Orders</a></li>
+          <li><a href="#">Shipping Rates &amp; Policies</a></li>
+          <li><a href="#">Returns &amp; Replacements</a></li>
+          <li><a href="#">Manage Your Content</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-logo-strip">
+    <a href="{% url 'home' %}" class="footer-logo">
+      <span class="logo-text">amazon</span><span class="logo-tld">.com</span>
+    </a>
+    <div class="footer-locale">
+      <a href="#" class="locale-btn">🌐 English</a>
+      <a href="#" class="locale-btn">$ USD</a>
+      <a href="#" class="locale-btn">🇺🇸 United States</a>
+    </div>
+  </div>
+
+  <div class="footer-copyright">
+    <div class="footer-copyright__links">
+      <a href="#">Conditions of Use</a>
+      <a href="#">Privacy Notice</a>
+      <a href="#">Your Ads Privacy Choices</a>
+      <a href="#">Cookie Preferences</a>
+    </div>
+    <p class="footer-copyright__text">
+      © 1996–{% now "Y" %}, Amazon.com, Inc. or its affiliates
+    </p>
+  </div>
+
+</footer>
+<!-- {# /FOOTER #} -->
+
+<!-- {# Bootstrap JS bundle (Popper included) — needed by cart/confirm modals, dropdowns #} -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- {# Page-specific JS (e.g. cart quantity logic, form validation) #} -->
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

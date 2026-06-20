@@ -1,0 +1,80 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS specific
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Python
+*.py[cod]
+*$py.class
+*.so
+dist/
+build/
+*.egg-info/
+.eggs/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
+.hypothesis/
+htmlcov/
+
+# Testing
+.pytest_cache/
+.nose*
+nosetests.xml
+
+# Node (if using frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Miscellaneous
+.vscode-settings
+*.bak
+*.tmp
+debug.log
+.DS_Store

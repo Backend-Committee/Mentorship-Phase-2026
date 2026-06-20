@@ -1,0 +1,416 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_filters %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root {
+    --az-orange: #FF9900;
+    --az-orange-hover: #F08804;
+    --az-mid: #232F3E;
+    --az-price: #B12704;
+  }
+
+  .cart-header {
+    background-color: var(--az-mid);
+    padding: 1.25rem 0;
+  }
+
+  .cart-header h1 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+
+  .cart-header .text-muted-light {
+    color: #CCC;
+    font-size: 0.9rem;
+  }
+
+  /* ---- Cart line item ---- */
+  .cart-item {
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .cart-item__img-wrap {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    background-color: #F7F8F8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .cart-item__img-wrap img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+  }
+
+  .cart-item__name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #0F1111;
+  }
+
+  .cart-item__price {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--az-price);
+  }
+
+  .cart-item__stock-note {
+    font-size: 0.78rem;
+    color: #565959;
+  }
+
+  /* ---- Quantity stepper ---- */
+  .qty-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #DDD;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .qty-stepper button {
+    background: #F0F2F2;
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    line-height: 1;
+    color: #0F1111;
+  }
+
+  .qty-stepper button:hover {
+    background: #E3E6E6;
+  }
+
+  .qty-stepper input {
+    width: 48px;
+    border: none;
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    text-align: center;
+    height: 32px;
+  }
+
+  .qty-stepper input:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .btn-remove {
+    color: var(--az-price);
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .btn-remove:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- Stock alert ---- */
+  .stock-alert {
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+
+  /* ---- Summary box ---- */
+  .cart-summary {
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background: #fff;
+    padding: 1.25rem;
+  }
+
+  .cart-summary__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cart-summary__total {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--az-price);
+  }
+
+  .btn-checkout {
+    background-color: var(--az-orange);
+    border-color: var(--az-orange);
+    color: #0F1111;
+    font-weight: 600;
+  }
+
+  .btn-checkout:hover {
+    background-color: var(--az-orange-hover);
+    border-color: var(--az-orange-hover);
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+
+  .empty-cart .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==============================================================
+     1. CART HEADER
+     ============================================================== -->
+<section class="cart-header">
+  <div class="container">
+    <h1>Shopping Cart</h1>
+    <!-- TODO: Cart item count -->
+    <span class="text-muted-light">{{ total_items }} item{{ total_items|pluralize }} in your cart</span>
+  </div>
+</section>
+
+<div class="container py-4">
+
+  {% if cart_items %}
+  <div class="row g-4">
+
+    <!-- ==============================================================
+         2. CART ITEMS LIST
+         ============================================================== -->
+    <div class="col-12 col-lg-8">
+      <div class="d-flex flex-column gap-3">
+
+        <!-- TODO: Loop cart items from backend -->
+        {% for item in cart_items %}
+          <div class="cart-item p-3" id="cart-item-{{ item.id }}">
+            <div class="row g-3 align-items-center">
+
+              <!-- Product Image -->
+              <div class="col-auto">
+                <div class="cart-item__img-wrap">
+                  <img
+                    src="{{ item.product.image_url }}"
+                    alt="{{ item.product.title }}"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+
+              <!-- Product Info -->
+              <div class="col-12 col-sm-4">
+                <p class="cart-item__name mb-1">{{ item.product.title }}</p>
+                <p class="cart-item__price mb-1" id="line-total-{{ item.id }}">
+                  {{ item.product.price|currency }}
+                </p>
+                <p class="cart-item__stock-note mb-0" id="stock-note-{{ item.id }}">
+                  Maximum Available: {{ item.product.stock }}
+                </p>
+              </div>
+
+              <!-- Quantity Stepper -->
+              <div class="col-12 col-sm-4">
+                <div class="qty-stepper"
+                    data-cart-item-id="{{ item.id }}"
+                    data-unit-price="{{ item.product.price }}"
+                    data-stock="{{ item.product.stock }}">
+                  <button type="button" class="qty-decrease">-</button>
+                  <input
+                    type="number"
+                    class="qty-input"
+                    value="{{ item.quantity }}"
+                    min="1"
+                    max="{{ item.product.stock }}"
+                    aria-label="Quantity"
+                  />
+                  <button type="button" class="qty-increase">+</button>
+                </div>
+                <div class="stock-alert text-danger mt-1 d-none" id="stock-alert-{{ item.id }}">
+                  Quantity cannot exceed available stock.
+                </div>
+              </div>
+
+              <!-- Remove Button -->
+              <div class="col-12 col-sm-auto ms-sm-auto text-sm-end">
+                <button
+                  class="btn-remove"
+                  hx-post="{% url 'remove_from_cart' item.id %}"
+                  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                  hx-target="#cart-item-{{ item.id }}"
+                  hx-swap="outerHTML"
+                >
+                  Remove
+                </button>
+              </div>
+
+            </div>
+          </div>
+        {% endfor %}
+
+      </div>
+
+      <a href="{% url 'home' %}" class="btn btn-outline-secondary mt-4">
+        ← Continue Shopping
+      </a>
+    </div>
+
+    <!-- ==============================================================
+         3. CART SUMMARY
+         ============================================================== -->
+    <div class="col-12 col-lg-4">
+      <div class="cart-summary">
+        <h2 class="h5 mb-3">Order Summary</h2>
+
+        <!-- TODO: Cart calculations -->
+        <div class="cart-summary__row">
+          <span>Total Products</span>
+          <span id="summary-total-items">{{ total_items }}</span>
+        </div>
+        <div class="cart-summary__row">
+          <span>Subtotal</span>
+          <span>{{ total_price|currency }}</span>
+        </div>
+        <div class="cart-summary__row">
+          <span>Shipping</span>
+          <span>FREE</span>
+        </div>
+        <hr />
+        <div class="cart-summary__row cart-summary__total">
+          <span>Total</span>
+          <span id="summary-cart-total">{{ total_price|currency }}</span>
+        </div>
+
+        <a href="{% url 'order' %}" class="btn btn-checkout w-100 mt-3">
+          Proceed To Checkout
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  {% else %}
+    <!-- ==============================================================
+         4. EMPTY CART STATE
+         ============================================================== -->
+    <div class="empty-cart">
+      <div class="empty-icon">🛒</div>
+      <h2 class="h4 mb-2">Your cart is empty</h2>
+      <p class="text-muted mb-4">Looks like you haven't added anything yet.</p>
+      <a href="{% url 'home' %}" class="btn btn-checkout px-4">Continue Shopping</a>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]')
+      ? document.querySelector('[name=csrfmiddlewaretoken]').value
+      : '{{ csrf_token }}';
+  }
+
+  function formatCurrency(value) {
+    return '$' + Number(value).toFixed(2);
+  }
+
+  async function postQuantityUpdate(cartItemId, payload) {
+    const url = `/cart/update/${cartItemId}/`; // {% url 'update_quantity' 0 %} pattern, adjust if your cart app is namespaced
+    const body = new URLSearchParams(payload);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCsrfToken(),
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body,
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update quantity');
+    }
+    return response.json();
+  }
+
+  function applyUpdate(stepper, data) {
+    const cartItemId = stepper.dataset.cartItemId;
+    const input = stepper.querySelector('.qty-input');
+    const alertBox = document.getElementById(`stock-alert-${cartItemId}`);
+    const lineTotalEl = document.getElementById(`line-total-${cartItemId}`);
+
+    input.value = data.quantity;
+    input.max = data.max_stock;
+    stepper.dataset.stock = data.max_stock;
+
+    if (lineTotalEl) {
+      lineTotalEl.textContent = formatCurrency(data.line_total);
+    }
+
+    if (alertBox) {
+      alertBox.classList.toggle('d-none', !data.at_max);
+    }
+
+    const summaryItems = document.getElementById('summary-total-items');
+    const summaryTotal = document.getElementById('summary-cart-total');
+    if (summaryItems) summaryItems.textContent = data.cart_total_items;
+    if (summaryTotal) summaryTotal.textContent = formatCurrency(data.cart_total);
+  }
+
+  document.querySelectorAll('.qty-stepper').forEach(function (stepper) {
+    const cartItemId = stepper.dataset.cartItemId;
+    const input = stepper.querySelector('.qty-input');
+    const decreaseBtn = stepper.querySelector('.qty-decrease');
+    const increaseBtn = stepper.querySelector('.qty-increase');
+
+    let pending = false;
+
+    async function sendAction(action, extra) {
+      if (pending) return;
+      pending = true;
+      try {
+        const data = await postQuantityUpdate(cartItemId, { action, ...extra });
+        applyUpdate(stepper, data);
+      } catch (err) {
+        console.error(err);
+        alert('Could not update quantity. Please try again.');
+      } finally {
+        pending = false;
+      }
+    }
+
+    decreaseBtn.addEventListener('click', function () {
+      sendAction('decrease', {});
+    });
+
+    increaseBtn.addEventListener('click', function () {
+      sendAction('increase', {});
+    });
+
+    // Manual typing into the input box
+    input.addEventListener('change', function () {
+      let value = parseInt(input.value, 10);
+      if (isNaN(value) || value < 1) value = 1;
+      sendAction('set', { quantity: value });
+    });
+  });
+</script>
+{% endblock %}

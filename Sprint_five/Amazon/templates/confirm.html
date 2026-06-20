@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_filters %}
+
+{% block title %}Confirm Your Order{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root {
+    --az-orange: #FF9900;
+    --az-orange-hover: #F08804;
+    --az-mid: #232F3E;
+    --az-price: #B12704;
+  }
+
+  .confirm-header {
+    background-color: var(--az-mid);
+    padding: 1.25rem 0;
+  }
+
+  .confirm-header h1 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+
+  .confirm-card {
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background: #fff;
+    padding: 1.5rem;
+  }
+
+  .confirm-card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .payment-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid #DDD;
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    background-color: #F7F8F8;
+  }
+
+  .payment-option__icon {
+    font-size: 1.5rem;
+  }
+
+  .payment-option__label {
+    font-weight: 600;
+    color: #0F1111;
+  }
+
+  .payment-option__note {
+    font-size: 0.8rem;
+    color: #565959;
+  }
+
+  .order-summary__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .order-summary__total {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--az-price);
+  }
+
+  .btn-confirm {
+    background-color: var(--az-orange);
+    border-color: var(--az-orange);
+    color: #0F1111;
+    font-weight: 600;
+  }
+
+  .btn-confirm:hover {
+    background-color: var(--az-orange-hover);
+    border-color: var(--az-orange-hover);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==============================================================
+     1. CONFIRM HEADER
+     ============================================================== -->
+<section class="confirm-header">
+  <div class="container">
+    <h1>Checkout</h1>
+  </div>
+</section>
+
+<div class="container py-4">
+  <div class="row g-4">
+
+    <!-- ==============================================================
+         2. CUSTOMER INFORMATION FORM + PAYMENT METHOD
+         ============================================================== -->
+    <div class="col-12 col-lg-8">
+
+      <!-- TODO: Wire up to order-confirmation view + Order model -->
+      <form method="post" action="#" novalidate>
+        {# TODO: {% csrf_token %} #}
+
+        <div class="confirm-card mb-4">
+          <h2>Customer Information</h2>
+
+          <div class="row g-3">
+
+            <div class="col-12 col-md-6">
+              <label for="full_name" class="form-label">Full Name</label>
+              <input
+                type="text"
+                id="full_name"
+                name="full_name"
+                class="form-control"
+                placeholder="e.g. John Doe"
+                required
+              />
+              <!-- TODO: Validation error message -->
+              <div class="invalid-feedback">Please enter your full name.</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="phone_number" class="form-label">Phone Number</label>
+              <input
+                type="tel"
+                id="phone_number"
+                name="phone_number"
+                class="form-control"
+                placeholder="e.g. 010xxxxxxxx"
+                required
+              />
+              <!-- TODO: Validation error message -->
+              <div class="invalid-feedback">Please enter a valid phone number.</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="governorate" class="form-label">Governorate</label>
+              <select id="governorate" name="governorate" class="form-select" required>
+                <option value="" selected disabled>Select governorate</option>
+                <!-- TODO: Loop governorates from backend -->
+                <option value="cairo">Cairo</option>
+                <option value="giza">Giza</option>
+                <option value="alexandria">Alexandria</option>
+              </select>
+              <!-- TODO: Validation error message -->
+              <div class="invalid-feedback">Please select your governorate.</div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="city" class="form-label">City</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                class="form-control"
+                placeholder="e.g. Nasr City"
+                required
+              />
+              <!-- TODO: Validation error message -->
+              <div class="invalid-feedback">Please enter your city.</div>
+            </div>
+
+            <div class="col-12">
+              <label for="address" class="form-label">Full Address</label>
+              <textarea
+                id="address"
+                name="address"
+                class="form-control"
+                rows="3"
+                placeholder="Street, building, floor, apartment, landmarks…"
+                required
+              ></textarea>
+              <!-- TODO: Validation error message -->
+              <div class="invalid-feedback">Please enter your full address.</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="confirm-card mb-4">
+          <h2>Payment Method</h2>
+
+          <!-- {# Pre-selected and read-only: Cash On Delivery is the only #}
+          {# payment method supported for this project.                #} -->
+          <div class="payment-option">
+            <span class="payment-option__icon">💵</span>
+            <div class="flex-grow-1">
+              <div class="payment-option__label">Cash On Delivery</div>
+              <div class="payment-option__note">Pay with cash when your order arrives</div>
+            </div>
+            <input type="radio" name="payment_method" value="cod" checked disabled />
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <a href="{% url 'cart' %}" class="btn btn-outline-secondary">
+            ← Back To Cart
+          </a>
+          <form method="post" action="{% url 'order' %}">
+              {% csrf_token %}
+
+              <button type="submit" class="btn btn-confirm">
+                  Confirm Purchase
+              </button>
+          </form>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ==============================================================
+         3. ORDER SUMMARY
+         ============================================================== -->
+    <div class="col-12 col-lg-4">
+      <div class="confirm-card">
+        <h2>Order Summary</h2>
+
+        <!-- TODO: Order summary -->
+        <div class="order-summary__row">
+          <span>Products</span>
+          <span>{{ total_items }}</span>
+        </div>
+        <div class="order-summary__row">
+          <span>Subtotal</span>
+          <span>{{ total_price|currency }}</span>
+        </div>
+        <div class="order-summary__row">
+          <span>Shipping</span>
+          <span>FREE</span>
+        </div>
+        <hr />
+        <div class="order-summary__row order-summary__total">
+          <span>Order Total</span>
+          <span>{{ total_price|currency }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // {# TODO: Replace with real server-side validation. This only adds #}
+  // {# Bootstrap's client-side validation UI hooks for now.          #}
+  (function () {
+    var form = document.querySelector('form[novalidate]');
+    if (!form) return;
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    });
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,1485 @@
+/* ================================================================
+   AMAZON CLONE — styles.css
+   Architecture:
+   1.  CSS Custom Properties (Design Tokens)
+   2.  Reset & Base Styles
+   3.  Layout Utilities
+   4.  Typography
+   5.  Buttons
+   6.  Badges
+   7.  Header / Navbar
+   8.  Sub-Navbar
+   9.  Hero Banner
+   10. Category Tiles
+   11. Deals Banner
+   12. Product Sections & Cards
+   13. Promo Strip
+   14. Footer
+   15. Responsive Breakpoints
+   ================================================================ */
+
+
+/* ================================================================
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+   All colors, spacing, shadows, and transitions live here.
+   Change a token once → updates everywhere.
+   ================================================================ */
+:root {
+  /* Brand Colors */
+  --amazon-dark:         #131921;   /* navbar background */
+  --amazon-mid:          #232F3E;   /* sub-navbar background */
+  --amazon-mid-hover:    #37475A;   /* sub-navbar hover */
+  --amazon-orange:       #FF9900;   /* primary accent */
+  --amazon-orange-hover: #F08804;   /* accent hover */
+  --amazon-orange-light: #FFF3CD;   /* light accent bg */
+
+  /* Content Colors */
+  --amazon-blue:         #007185;   /* links */
+  --amazon-blue-hover:   #C7511F;   /* link hover (Amazon style) */
+
+  /* Backgrounds */
+  --bg-page:             #EAEDED;   /* main page background */
+  --bg-white:            #FFFFFF;
+  --bg-card:             #FFFFFF;
+  --bg-footer:           #232F3E;
+  --bg-footer-dark:      #131A22;
+  --bg-footer-bottom:    #0F1111;
+
+  /* Text */
+  --text-dark:           #0F1111;
+  --text-body:           #333333;
+  --text-muted:          #565959;
+  --text-light:          #CCCCCC;
+  --text-white:          #FFFFFF;
+  --text-link:           #007185;
+  --text-price:          #B12704;
+  --text-old-price:      #565959;
+
+  /* Borders */
+  --border-color:        #DDD;
+  --border-light:        #E7E7E7;
+  --border-card:         #DDD;
+
+  /* Spacing Scale */
+  --space-xs:    4px;
+  --space-sm:    8px;
+  --space-md:    16px;
+  --space-lg:    24px;
+  --space-xl:    32px;
+  --space-2xl:   48px;
+  --space-3xl:   64px;
+
+  /* Typography */
+  --font-sans:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs:   11px;
+  --font-size-sm:   12px;
+  --font-size-base: 14px;
+  --font-size-md:   16px;
+  --font-size-lg:   18px;
+  --font-size-xl:   22px;
+  --font-size-2xl:  28px;
+  --font-size-3xl:  38px;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  --shadow-md:   0 2px 8px rgba(0,0,0,.15);
+  --shadow-card: 0 2px 5px rgba(0,0,0,.1);
+  --shadow-nav:  0 2px 4px rgba(0,0,0,.2);
+
+  /* Borders Radius */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-pill: 999px;
+
+  /* Transitions */
+  --transition-fast:   .15s ease;
+  --transition-base:   .2s ease;
+  --transition-slow:   .3s ease;
+
+  /* Layout */
+  --container-max:     1500px;
+  --navbar-height:     60px;
+}
+
+
+/* ================================================================
+   2. RESET & BASE STYLES
+   Normalize browser inconsistencies. Box-sizing: border-box makes
+   sizing predictable — padding/border are included in element width.
+   ================================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--text-body);
+  background-color: var(--bg-page);
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button, select, input {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+
+/* ================================================================
+   3. LAYOUT UTILITIES
+   Reusable layout primitives used across sections.
+   ================================================================ */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Page wrapper constrains the main content area */
+.page-wrapper {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Generic section spacing */
+.section {
+  margin-bottom: var(--space-xl);
+}
+
+
+/* ================================================================
+   4. TYPOGRAPHY
+   ================================================================ */
+.section__title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: var(--space-md);
+}
+
+
+/* ================================================================
+   5. BUTTONS
+   Three variants: primary (orange), outline, cart (dark)
+   ================================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--transition-fast), border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* Primary: Amazon orange with gradient */
+.btn--primary {
+  background: linear-gradient(to bottom, #FFD814, #FFA41C);
+  border-color: #FFA41C;
+  color: var(--text-dark);
+  padding: 12px 28px;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 5px rgba(213,117,19,.5);
+}
+
+.btn--primary:hover {
+  background: linear-gradient(to bottom, #F7CA00, #F08804);
+  border-color: #F08804;
+  box-shadow: 0 3px 8px rgba(213,117,19,.6);
+}
+
+/* Outline: white border for dark backgrounds */
+.btn--outline {
+  background: transparent;
+  border: 2px solid var(--bg-white);
+  color: var(--bg-white);
+  border-radius: var(--radius-pill);
+  padding: 10px 24px;
+}
+
+.btn--outline:hover {
+  background: rgba(255,255,255,.1);
+}
+
+/* Cart: small yellow Amazon add-to-cart button */
+.btn--cart {
+  background: linear-gradient(to bottom, #FFD814, #FFA41C);
+  border-color: #FFA41C;
+  color: var(--text-dark);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  width: 100%;
+  margin-top: var(--space-sm);
+}
+
+.btn--cart:hover {
+  background: linear-gradient(to bottom, #F7CA00, #F08804);
+}
+
+
+/* ================================================================
+   6. BADGES
+   Small labels overlaid on product card images.
+   ================================================================ */
+.badge {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  z-index: 2;
+}
+
+.badge--bestseller {
+  background: #E77600;
+  color: var(--text-white);
+}
+
+.badge--prime {
+  background: #232F3E;
+  color: var(--amazon-orange);
+  border: 1px solid var(--amazon-orange);
+}
+
+.badge--deal {
+  background: #CC0C39;
+  color: var(--text-white);
+}
+
+
+/* ================================================================
+   7. HEADER / NAVBAR
+   Three-layer sticky header.
+   ================================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-nav);
+}
+
+/* ── Main Navbar ── */
+.navbar {
+  background-color: var(--amazon-dark);
+  height: var(--navbar-height);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Logo */
+.navbar__logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  line-height: 1;
+  padding: 4px 8px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.navbar__logo:hover {
+  border-color: var(--text-white);
+}
+
+.logo-text {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-white);
+  font-family: var(--font-sans);
+  letter-spacing: -1px;
+}
+
+.logo-tld {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--amazon-orange);
+  margin-bottom: 3px;
+  margin-left: 1px;
+}
+
+/* Location */
+.navbar__location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.navbar__location:hover {
+  border-color: var(--text-white);
+}
+
+.location__icon {
+  font-size: 18px;
+}
+
+.location__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.location__label {
+  font-size: var(--font-size-xs);
+  color: var(--text-light);
+  line-height: 1.1;
+}
+
+.location__city {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+/* Search Bar — the focal center of the navbar */
+.navbar__search {
+  flex: 1;
+  max-width: 860px;
+}
+
+.search-bar {
+  display: flex;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 0 0 3px var(--amazon-orange);
+  transition: box-shadow var(--transition-fast);
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 0 0 4px var(--amazon-orange-hover);
+}
+
+.search-bar__category {
+  flex-shrink: 0;
+  padding: 0 var(--space-sm);
+  background: #F3F3F3;
+  border: none;
+  border-right: 1px solid var(--border-color);
+  font-size: var(--font-size-sm);
+  color: var(--text-body);
+  cursor: pointer;
+  min-width: 80px;
+  appearance: auto;
+}
+
+.search-bar__input {
+  flex: 1;
+  padding: 0 var(--space-md);
+  border: none;
+  outline: none;
+  font-size: var(--font-size-base);
+  color: var(--text-dark);
+  background: var(--bg-white);
+}
+
+.search-bar__btn {
+  flex-shrink: 0;
+  width: 48px;
+  background: var(--amazon-orange);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+  transition: background var(--transition-fast);
+}
+
+.search-bar__btn:hover {
+  background: var(--amazon-orange-hover);
+}
+
+/* Right Action Links */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.nav-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 8px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-white);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.nav-action:hover {
+  border-color: var(--text-white);
+}
+
+.nav-action__label {
+  font-size: var(--font-size-xs);
+  color: #CCC;
+}
+
+.nav-action__main {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+/* Cart action has special layout with icon */
+.nav-action--cart {
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 4px;
+  position: relative;
+  padding-top: 6px;
+}
+
+.cart-icon {
+  color: var(--text-white);
+  flex-shrink: 0;
+}
+
+.cart-count {
+  position: absolute;
+  top: 2px;
+  left: 18px;
+  background: var(--amazon-orange);
+  color: var(--text-dark);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ================================================================
+   8. SUB-NAVBAR
+   Department navigation below the main navbar.
+   ================================================================ */
+.sub-nav {
+  background-color: var(--amazon-mid);
+  height: 38px;
+  overflow: hidden;
+}
+
+.sub-nav__inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-sm);
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sub-nav__inner::-webkit-scrollbar {
+  display: none;
+}
+
+.sub-nav__link {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 100%;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: var(--text-white);
+  white-space: nowrap;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.sub-nav__link:hover {
+  border-color: var(--text-white);
+  background: var(--amazon-mid-hover);
+}
+
+.sub-nav__link--menu {
+  font-weight: 700;
+  gap: 6px;
+}
+
+/* Highlighted link stands out */
+.sub-nav__link--highlight {
+  color: var(--amazon-orange);
+  font-weight: 600;
+}
+
+
+/* ================================================================
+   9. HERO BANNER
+   Full-width promotional banner. Uses a CSS gradient to simulate
+   the typical Amazon hero image with rich color overlay.
+   ================================================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+}
+
+.hero__slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Slide 1: deep teal-to-dark gradient (tech/electronics feel) */
+.hero__slide--1 {
+  background: linear-gradient(
+    135deg,
+    #0a3d62 0%,
+    #1e5799 40%,
+    #2d7dd2 70%,
+    #1a1a2e 100%
+  );
+  position: relative;
+}
+
+/* Decorative abstract circles in the background */
+.hero__slide--1::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,153,0,.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero__slide--1::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  right: 200px;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(45,125,210,.4) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 0 80px;
+  max-width: 600px;
+}
+
+.hero__eyebrow {
+  display: inline-block;
+  background: var(--amazon-orange);
+  color: var(--text-dark);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--space-md);
+}
+
+.hero__headline {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: var(--text-white);
+  line-height: 1.15;
+  margin-bottom: var(--space-sm);
+  text-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+
+.hero__sub {
+  font-size: var(--font-size-lg);
+  color: rgba(255,255,255,.85);
+  margin-bottom: var(--space-lg);
+}
+
+/* Pagination dots */
+.hero__dots {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-sm);
+  z-index: 3;
+}
+
+.hero__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.6);
+  cursor: pointer;
+}
+
+.hero__dot--active {
+  background: var(--text-white);
+  width: 28px;
+  border-radius: var(--radius-pill);
+}
+
+
+/* ================================================================
+   10. CATEGORY TILES
+   5 large clickable category cards in a responsive row.
+   ================================================================ */
+.category-tiles {
+  padding-top: var(--space-xl);
+}
+
+.category-tiles__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-md);
+}
+
+.category-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg) var(--space-md);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+              border-color var(--transition-base);
+  text-align: center;
+  gap: var(--space-md);
+}
+
+.category-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--amazon-orange);
+}
+
+.category-tile__img-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+/* Each category has its own signature color */
+.category-tile__img-wrap--electronics { background: #E8F4FD; }
+.category-tile__img-wrap--books       { background: #FFF3E0; }
+.category-tile__img-wrap--clothing    { background: #FCE4EC; }
+.category-tile__img-wrap--kitchen     { background: #E8F5E9; }
+.category-tile__img-wrap--sports      { background: #EDE7F6; }
+
+.category-tile__emoji {
+  line-height: 1;
+}
+
+.category-tile__name {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+
+/* ================================================================
+   11. DEALS BANNER
+   A full-width promotional panel with mini deal cards.
+   ================================================================ */
+.deals-banner {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.deals-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-2xl) var(--space-xl);
+}
+
+.deals-banner__text {
+  flex-shrink: 0;
+  max-width: 280px;
+}
+
+.deals-banner__eyebrow {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--amazon-orange);
+  margin-bottom: var(--space-sm);
+}
+
+.deals-banner__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--text-white);
+  margin-bottom: var(--space-sm);
+}
+
+.deals-banner__sub {
+  font-size: var(--font-size-base);
+  color: rgba(255,255,255,.7);
+  margin-bottom: var(--space-lg);
+}
+
+.deals-banner__cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+.deal-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  position: relative;
+  transition: background var(--transition-base), transform var(--transition-base);
+  cursor: pointer;
+}
+
+.deal-card:hover {
+  background: rgba(255,255,255,.14);
+  transform: translateY(-2px);
+}
+
+.deal-card__badge {
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  background: #CC0C39;
+  color: var(--text-white);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.deal-card__icon {
+  font-size: 40px;
+  margin-bottom: var(--space-sm);
+  line-height: 1;
+}
+
+.deal-card__name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-white);
+  margin-bottom: var(--space-xs);
+}
+
+.deal-card__price {
+  font-size: var(--font-size-sm);
+}
+
+.price__current {
+  font-weight: 700;
+  color: var(--amazon-orange);
+}
+
+.price__old {
+  color: rgba(255,255,255,.5);
+  text-decoration: line-through;
+  margin-left: 4px;
+  font-size: var(--font-size-xs);
+}
+
+.price__discount {
+  color: #91C499;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+
+/* ================================================================
+   12. PRODUCT SECTIONS & CARDS
+   The main content grid. Cards follow Amazon's structural pattern:
+   image → brand → title → rating → price → delivery → button.
+   ================================================================ */
+
+/* Section header: title on left, "See all" link on right */
+
+
+.product-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.product-section__title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-dark);
+  position: relative;
+}
+
+/* Accent underline on section title */
+.product-section__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 40px;
+  height: 3px;
+  background: var(--amazon-orange);
+  border-radius: 2px;
+}
+
+.product-section__see-more {
+  font-size: var(--font-size-sm);
+  color: var(--amazon-blue);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.product-section__see-more:hover {
+  color: var(--amazon-blue-hover);
+  text-decoration: underline;
+}
+
+/* Products Grid: 5 columns on full desktop */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-md);
+}
+
+/* Product Card */
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-base), transform var(--transition-base),
+              border-color var(--transition-base);
+  cursor: pointer;
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  border-color: var(--amazon-orange);
+}
+
+/* Card Image Area */
+.product-card__img-wrap {
+  position: relative;
+  background: #F7F8F8;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+/* Colored tint per category using a subtle background */
+.product-card__img-wrap--book     { background: linear-gradient(135deg, #FFF8E1, #FFF3E0); }
+.product-card__img-wrap--clothing { background: linear-gradient(135deg, #FCE4EC, #F8BBD9); }
+.product-card__img-wrap--kitchen  { background: linear-gradient(135deg, #E8F5E9, #DCEDC8); }
+.product-card__img-wrap--sports   { background: linear-gradient(135deg, #EDE7F6, #E1BEE7); }
+
+.product-card__emoji {
+  font-size: 64px;
+  line-height: 1;
+  transition: transform var(--transition-base);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.1));
+}
+
+.product-card:hover .product-card__emoji {
+  transform: scale(1.08);
+}
+
+/* Card Body — now split into a growing content block + pinned CTA */
+.product-card__body {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Everything above the button — grows to fill available space */
+.product-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* CTA always sits at the bottom, regardless of content height above */
+.product-card__cta {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Clamp the description to 2 lines so it can't blow out card height */
+.product-card__desc {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card__brand {
+  font-size: var(--font-size-xs);
+  color: var(--amazon-blue);
+  font-weight: 500;
+}
+
+/* Title clamp tightened to 2 lines to match (was 3) so card heights
+   stay consistent even with a description present */
+.product-card__name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-dark);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em;
+}
+
+/* Stars Rating */
+.product-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stars {
+  color: var(--amazon-orange);
+  font-size: 13px;
+  letter-spacing: -1px;
+}
+
+.rating-count {
+  font-size: var(--font-size-xs);
+  color: var(--amazon-blue);
+}
+
+/* Price Block */
+.product-card__price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+/* Override price colors inside cards for light background */
+.product-card .price__current {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--text-price);
+}
+
+.product-card .price__old {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.product-card .price__discount {
+  font-size: var(--font-size-xs);
+  color: #067D62;
+  font-weight: 700;
+}
+
+/* Delivery Info */
+.product-card__delivery {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.product-card__delivery strong {
+  color: var(--text-dark);
+}
+
+
+/* ================================================================
+   13. PROMO STRIP
+   Full-width accent bar between sections.
+   ================================================================ */
+.promo-strip {
+  background: linear-gradient(to right, #232F3E, #37475A);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.promo-strip__icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.promo-strip__text {
+  flex: 1;
+  font-size: var(--font-size-base);
+  color: rgba(255,255,255,.9);
+}
+
+.promo-strip__text strong {
+  color: var(--amazon-orange);
+}
+
+.promo-strip__link {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--amazon-orange);
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.promo-strip__link:hover {
+  color: var(--amazon-orange-hover);
+  text-decoration: underline;
+}
+
+
+/* ================================================================
+   14. FOOTER
+   Four-layer footer matching Amazon's structural approach.
+   ================================================================ */
+
+/* Back to Top button: full width */
+.footer-back-top {
+  display: block;
+  background: #37475A;
+  color: var(--text-white);
+  text-align: center;
+  padding: var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: background var(--transition-fast);
+}
+
+.footer-back-top:hover {
+  background: #485769;
+}
+
+/* Footer links grid */
+.footer-links {
+  background: var(--bg-footer);
+  padding: var(--space-2xl) var(--space-md);
+}
+
+.footer-links__inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.footer-col__heading {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: var(--space-md);
+}
+
+.footer-col__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer-col__list a {
+  font-size: var(--font-size-sm);
+  color: #DDD;
+  transition: color var(--transition-fast);
+  line-height: 1.4;
+}
+
+.footer-col__list a:hover {
+  color: var(--text-white);
+  text-decoration: underline;
+}
+
+/* Footer Logo Strip */
+.footer-logo-strip {
+  background: var(--bg-footer-dark);
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: flex-end;
+}
+
+.footer-locale {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.locale-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-white);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.locale-btn:hover {
+  border-color: var(--text-white);
+  background: rgba(255,255,255,.05);
+}
+
+/* Copyright Bar */
+.footer-copyright {
+  background: var(--bg-footer-bottom);
+  padding: var(--space-md) var(--space-md);
+  text-align: center;
+}
+
+.footer-copyright__links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.footer-copyright__links a {
+  font-size: var(--font-size-xs);
+  color: #DDD;
+  transition: color var(--transition-fast);
+}
+
+.footer-copyright__links a:hover {
+  color: var(--text-white);
+  text-decoration: underline;
+}
+
+.footer-copyright__text {
+  font-size: var(--font-size-xs);
+  color: #999;
+}
+
+
+/* ================================================================
+   15. RESPONSIVE BREAKPOINTS
+   Four breakpoints for a fluid layout from desktop to mobile.
+   
+   ≥ 1200px  — Full 5-column product grid (desktop)
+   900–1199px — 3-column products, 5-col categories stay
+   600–899px  — 2-column products, 3-col categories
+   < 600px   — Single column, mobile-optimized nav
+   ================================================================ */
+
+/* ── Large Tablets (900–1199px) ── */
+@media (max-width: 1199px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero__headline {
+    font-size: var(--font-size-2xl);
+  }
+
+  .hero__content {
+    padding: 0 var(--space-xl);
+  }
+
+  .deals-banner__cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .navbar__location {
+    display: none; /* hide on smaller screens to save space */
+  }
+}
+
+/* ── Tablets (600–899px) ── */
+@media (max-width: 899px) {
+  .category-tiles__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero {
+    height: 320px;
+  }
+
+  .hero__headline {
+    font-size: var(--font-size-xl);
+  }
+
+  .deals-banner__inner {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .deals-banner__text {
+    max-width: 100%;
+  }
+
+  .deals-banner__cards {
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .footer-links__inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .navbar__actions .nav-action:nth-child(2) {
+    display: none; /* hide "Returns & Orders" on tablets */
+  }
+}
+
+/* ── Mobile (< 600px) ── */
+@media (max-width: 599px) {
+  :root {
+    --navbar-height: 96px; /* taller navbar to stack elements */
+  }
+
+  /* Stack navbar into two rows on mobile */
+  .navbar__inner {
+    flex-wrap: wrap;
+    height: auto;
+    padding: var(--space-sm) var(--space-sm);
+    gap: var(--space-sm);
+  }
+
+  .navbar__logo {
+    order: 1;
+  }
+
+  .navbar__actions {
+    order: 2;
+    gap: 4px;
+  }
+
+  /* Search takes full width on mobile (second row) */
+  .navbar__search {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: var(--space-sm);
+  }
+
+  .navbar__location {
+    display: none;
+  }
+
+  .nav-action__label {
+    display: none; /* simplify actions on mobile */
+  }
+
+  .category-tiles__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* On mobile, category tiles show 3-per-row with wrap */
+  .category-tile {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .category-tile__img-wrap {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .product-card__img-wrap {
+    height: 140px;
+  }
+
+  .product-card__emoji {
+    font-size: 48px;
+  }
+
+  .hero {
+    height: 260px;
+  }
+
+  .hero__content {
+    padding: 0 var(--space-md);
+  }
+
+  .hero__headline {
+    font-size: var(--font-size-lg);
+  }
+
+  .hero__sub {
+    font-size: var(--font-size-base);
+  }
+
+  .deals-banner__cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-links__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-locale {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-section__title::after {
+    bottom: -12px;
+  }
+
+  .promo-strip {
+    padding: var(--space-md);
+    gap: var(--space-sm);
+  }
+}
+
+/* ── Very Small Mobile (< 400px) ── */
+@media (max-width: 399px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-tiles__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .deals-banner__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ================================================================
+   ACCESSIBILITY IMPROVEMENTS
+   Focus styles ensure keyboard navigability.
+   Reduced-motion respects OS preference.
+   ================================================================ */
+:focus-visible {
+  outline: 3px solid var(--amazon-orange);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

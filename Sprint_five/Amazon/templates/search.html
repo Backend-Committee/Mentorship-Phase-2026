@@ -1,0 +1,395 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_filters %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root {
+    --az-orange: #FF9900;
+    --az-orange-hover: #F08804;
+    --az-dark: #131921;
+    --az-mid: #232F3E;
+    --az-blue: #007185;
+    --az-price: #B12704;
+  }
+
+  .search-header {
+    background-color: var(--az-mid);
+    padding: 1.25rem 0;
+  }
+
+  .search-header .form-control,
+  .search-header .form-select {
+    height: 44px;
+  }
+
+  .search-header .btn-search {
+    background-color: var(--az-orange);
+    border-color: var(--az-orange);
+    color: #0F1111;
+    font-weight: 600;
+    height: 44px;
+  }
+
+  .search-header .btn-search:hover {
+    background-color: var(--az-orange-hover);
+    border-color: var(--az-orange-hover);
+  }
+
+  .results-summary {
+    font-size: 0.95rem;
+    color: #565959;
+  }
+
+  .filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #F0F2F2;
+    border: 1px solid #DDD;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    color: #333;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+
+  .filter-pill .pill-label {
+    font-weight: 600;
+    color: var(--az-mid);
+  }
+
+  /* ---- Product Card ---- */
+  .product-card {
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+    height: 100%;
+  }
+
+  .product-card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,.12);
+    transform: translateY(-3px);
+    border-color: var(--az-orange);
+  }
+
+  .product-card__img-wrap {
+    position: relative;
+    background-color: #F7F8F8;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #E7E7E7;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .product-card__img-wrap img {
+    max-height: 160px;
+    max-width: 90%;
+    object-fit: contain;
+  }
+
+  .badge-bestseller {
+    background-color: #E77600;
+    color: #fff;
+  }
+
+  .badge-prime {
+    background-color: var(--az-mid);
+    color: var(--az-orange);
+    border: 1px solid var(--az-orange);
+  }
+
+  .badge-deal {
+    background-color: #CC0C39;
+    color: #fff;
+  }
+
+  .product-card .position-absolute.badges {
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+  }
+
+  .product-card__brand {
+    font-size: 0.78rem;
+    color: var(--az-blue);
+    font-weight: 500;
+  }
+
+  .product-card__title {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #0F1111;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.6em;
+  }
+
+  .product-card__category {
+    font-size: 0.75rem;
+    color: #565959;
+  }
+
+  .product-card__desc {
+    font-size: 0.8rem;
+    color: #565959;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .price-current {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--az-price);
+  }
+
+  .price-old {
+    font-size: 0.8rem;
+    color: #565959;
+    text-decoration: line-through;
+    margin-left: 6px;
+  }
+
+  .price-discount {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #067D62;
+    margin-left: 6px;
+  }
+
+  .stars {
+    color: var(--az-orange);
+    letter-spacing: -1px;
+  }
+
+  .btn-add-cart {
+    background-color: #FFD814;
+    border-color: #FCD200;
+    color: #0F1111;
+    font-weight: 600;
+  }
+
+  .btn-add-cart:hover {
+    background-color: #F7CA00;
+    border-color: #F2C200;
+  }
+
+  .stock-in {
+    color: #067D62;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .stock-out {
+    color: #B12704;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* ---- Empty State ---- */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+
+  .empty-state .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==============================================================
+     1. SEARCH HEADER SECTION
+     ============================================================== -->
+<section class="search-header">
+  <div class="container">
+    <form method="get" action="{% url 'search' %}" class="row g-2 align-items-center">
+
+      <!-- TODO: Search query value -->
+      <div class="col-12 col-md-5">
+        <input
+          type="text"
+          name="q"
+          class="form-control"
+          placeholder="Search Amazon"
+          value="{{ query|default:'' }}"
+          aria-label="Search products"
+        />
+      </div>
+
+      <!-- TODO: Selected category filter -->
+      <div class="col-8 col-md-4">
+        <select name="category" class="form-select" aria-label="Filter by category">
+          <option value="" {% if not selected_category %}selected{% endif %}>All Categories</option>
+          <option value="electronics" {% if selected_category == "electronics" %}selected{% endif %}>Electronics</option>
+          <option value="books" {% if selected_category == "books" %}selected{% endif %}>Books</option>
+          <option value="kitchen" {% if selected_category == "kitchen" %}selected{% endif %}>Kitchen</option>
+          <option value="sports" {% if selected_category == "sports" %}selected{% endif %}>Sports</option>
+          <option value="clothing" {% if selected_category == "clothing" %}selected{% endif %}>Clothing</option>
+          {# TODO: Loop categories dynamically from backend instead of hardcoded options above #}
+        </select>
+      </div>
+
+      <div class="col-4 col-md-3">
+        <button type="submit" class="btn btn-search w-100">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="me-1">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          Search
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+
+<div class="container py-4">
+
+  <!-- ==============================================================
+       2. RESULTS SUMMARY SECTION
+       ============================================================== -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+    <p class="results-summary mb-0">
+      <!-- TODO: results count -->
+      {% if results %}
+        Showing <strong>{{ results_count }}</strong> result{{ results_count|pluralize }}
+        {% if query %}for "<strong>{{ query }}</strong>"{% endif %}
+      {% else %}
+        <!-- TODO: conditional rendering for empty results -->
+        No results found{% if query %} for "<strong>{{ query }}</strong>"{% endif %}
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- ==============================================================
+       3. FILTER INFO BAR
+       ============================================================== -->
+  <!-- TODO: active filters display -->
+  <div class="mb-4">
+    {% if query %}
+      <span class="filter-pill">
+        <span class="pill-label">Keyword:</span> {{ query }}
+      </span>
+    {% endif %}
+    <span class="filter-pill">
+      <span class="pill-label">Category:</span> {{ selected_category|default:"All" }}
+    </span>
+  </div>
+
+  <!-- ==============================================================
+       4. PRODUCTS GRID SECTION
+       ============================================================== -->
+  {% if results %}
+    <div class="row g-3">
+      <!-- TODO: loop through search results -->
+      <!-- TODO: product list from backend -->
+      {% for product in results %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card product-card position-relative">
+
+            <!-- Badges -->
+            <div class="position-absolute badges d-flex flex-column gap-1">
+              {% if product.is_best_seller %}
+                <span class="badge badge-bestseller">Best Seller</span>
+              {% elif product.is_prime %}
+                <span class="badge badge-prime">Prime</span>
+              {% elif product.is_deal %}
+                <span class="badge badge-deal">Deal</span>
+              {% endif %}
+            </div>
+
+            <!-- Image -->
+            <div class="product-card__img-wrap">
+              <img
+                src="{{ product.image_url }}"
+                alt="{{ product.title }}"
+                loading="lazy"
+              />
+            </div>
+
+            <div class="card-body d-flex flex-column">
+              <p class="product-card__category mb-1">{{ product.category.name }}</p>
+              <p class="product-card__brand mb-1">{{ product.brand }}</p>
+              <h3 class="product-card__title">{{ product.title }}</h3>
+              <p class="product-card__desc">{{ product.short_description }}</p>
+
+              <!-- Rating -->
+              <div class="d-flex align-items-center gap-1 mb-1">
+                <span class="stars">{{ product.rating|stars }}</span>
+                <span class="text-muted small">({{ product.reviews_count|fmt_num }})</span>
+              </div>
+
+              <!-- Price -->
+              <div class="mb-1">
+                <span class="price-current">{{ product.price|currency }}</span>
+                {% if product.old_price %}
+                  <span class="price-old">{{ product.old_price|currency }}</span>
+                  {% if product.discount_percent %}
+                    <span class="price-discount">{{ product.discount_percent }}% off</span>
+                  {% endif %}
+                {% endif %}
+              </div>
+
+              <!-- Stock Status -->
+              {% if product.in_stock %}
+                <p class="stock-in mb-2">In Stock</p>
+              {% else %}
+                <p class="stock-out mb-2">Out of Stock</p>
+              {% endif %}
+
+              <!-- TODO: Add to cart action -->
+              {% if not product.in_stock %}
+                <button class="btn btn--cart" disabled>
+                  Out of Stock
+                </button>
+              {% else %}
+                <button
+                  class="btn btn--cart"
+                  hx-post="{% url 'add_to_cart' product.id %}"
+                  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                  hx-target="#cart-message-{{ product.id }}"
+                  hx-swap="innerHTML"
+                >
+                  Add to Cart
+                </button>
+              {% endif %}
+              <div id="cart-message-{{ product.id }}"></div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <!-- ==============================================================
+         5. EMPTY STATE UI
+         ============================================================== -->
+    <!-- TODO: empty state condition -->
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h2 class="h4 mb-2">No products found for your search</h2>
+      <p class="text-muted mb-4">
+        Try different keywords or select another category to broaden your results.
+      </p>
+      <a href="{% url 'home' %}" class="btn btn-search px-4">Back to Home</a>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

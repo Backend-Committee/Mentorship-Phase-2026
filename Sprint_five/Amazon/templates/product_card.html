@@ -1,0 +1,130 @@
+{% load store_filters %}
+
+<article class="product-card">
+
+  <!-- {# ── 1. Image Area ─────────────────────────────────────────────
+     The image wrap has a fixed height and `position: relative`
+     so badges can be absolutely positioned over the image.
+
+     `object-fit: contain` in CSS ensures the product photo fits
+     neatly without cropping, regardless of its original dimensions.
+
+     `loading="lazy"` defers off-screen images — essential for a
+     page with up to 50+ product images.                           #} -->
+  <div class="product-card__img-wrap">
+
+    <img
+      src="{{ product.image_url }}"
+      alt="{{ product.title }}"
+      class="product-card__img"
+      loading="lazy"
+      width="200"
+      height="200"
+    />
+
+    <!-- {# ── Badge Priority Logic ──
+       A product may technically qualify for multiple badges,
+       but we only show ONE to keep the card clean.
+       Priority: Best Seller > Prime > Deal                       #} -->
+    {% if product.is_best_seller %}
+      <span class="badge badge--bestseller">Best Seller</span>
+    {% elif product.is_prime %}
+      <span class="badge badge--prime">Prime</span>
+    {% elif product.is_deal %}
+      <span class="badge badge--deal">Deal</span>
+    {% endif %}
+
+  </div><!-- {# /product-card__img-wrap #} -->
+
+
+  <!-- {# ── 2. Card Body ─────────────────────────────────────────────────
+     IMPORTANT LAYOUT NOTE:
+     This body is split into two stacked blocks:
+       a) .product-card__content  → everything that varies in height
+          (brand, title, description, rating, price, stock line)
+       b) .product-card__cta      → the Add-to-Cart button + message slot
+
+     `.product-card__content` is given `flex: 1` so it grows/shrinks
+     to fill whatever space is available, and `.product-card__cta`
+     is pushed to the very bottom with `margin-top: auto`.
+     Result: no matter how many lines the description/title wrap to,
+     the button always lands in the exact same spot across every
+     card in the grid.                                              #} -->
+  <div class="product-card__body">
+
+    <div class="product-card__content">
+
+      <!-- {# Brand name (small link-coloured label above title) #} -->
+      <p class="product-card__brand">{{ product.brand }}</p>
+
+      <!-- {# Product title — CSS clamps this to 2 lines via line-clamp #} -->
+      <h3 class="product-card__name">{{ product.title }}</h3>
+
+      <!-- {# Short description — clamped to 2 lines so it never pushes
+         the button further than .product-card__content's own space #} -->
+      {% if product.short_description %}
+        <p class="product-card__desc">{{ product.short_description }}</p>
+      {% endif %}
+
+      <!-- {# Star Rating
+         `product.rating|stars` calls our custom filter and returns
+         an HTML <span class="stars">★★★★½</span> (mark_safe).
+         `product.reviews_count|fmt_num` adds comma formatting: 12340 → 12,340 #} -->
+      <div class="product-card__rating">
+        {{ product.rating|stars }}
+        <span class="rating-count">({{ product.reviews_count|fmt_num }})</span>
+      </div>
+
+      <!-- {# Price Block
+         Always show current price.
+         Only show old price and discount badge if old_price is set.
+         `discount_percent` is a model @property — no template math.  #} -->
+      <div class="product-card__price">
+        <span class="price__current">{{ product.price|currency }}</span>
+        {% if product.old_price %}
+          <span class="price__old">{{ product.old_price|currency }}</span>
+          {% if product.discount_percent %}
+            <span class="price__discount">{{ product.discount_percent }}% off</span>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <!-- {# Out-of-stock / delivery indicator #} -->
+      {% if not product.in_stock %}
+        <p class="product-card__stock product-card__stock--out">
+          Currently unavailable
+        </p>
+      {% else %}
+        <p class="product-card__delivery">
+          FREE delivery <strong>Tomorrow</strong>
+        </p>
+      {% endif %}
+
+    </div><!-- {# /product-card__content #} -->
+
+    <!-- {# ── CTA block — always pinned to the bottom of the card ── #} -->
+    <div class="product-card__cta">
+
+      {% if not product.in_stock %}
+        <button class="btn btn--cart" disabled>
+          Out of Stock
+        </button>
+      {% else %}
+        <button
+          class="btn btn--cart"
+          hx-post="{% url 'add_to_cart' product.id %}"
+          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+          hx-target="#cart-message-{{ product.id }}"
+          hx-swap="innerHTML"
+        >
+          Add to Cart
+        </button>
+      {% endif %}
+
+      <div id="cart-message-{{ product.id }}"></div>
+
+    </div><!-- {# /product-card__cta #} -->
+
+  </div><!-- {# /product-card__body #} -->
+
+</article>

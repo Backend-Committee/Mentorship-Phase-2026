@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_filters %}
+
+{% block title %}Amazon.com — Deals, Electronics, Books &amp; More{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const msg = document.getElementById("success-message");
+
+    if (msg) {
+        setTimeout(() => {
+            msg.style.opacity = "0";
+
+            setTimeout(() => {
+                msg.remove();
+            }, 500);
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+
+{% if messages %}
+    {% for message in messages %}
+        <div id="success-message" class="custom-alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+  <!-- {# ── HERO BANNER ─────────────────────────────────────────────
+     If a Banner object exists in context, render it dynamically.
+     The background image is set via an inline style on the slide div
+     so we can keep the CSS gradient as a pure fallback.
+     If no banner is configured, the CSS gradient shows instead.   #} -->
+  <section class="hero" aria-label="Promotional banner">
+
+    {% if banner %}
+<!--       {# Dynamic banner with real background image from the DB #}
+ -->      <div class="hero__slide hero__slide--dynamic"
+           style="background-image: url('{{ banner.image_url }}');"
+           role="img"
+           aria-label="{{ banner.title }}">
+        <div class="hero__content">
+          {% if banner.eyebrow_text %}
+            <p class="hero__eyebrow">{{ banner.eyebrow_text }}</p>
+          {% endif %}
+          <h1 class="hero__headline">{{ banner.title }}</h1>
+          {% if banner.subtitle %}
+            <p class="hero__sub">{{ banner.subtitle }}</p>
+          {% endif %}
+          <a href="{{ banner.button_link }}" class="btn btn--primary">
+            {{ banner.button_text }}
+          </a>
+        </div>
+      </div>
+
+    {% else %}
+<!--       {# Fallback: CSS-only gradient slide (no DB banner configured) #}
+ -->      <div class="hero__slide hero__slide--1">
+        <div class="hero__content">
+          <p class="hero__eyebrow">Welcome</p>
+          <h1 class="hero__headline">Discover Great Deals</h1>
+          <p class="hero__sub">Shop thousands of products across all categories</p>
+          <a href="#" class="btn btn--primary">Shop Now</a>
+        </div>
+      </div>
+    {% endif %}
+    <!-- {# TODO: Banner data — fed by the `banner` context variable above #} -->
+
+<!--     {# Pagination dots — always shown as visual chrome #}
+ -->    <div class="hero__dots" aria-hidden="true">
+      <span class="hero__dot hero__dot--active"></span>
+      <span class="hero__dot"></span>
+      <span class="hero__dot"></span>
+    </div>
+
+  </section>
+<!--   {# /HERO BANNER #}
+ -->
+
+<!--   {# ── PAGE WRAPPER ─────────────────────────────────────────── #}
+ -->  <div class="page-wrapper">
+
+    <!-- {# ── CATEGORY TILES ────────────────────────────────────────
+       One tile per Category object. The image comes from
+       `category.image_url` (an `<img>` tag replaces the old emoji).
+       The `color` field from the model drives the tile background
+       via an inline style, so each category keeps its own hue.    #} -->
+    <!-- TODO: Loop categories -->
+    <section class="section category-tiles" aria-labelledby="categories-heading">
+      <h2 id="categories-heading" class="section__title">Shop by Category</h2>
+      <div class="category-tiles__grid">
+
+        {% for category in categories %}
+          <a href="#{{ category.slug }}" class="category-tile">
+
+              <div class="category-tile__img-wrap"
+                {% if category.color %}style="background-color: {{ category.color }};"{% endif %}>
+              {% if category.image_url %}
+                <img
+                  src="{{ category.image_url }}"
+                  alt="{{ category.name }}"
+                  class="category-tile__img"
+                  loading="lazy"
+                  width="80"
+                  height="80"
+                />
+              {% else %}
+                {# Fallback initial letter if no image is set #}
+                <span class="category-tile__initial">
+                  {{ category.name|first|upper }}
+                </span>
+              {% endif %}
+            </div>
+
+            <span class="category-tile__name">{{ category.name }}</span>
+          </a>
+        {% empty %}
+          <p class="empty-state">No categories configured yet.</p>
+        {% endfor %}
+
+      </div>
+    </section>
+    <!-- {# /CATEGORY TILES #} -->
+
+
+    <!-- {# ── FLASH DEALS BANNER ────────────────────────────────────
+       The dark promotional panel shows up to 4 deal products
+       (is_deal=True), fetched by the view as `deal_products`.
+       Discount % is a model property — no template math needed.   #} -->
+    {% if deal_products %}
+    <section class="section deals-banner" aria-labelledby="deals-heading">
+      <div class="deals-banner__inner">
+
+        <div class="deals-banner__text">
+          <p class="deals-banner__eyebrow">⚡ Flash Deals</p>
+          <h2 id="deals-heading" class="deals-banner__title">Today's Best Deals</h2>
+          <p class="deals-banner__sub">New deals added every hour. Don't miss out.</p>
+          <a href="#" class="btn btn--outline">See All Deals</a>
+        </div>
+
+        <div class="deals-banner__cards">
+          {% for product in deal_products %}
+            <div class="deal-card">
+
+<!--               {# Discount badge — only shown when old_price is set #}
+ -->              {% if product.discount_percent %}
+                <span class="deal-card__badge">-{{ product.discount_percent }}%</span>
+              {% endif %}
+
+<!--               {# Product image in the deal card #}
+ -->              <div class="deal-card__img-wrap">
+                <img
+                  src="{{ product.image_url }}"
+                  alt="{{ product.title }}"
+                  class="deal-card__img"
+                  loading="lazy"
+                />
+              </div>
+
+              <p class="deal-card__name">{{ product.title|truncatechars:40 }}</p>
+              <p class="deal-card__price">
+                <span class="price__current">{{ product.price|currency }}</span>
+                {% if product.old_price %}
+                  <span class="price__old">{{ product.old_price|currency }}</span>
+                {% endif %}
+              </p>
+
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </section>
+    {% endif %}
+<!--     {# /FLASH DEALS BANNER #}
+ -->
+
+      <!-- {# ── FEATURED / BEST SELLERS ───────────────────────────────
+        A standalone product grid for top best-sellers across all
+        categories. Only rendered if there is at least one product. #} -->
+    {% if featured_products %}
+    <section class="section product-section" id="featured" aria-labelledby="featured-heading">
+      <div class="product-section__header">
+        <h2 id="featured-heading" class="product-section__title">Best Sellers</h2>
+        <a href="#" class="product-section__see-more">See all results →</a>
+      </div>
+      <div class="products-grid">
+        <!-- TODO: Loop products inside category -->
+        {% for product in featured_products %}
+          {% include 'product_card.html' %}
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+    <!-- {# /FEATURED #} -->
+
+
+    <!-- {# ── PROMO STRIP (static UI chrome between sections) ─────── #} -->
+    <div class="promo-strip">
+      <span class="promo-strip__icon">🚚</span>
+      <span class="promo-strip__text">
+        FREE Shipping on orders over <strong>$35</strong> —
+        Prime members get FREE same-day delivery
+      </span>
+      <a href="#" class="promo-strip__link">Try Prime Free →</a>
+    </div>
+
+
+    <!-- {# ── PER-CATEGORY PRODUCT SECTIONS ────────────────────────
+       This replaces the 5 hardcoded category blocks (Electronics,
+       Books, Clothing, Kitchen, Sports) with a single dynamic loop.
+
+       `categories_with_products` is a list of dicts built in the view:
+         [
+           {'category': <Category: Electronics>, 'products': <QuerySet>},
+           {'category': <Category: Books>,       'products': <QuerySet>},
+           ...
+         ]
+
+       Each dict is one <section> with a product grid of up to 10 cards.
+       The section `id` matches the sub-nav anchor (`#electronics` etc.) #} -->
+    <!-- TODO: Loop categories -->
+    {% for group in categories_with_products %}
+      <section class="section product-section"
+               id="{{ group.category.slug }}"
+               aria-labelledby="{{ group.category.slug }}-heading">
+
+        <div class="product-section__header">
+          <h2 id="{{ group.category.slug }}-heading"
+              class="product-section__title">
+            {{ group.category.name }}
+          </h2>
+          <a href="#" class="product-section__see-more">See all results →</a>
+        </div>
+
+        <div class="products-grid">
+          <!-- TODO: Loop products inside category -->
+          {% for product in group.products %}
+            {% include 'product_card.html' %}
+          {% endfor %}
+        </div>
+
+      </section>
+    {% empty %}
+      <!-- {# Shown only if no categories have any products at all #} -->
+      <div class="empty-state-page">
+        <p>No products available yet. Check back soon!</p>
+      </div>
+    {% endfor %}
+    <!-- {# /PER-CATEGORY PRODUCT SECTIONS #} -->
+
+  </div><!-- {# /page-wrapper #} -->
+
+{% endblock %}
