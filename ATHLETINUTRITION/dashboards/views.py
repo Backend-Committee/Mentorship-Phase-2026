@@ -5,6 +5,7 @@ from datetime import timedelta
 from workouts.models import Workout
 from nutrition_tracker.models import NutritionLog
 from django.db.models import Sum
+from coaches.models import CoachFeedback, WorkoutPlan
 
 class DashboardView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'dashboard/dashboard.html'
@@ -25,4 +26,10 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         context['today_protein'] = NutritionLog.objects.filter(
             user=self.request.user, date=today).aggregate(
             Sum('total_protein'))['total_protein__sum'] or 0
+        context['recent_workouts'] = Workout.objects.filter(
+            user=self.request.user).order_by('-date')[:5]
+        context['coach_feedback'] = CoachFeedback.objects.filter(
+        workout__user=self.request.user).order_by('-created_at')
+        context['workout_plans'] = WorkoutPlan.objects.filter(
+        athlete__user=self.request.user).order_by('-week_start_date')
         return context

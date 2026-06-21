@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">My Athletes</h1>
+<div class="row g-4">
+    {% for athlete in athletes %}
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">{{ athlete.user.username }}</div>
+            <div class="card-body">
+                <p><strong>Sport:</strong> {{ athlete.sport_type|default:"Not specified" }}</p>
+                <a href="{% url 'athlete_detail' athlete.pk %}" class="btn btn-primary w-100">View Profile & Workouts</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No athletes assigned yet.</p>
+    {% endfor %}
+</div>
+<a href="{% url 'plan_create' %}" class="btn btn-outline-danger w-100 mt-2">Create Workout Plan</a>
+{% endblock %}

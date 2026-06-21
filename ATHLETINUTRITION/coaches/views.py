@@ -23,9 +23,13 @@ class CoachListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            context['athlete_profile'] = AthleteProfile.objects.get(user=self.request.user)
+            athlete_profile = AthleteProfile.objects.get(user=self.request.user)
+            context['athlete_profile'] = athlete_profile
+            context['pending_requests'] = CoachRequest.objects.filter(
+                athlete=athlete_profile, status='pending')
         except AthleteProfile.DoesNotExist:
             context['athlete_profile'] = None
+            context['pending_requests'] = []
         return context
 
 class AcceptRequestView(LoginRequiredMixin, generic.View):
@@ -54,7 +58,7 @@ class CoachRequestListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         coach = get_object_or_404(CoachProfile, user=self.request.user)
         return CoachRequest.objects.filter(coach=coach, status='pending')
-
+    
 class AthleteDetailView(LoginRequiredMixin, generic.DetailView):
     model = AthleteProfile
     template_name = 'coaches/athlete_detail.html'
@@ -80,3 +84,19 @@ class WorkoutPlanCreateView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.coach = get_object_or_404(CoachProfile, user=self.request.user)
         return super().form_valid(form)
+    
+class LeaveCoachView(LoginRequiredMixin, generic.View):
+    def post(self, request):
+        athlete = get_object_or_404(AthleteProfile, user=request.user)
+        athlete.coach = None
+        athlete.save()
+        return redirect('coach_list')
+    
+class MyAthletesView(LoginRequiredMixin, generic.ListView):
+    model = AthleteProfile
+    template_name = 'coaches/my_athletes.html'
+    context_object_name = 'athletes'
+
+    def get_queryset(self):
+        coach = get_object_or_404(CoachProfile, user=self.request.user)
+        return AthleteProfile.objects.filter(coach=coach)

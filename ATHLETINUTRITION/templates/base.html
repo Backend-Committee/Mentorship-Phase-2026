@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AthletiNutrition</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --red-dark: #8B0000; --red-mid: #B22222; --red-light: #DC143C; }
+        body { background-color: #0f0f0f; color: #f0f0f0; }
+        .navbar { background-color: #8B0000 !important; }
+        .navbar-brand { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; }
+        .nav-link { color: #f0f0f0 !important; }
+        .nav-link:hover { color: #DC143C !important; }
+        .card { background-color: #1a1a1a; border: 1px solid #8B0000; color: #f0f0f0; }
+        .card-header { background-color: #8B0000; color: white; font-weight: bold; }
+        .btn-primary { background-color: #8B0000; border-color: #8B0000; }
+        .btn-primary:hover { background-color: #B22222; border-color: #B22222; }
+        .btn-danger { background-color: #DC143C; border-color: #DC143C; }
+        .table { color: #f0f0f0; }
+        .table thead { background-color: #8B0000; color: white; }
+        .table tbody tr:hover { background-color: #1f1f1f; }
+        a { color: #DC143C; }
+        a:hover { color: #B22222; }
+        .form-control { background-color: #1a1a1a; border-color: #8B0000; color: #f0f0f0; }
+        .form-control:focus { background-color: #1a1a1a; border-color: #DC143C; color: #f0f0f0; box-shadow: 0 0 0 0.2rem rgba(220,20,60,0.25); }
+        .stat-card { border-left: 4px solid #DC143C; padding: 1rem; background-color: #1a1a1a; border-radius: 8px; }
+        .stat-number { font-size: 2rem; font-weight: 900; color: #DC143C; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">💪 AthletiNutrition</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                <a class="nav-link" href="{% url 'workout_list' %}">Workouts</a>
+                <a class="nav-link" href="{% url 'nutrition_list' %}">Nutrition</a>
+                <a class="nav-link" href="{% url 'coach_list' %}">Coaches</a>
+                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                {% if user.coachprofile %}
+                <a class="nav-link" href="{% url 'my_athletes' %}">My Athletes</a>
+                <a class="nav-link" href="{% url 'coach_requests' %}">Requests</a>
+                {% endif %}
+                <form method="POST" action="{% url 'logout' %}" class="d-inline ms-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+                {% else %}
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

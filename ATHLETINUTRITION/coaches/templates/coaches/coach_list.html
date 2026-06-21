@@ -1,24 +1,45 @@
-<!DOCTYPE html>
-<html>
-<body>
-    <h1>Available Coaches</h1>
-    {% if athlete_profile.coach %}
-        <p>Your current coach: <strong>{{ athlete_profile.coach.user.username }}</strong></p>
-    {% endif %}
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Available Coaches</h1>
+{% if athlete_profile.coach %}
+<div class="alert alert-success d-flex justify-content-between align-items-center">
+    <span>Your current coach: <strong>{{ athlete_profile.coach.user.username }}</strong></span>
+    <form method="POST" action="{% url 'leave_coach' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-danger">Leave Coach</button>
+    </form>
+</div>
+{% endif %}
+<div class="row g-4">
     {% for coach in coaches %}
-    <div>
-        <h3>{{ coach.user.username }}</h3>
-        <p>{{ coach.specialty }}</p>
-        <p>{{ coach.bio }}</p>
-        {% if not athlete_profile.coach %}
-        <form method="POST" action="{% url 'send_request' coach.id %}">
-            {% csrf_token %}
-            <button type="submit">Request Coach</button>
-        </form>
-        {% endif %}
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header">{{ coach.user.username }}</div>
+            <div class="card-body">
+                <p><strong>Specialty:</strong> {{ coach.specialty|default:"Not specified" }}</p>
+                <p>{{ coach.bio|default:"No bio available." }}</p>
+                {% if not athlete_profile.coach %}
+                    {% for req in pending_requests %}
+                        {% if req.coach == coach %}
+                        <button class="btn btn-secondary w-100" disabled>Request Sent</button>
+                        {% else %}
+                        <form method="POST" action="{% url 'send_request' coach.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary w-100">Request Coach</button>
+                        </form>
+                        {% endif %}
+                    {% empty %}
+                    <form method="POST" action="{% url 'send_request' coach.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary w-100">Request Coach</button>
+                    </form>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
     </div>
     {% empty %}
     <p>No coaches available.</p>
     {% endfor %}
-</body>
-</html>
+</div>
+{% endblock %}

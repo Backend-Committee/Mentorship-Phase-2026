@@ -10,4 +10,6 @@ urlpatterns = [
     path('athlete/<int:pk>/', views.AthleteDetailView.as_view(), name='athlete_detail'),
     path('feedback/<int:workout_id>/', views.AddFeedbackView.as_view(), name='add_feedback'),
     path('plan/create/', views.WorkoutPlanCreateView.as_view(), name='plan_create'),
+    path('leave/', views.LeaveCoachView.as_view(), name='leave_coach'),
+    path('my-athletes/', views.MyAthletesView.as_view(), name='my_athletes'),
 ]

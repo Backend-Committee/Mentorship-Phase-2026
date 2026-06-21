@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'workouts',
     'nutrition_tracker',
     'dashboards',
-    'templates',
     'coaches',
     'rest_framework',
     'rest_framework.authtoken',
