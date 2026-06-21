@@ -394,5 +394,5 @@ erDiagram
         boolean is_enabled
         time reminder_time
     }
-Link ERD { https://lucid.app/lucidchart/c4cd0041-0f49-43a6-83b7-5523d51749c9/edit?viewport_loc=-578%2C-2251%2C2383%2C2026%2C0_0&invitationId=inv_989f7311-6bb5-401e-9ee6-ba577bd7de44 }
 ```
+Link ERD { https://lucid.app/lucidchart/c4cd0041-0f49-43a6-83b7-5523d51749c9/edit?viewport_loc=-578%2C-2251%2C2383%2C2026%2C0_0&invitationId=inv_989f7311-6bb5-401e-9ee6-ba577bd7de44 }
