@@ -78,7 +78,7 @@ This module manages daily cashier shifts, starting/closing cash, and shift-relat
 #### 🔒 Custom Shift Actions
 | HTTP Method | Endpoint | Description | Permissions | Body/Payload |
 |-------------|----------|-------------|-------------|--------------|
-| `POST` | `/api/shifts/{id}/close_shift/` | Close an active shift and calculate differences (shortage/surplus). | Authenticated | `{"closing_cash": 1500}` |
+| `POST` | `/api/shifts/close_shift/` | Close the current active shift and calculate differences (shortage/surplus). | Authenticated | `{"closing_cash": 1500}` |
 
 
 ### 💸 Expenses Management Endpoints (CRUD)
