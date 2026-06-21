@@ -1,0 +1,208 @@
+@startuml Tashkhees Physical Data Model
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+}
+
+' ==================== USERS APP ====================
+
+class users.User {
+    + id: BigAutoField [PK]
+    + password: CharField
+    + last_login: DateTimeField
+    + is_superuser: BooleanField
+    + username: CharField
+    + email: EmailField [Unique]
+    + is_staff: BooleanField
+    + is_active: BooleanField
+    + date_joined: DateTimeField
+    --
+    + USERNAME_FIELD: "email"
+    + REQUIRED_FIELDS: ["username"]
+}
+
+class users.Patient {
+    + user: OneToOneField(User) [PK]
+    + history: TextField
+}
+
+class users.Doctor {
+    + user: OneToOneField(User) [PK]
+    + specialization: CharField
+}
+
+class users.LabAdmin {
+    + user: OneToOneField(User) [PK]
+    + lab: OneToOneField(Laboratory)
+}
+
+' ==================== FILES APP ====================
+
+class files.File {
+    + id: AutoField [PK]
+    + file: FileField
+    + uploaded_at: DateTimeField
+}
+
+class files.UploadFile {
+    + id: AutoField [PK]
+    + file: ForeignKey(File)
+    + receiver: ForeignKey(User)
+    + uploader: ForeignKey(User)
+    + approved: BooleanField
+    + uploaded_at: DateTimeField
+}
+
+' ==================== FACILITIES APP ====================
+
+abstract class facilities.Facility {
+    # name: CharField
+    # description: TextField
+    # phone: CharField
+    # email: EmailField
+    # website: URLField
+    # opening_time: TimeField
+    # closing_time: TimeField
+    # is_active: BooleanField
+    --
+    {abstract} Meta: abstract = True
+}
+
+class facilities.Clinic {
+    + specialty: CharField
+    + consultation_fee: DecimalField
+    + emergency_services: BooleanField
+    + appointment_required: BooleanField
+    + doctors: ManyToManyField(Doctor)
+}
+
+class facilities.Laboratory {
+    + home_sample_collection: BooleanField
+    + online_results: BooleanField
+}
+
+class facilities.Address {
+    + id: AutoField [PK]
+    + content_type: ForeignKey(ContentType)
+    + object_id: PositiveIntegerField
+    + governorate: CharField
+    + city: CharField
+    + street: CharField
+    + latitude: FloatField
+    + longitude: FloatField
+}
+
+' ==================== DJANGO AUTH ====================
+
+class django.contrib.auth.models.Group {
+    + id: AutoField [PK]
+    + name: CharField [Unique]
+}
+
+class django.contrib.auth.models.Permission {
+    + id: AutoField [PK]
+    + name: CharField
+    + content_type: ForeignKey(ContentType)
+    + codename: CharField
+}
+
+class django.contrib.contenttypes.models.ContentType {
+    + id: AutoField [PK]
+    + app_label: CharField
+    + model: CharField
+}
+
+class django.contrib.auth.models.User_groups {
+    + id: AutoField [PK]
+    + user: ForeignKey(User)
+    + group: ForeignKey(Group)
+}
+
+class django.contrib.auth.models.User_user_permissions {
+    + id: AutoField [PK]
+    + user: ForeignKey(User)
+    + permission: ForeignKey(Permission)
+}
+
+' ==================== RELATIONSHIPS ====================
+
+' User relationships
+users.User ||--o{ users.Patient : "1:1\npatient_profile"
+users.User ||--o{ users.Doctor : "1:1\ndoctor_profile"
+users.User ||--o{ users.LabAdmin : "1:1\nlab_admin_profile"
+
+' User - Auth M2M
+users.User }o--o{ django.contrib.auth.models.Group : "groups"
+users.User }o--o{ django.contrib.auth.models.Permission : "user_permissions"
+
+' File relationships
+files.File ||--o{ files.UploadFile : "1:N"
+users.User ||--o{ files.UploadFile : "1:N\nuploader"
+users.User ||--o{ files.UploadFile : "1:N\nreceiver"
+
+' Facility inheritance
+facilities.Facility <|-- facilities.Clinic
+facilities.Facility <|-- facilities.Laboratory
+
+' Clinic - Doctor M2M
+facilities.Clinic }o--o{ users.Doctor : "doctors"
+
+' LabAdmin - Laboratory
+users.LabAdmin ||--|| facilities.Laboratory : "1:1\nlab_admins"
+
+' Address GenericForeignKey
+facilities.Address ..> facilities.Clinic : "GenericFK\n(content_type+object_id)"
+facilities.Address ..> facilities.Laboratory : "GenericFK\n(content_type+object_id)"
+facilities.Address ||--|| django.contrib.contenttypes.models.ContentType : "content_type"
+
+' Django Auth relationships
+django.contrib.auth.models.Group }o--o{ django.contrib.auth.models.Permission : "permissions"
+django.contrib.auth.models.Permission ||--|| django.contrib.contenttypes.models.ContentType : "content_type"
+
+' Django through tables
+django.contrib.auth.models.User_groups }-- users.User
+django.contrib.auth.models.User_groups }-- django.contrib.auth.models.Group
+django.contrib.auth.models.User_user_permissions }-- users.User
+django.contrib.auth.models.User_user_permissions }-- django.contrib.auth.models.Permission
+
+' ==================== NOTES ====================
+
+note right of users.User
+    Custom User Model
+    - Email-based authentication
+    - Inherits from AbstractBaseUser
+    - Managed by UserManager
+end note
+
+note right of facilities.Facility
+    Abstract Base Model
+    - No database table
+    - Fields inherited by
+      Clinic and Laboratory
+end note
+
+note right of facilities.Address
+    GenericForeignKey
+    - Can link to Clinic or Laboratory
+    - Uses ContentType framework
+    - Not a true ForeignKey
+end note
+
+note right of files.UploadFile
+    File Approval Workflow
+    1. Uploader sends file
+    2. Receiver views unapproved
+    3. Receiver approves file
+    4. Receiver views approved
+end note
+
+note bottom of users.LabAdmin
+    LabAdmin links to both
+    User (1:1) and Laboratory (1:1)
+end note
+
+@enduml

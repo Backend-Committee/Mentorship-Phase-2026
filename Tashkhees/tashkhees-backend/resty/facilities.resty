@@ -1,0 +1,291 @@
+# ============================================================
+# Facilities API Tests — Clinics, Laboratories, Facilities & Addresses
+# Base URL and tokens are defined as variables below.
+# Run auth.resty first to populate the token variables.
+# ============================================================
+
+@base_url=http://localhost:8000
+
+
+### #List All Facilities
+GET {{base_url}}/api/facilities/facilities/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Create New Facility
+POST {{base_url}}/api/facilities/facilities/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "name": "General Medical Center",
+    "description": "A full-service medical facility.",
+    "phone": "+1234567890",
+    "email": "info@generalmed.com",
+    "website": "https://generalmed.com",
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00",
+    "is_active": true
+}
+
+# save the facility id into variable: {{facilities.facility_id}}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("facilities.facility_id", body.id)
+--%}
+
+
+### #Get Facility Detail by ID
+GET {{base_url}}/api/facilities/facilities/{{facilities.facility_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Facility by ID
+PUT {{base_url}}/api/facilities/facilities/{{facilities.facility_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "name": "Updated General Medical Center",
+    "description": "Updated description.",
+    "phone": "+1234567890",
+    "email": "info@generalmed.com",
+    "website": "https://generalmed.com",
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00",
+    "is_active": true
+}
+
+
+### #Partial Update Facility by ID
+PATCH {{base_url}}/api/facilities/facilities/{{facilities.facility_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "phone": "+9876543210"
+}
+
+
+### #Delete Facility by ID
+DELETE {{base_url}}/api/facilities/facilities/{{facilities.facility_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #List All Clinics
+GET {{base_url}}/api/facilities/clinics/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Create New Clinic
+POST {{base_url}}/api/facilities/clinics/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "name": "Cardiology Clinic",
+    "description": "Specialized heart care clinic.",
+    "phone": "+1112223333",
+    "email": "heart@clinic.com",
+    "website": "https://cardioclinic.com",
+    "opening_time": "09:00:00",
+    "closing_time": "17:00:00",
+    "is_active": true,
+    "specialty": "Cardiology",
+    "consultation_fee": "150.00",
+    "emergency_services": true,
+    "appointment_required": true
+}
+
+# save the clinic id into variable: {{facilities.clinic_id}}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("facilities.clinic_id", body.id)
+--%}
+
+
+### #Get Clinic Detail by ID
+GET {{base_url}}/api/facilities/clinics/{{facilities.clinic_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Clinic by ID
+PUT {{base_url}}/api/facilities/clinics/{{facilities.clinic_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "name": "Advanced Cardiology Clinic",
+    "description": "Updated heart care clinic.",
+    "phone": "+1112223333",
+    "email": "heart@clinic.com",
+    "website": "https://cardioclinic.com",
+    "opening_time": "09:00:00",
+    "closing_time": "17:00:00",
+    "is_active": true,
+    "specialty": "Cardiology",
+    "consultation_fee": "200.00",
+    "emergency_services": true,
+    "appointment_required": false
+}
+
+
+### #Partial Update Clinic by ID
+PATCH {{base_url}}/api/facilities/clinics/{{facilities.clinic_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "consultation_fee": "175.00"
+}
+
+
+### #Delete Clinic by ID
+DELETE {{base_url}}/api/facilities/clinics/{{facilities.clinic_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #List All Laboratories
+GET {{base_url}}/api/facilities/laboratories/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Create New Laboratory
+POST {{base_url}}/api/facilities/laboratories/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "name": "Central Diagnostic Lab",
+    "description": "Full diagnostic laboratory services.",
+    "phone": "+4445556666",
+    "email": "lab@central.com",
+    "website": "https://centrallab.com",
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00",
+    "is_active": true,
+    "home_sample_collection": true,
+    "online_results": true
+}
+
+# save the laboratory id into variable: {{facilities.lab_id}}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("facilities.lab_id", body.id)
+--%}
+
+
+### #Get Laboratory Detail by ID
+GET {{base_url}}/api/facilities/laboratories/{{facilities.lab_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Laboratory by ID
+PUT {{base_url}}/api/facilities/laboratories/{{facilities.lab_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "name": "Advanced Central Diagnostic Lab",
+    "description": "Updated diagnostic laboratory.",
+    "phone": "+4445556666",
+    "email": "lab@central.com",
+    "website": "https://centrallab.com",
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00",
+    "is_active": true,
+    "home_sample_collection": false,
+    "online_results": true
+}
+
+
+### #Partial Update Laboratory by ID
+PATCH {{base_url}}/api/facilities/laboratories/{{facilities.lab_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "online_results": false
+}
+
+
+### #Delete Laboratory by ID
+DELETE {{base_url}}/api/facilities/laboratories/{{facilities.lab_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #List All Addresses
+GET {{base_url}}/api/facilities/addresses/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Create New Address for a Facility
+POST {{base_url}}/api/facilities/addresses/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "facility": {{facilities.facility_id}},
+    "governorate": "Cairo",
+    "city": "Nasr City",
+    "street": "Tayaran Street",
+    "latitude": 30.0561,
+    "longitude": 31.3301
+}
+
+# save the address id into variable: {{facilities.address_id}}
+
+--{%
+  local body = ctx.json_body()
+  ctx.set("facilities.address_id", body.id)
+--%}
+
+
+### #Get Address Detail by ID
+GET {{base_url}}/api/facilities/addresses/{{facilities.address_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+
+### #Update Address by ID
+PUT {{base_url}}/api/facilities/addresses/{{facilities.address_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "facility": {{facilities.facility_id}},
+    "governorate": "Giza",
+    "city": "Dokki",
+    "street": "Nile Street",
+    "latitude": 30.0478,
+    "longitude": 31.2065
+}
+
+
+### #Partial Update Address by ID
+PATCH {{base_url}}/api/facilities/addresses/{{facilities.address_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json
+
+{
+    "street": "Updated Street Name"
+}
+
+
+### #Delete Address by ID
+DELETE {{base_url}}/api/facilities/addresses/{{facilities.address_id}}/
+Authorization: Bearer {{auth.access_token}}
+Content-Type: application/json

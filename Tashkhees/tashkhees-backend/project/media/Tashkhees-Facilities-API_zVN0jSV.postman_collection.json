@@ -1,0 +1,626 @@
+{
+  "info": {
+    "_postman_id": "tashkhees-facilities-api",
+    "name": "Tashkhees - Facilities API",
+    "description": "Postman collection for testing Clinics, Laboratories, and Addresses endpoints. Facility is an abstract model - only concrete instances (Clinic/Lab) can be created.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Clinics",
+      "item": [
+        {
+          "name": "List All Clinics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/clinics/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "clinics", ""]
+            },
+            "description": "List all clinics. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Create New Clinic",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Cardiology Clinic\",\n    \"description\": \"Specialized heart care clinic.\",\n    \"phone\": \"+1112223333\",\n    \"email\": \"heart@clinic.com\",\n    \"website\": \"https://cardioclinic.com\",\n    \"opening_time\": \"09:00:00\",\n    \"closing_time\": \"17:00:00\",\n    \"is_active\": true,\n    \"specialty\": \"Cardiology\",\n    \"consultation_fee\": \"150.00\",\n    \"emergency_services\": true,\n    \"appointment_required\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/clinics/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "clinics", ""]
+            },
+            "description": "Create a new clinic. Requires admin privileges. Save the returned ID to the clinic_id variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Clinic by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+            },
+            "description": "Get clinic details by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Clinic by ID",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Advanced Cardiology Clinic\",\n    \"description\": \"Updated heart care clinic.\",\n    \"phone\": \"+1112223333\",\n    \"email\": \"heart@clinic.com\",\n    \"website\": \"https://cardioclinic.com\",\n    \"opening_time\": \"09:00:00\",\n    \"closing_time\": \"17:00:00\",\n    \"is_active\": true,\n    \"specialty\": \"Cardiology\",\n    \"consultation_fee\": \"200.00\",\n    \"emergency_services\": true,\n    \"appointment_required\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+            },
+            "description": "Full update of a clinic. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Clinic by ID",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"consultation_fee\": \"175.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+            },
+            "description": "Partial update of a clinic. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Clinic by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+            },
+            "description": "Delete a clinic. Requires admin privileges."
+          },
+          "response": []
+        }
+      ],
+      "description": "Clinic management endpoints. Facility is abstract - Clinic is a concrete implementation."
+    },
+    {
+      "name": "Laboratories",
+      "item": [
+        {
+          "name": "List All Laboratories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/laboratories/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "laboratories", ""]
+            },
+            "description": "List all laboratories. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Create New Laboratory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Central Diagnostic Lab\",\n    \"description\": \"Full diagnostic laboratory services.\",\n    \"phone\": \"+4445556666\",\n    \"email\": \"lab@central.com\",\n    \"website\": \"https://centrallab.com\",\n    \"opening_time\": \"07:00:00\",\n    \"closing_time\": \"19:00:00\",\n    \"is_active\": true,\n    \"home_sample_collection\": true,\n    \"online_results\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/laboratories/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "laboratories", ""]
+            },
+            "description": "Create a new laboratory. Requires admin privileges. Save the returned ID to the lab_id variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Laboratory by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+            },
+            "description": "Get laboratory details by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Laboratory by ID",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Advanced Central Diagnostic Lab\",\n    \"description\": \"Updated diagnostic laboratory.\",\n    \"phone\": \"+4445556666\",\n    \"email\": \"lab@central.com\",\n    \"website\": \"https://centrallab.com\",\n    \"opening_time\": \"07:00:00\",\n    \"closing_time\": \"19:00:00\",\n    \"is_active\": true,\n    \"home_sample_collection\": false,\n    \"online_results\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+            },
+            "description": "Full update of a laboratory. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Laboratory by ID",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"online_results\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+            },
+            "description": "Partial update of a laboratory. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Laboratory by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+            },
+            "description": "Delete a laboratory. Requires admin privileges."
+          },
+          "response": []
+        }
+      ],
+      "description": "Laboratory management endpoints. Facility is abstract - Laboratory is a concrete implementation."
+    },
+    {
+      "name": "Addresses",
+      "item": [
+        {
+          "name": "List All Addresses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/addresses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "addresses", ""]
+            },
+            "description": "List all addresses. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Address for Clinic",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content_type\": \"facilities.clinic\",\n    \"object_id\": {{clinic_id}},\n    \"governorate\": \"Cairo\",\n    \"city\": \"Nasr City\",\n    \"street\": \"Tayaran Street\",\n    \"latitude\": 30.0561,\n    \"longitude\": 31.3301\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/addresses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "addresses", ""]
+            },
+            "description": "Create an address linked to a clinic using generic relations (content_type + object_id). Save the returned ID to the address_id variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Address for Laboratory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content_type\": \"facilities.laboratory\",\n    \"object_id\": {{lab_id}},\n    \"governorate\": \"Giza\",\n    \"city\": \"Dokki\",\n    \"street\": \"Nile Street\",\n    \"latitude\": 30.0478,\n    \"longitude\": 31.2065\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/addresses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "addresses", ""]
+            },
+            "description": "Create an address linked to a laboratory using generic relations."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Address by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+            },
+            "description": "Get address details by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Address by ID",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content_type\": \"facilities.clinic\",\n    \"object_id\": {{clinic_id}},\n    \"governorate\": \"Giza\",\n    \"city\": \"Dokki\",\n    \"street\": \"Nile Street\",\n    \"latitude\": 30.0478,\n    \"longitude\": 31.2065\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+            },
+            "description": "Full update of an address. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Address by ID",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"street\": \"Updated Street Name\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+            },
+            "description": "Partial update of an address. Requires admin privileges."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Address by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+            },
+            "description": "Delete an address. Requires admin privileges."
+          },
+          "response": []
+        }
+      ],
+      "description": "Address management using Django ContentTypes (GenericForeignKey). Addresses can be linked to either Clinic or Laboratory via content_type and object_id."
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL for the Tashkhees API"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token. Obtain via /api/token/ endpoint."
+    },
+    {
+      "key": "clinic_id",
+      "value": "",
+      "type": "string",
+      "description": "ID of the last created clinic. Set manually or via test scripts."
+    },
+    {
+      "key": "lab_id",
+      "value": "",
+      "type": "string",
+      "description": "ID of the last created laboratory. Set manually or via test scripts."
+    },
+    {
+      "key": "address_id",
+      "value": "",
+      "type": "string",
+      "description": "ID of the last created address. Set manually or via test scripts."
+    }
+  ]
+}

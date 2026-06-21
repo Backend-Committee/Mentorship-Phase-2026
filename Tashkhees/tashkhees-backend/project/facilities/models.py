@@ -1,14 +1,6 @@
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
-
-# Create your models here.
-class Address(models.Model):
-    facility = models.ForeignKey('Facility', on_delete=models.CASCADE, related_name='addresses')
-    governorate = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    street = models.CharField(max_length=255)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
 
 
 class Facility(models.Model):
@@ -21,6 +13,21 @@ class Facility(models.Model):
     closing_time = models.TimeField()
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        abstract = True
+
+
+class Address(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    facility = GenericForeignKey("content_type", "object_id")
+
+    governorate = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    street = models.CharField(max_length=255)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
 
 class Clinic(Facility):
     specialty = models.CharField(max_length=255, blank=True, null=True)
@@ -31,6 +38,7 @@ class Clinic(Facility):
         "users.Doctor",
         related_name="clinics",
     )
+
 
 class Laboratory(Facility):
     home_sample_collection = models.BooleanField(default=False)

@@ -1,0 +1,1612 @@
+{
+  "info": {
+    "_postman_id": "tashkhees-full-api",
+    "name": "Tashkhees - Full API Collection",
+    "description": "Complete Postman collection for testing the entire Tashkhees application including Auth, Users, Files, and Facilities endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Obtain JWT Token (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", ""]
+            },
+            "description": "Obtain JWT access and refresh tokens for admin user."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtain JWT Token (Regular User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", ""]
+            },
+            "description": "Obtain JWT access and refresh tokens for regular user."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Admin Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{admin_refresh_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", "refresh", ""]
+            },
+            "description": "Refresh admin access token using refresh token."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh User Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{user_refresh_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", "refresh", ""]
+            },
+            "description": "Refresh user access token using refresh token."
+          },
+          "response": []
+        }
+      ],
+      "description": "JWT Authentication endpoints using djangorestframework-simplejwt."
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Register New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"newuser@example.com\",\n    \"username\": \"newuser\",\n    \"password\": \"securepassword123\",\n    \"is_staff\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "register", ""]
+            },
+            "description": "Register a new user. No authentication required."
+          },
+          "response": []
+        },
+        {
+          "name": "List All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", ""]
+            },
+            "description": "List all users. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "me", ""]
+            },
+            "description": "Get the currently authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", ""]
+            },
+            "description": "Get a specific user by ID."
+          },
+          "response": []
+        }
+      ],
+      "description": "User management endpoints."
+    },
+    {
+      "name": "Patients",
+      "item": [
+        {
+          "name": "List All Patients",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/patients/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "patients", ""]
+            },
+            "description": "List all patients. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Patient Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user\": {{user_id}},\n    \"history\": \"Patient has a history of hypertension.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/patients/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "patients", ""]
+            },
+            "description": "Create a new patient profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/patients/{{patient_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "patients", "{{patient_id}}", ""]
+            },
+            "description": "Get patient details by ID. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Patient Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user\": {{user_id}},\n    \"history\": \"Updated patient history: hypertension and diabetes.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/patients/{{patient_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "patients", "{{patient_id}}", ""]
+            },
+            "description": "Full update of a patient profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Patient Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"history\": \"Partial update: only hypertension.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/patients/{{patient_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "patients", "{{patient_id}}", ""]
+            },
+            "description": "Partial update of a patient profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Patient Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/patients/{{patient_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "patients", "{{patient_id}}", ""]
+            },
+            "description": "Delete a patient profile. Admin only."
+          },
+          "response": []
+        }
+      ],
+      "description": "Patient profile management. Admin only."
+    },
+    {
+      "name": "Doctors",
+      "item": [
+        {
+          "name": "List All Doctors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/doctors/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "doctors", ""]
+            },
+            "description": "List all doctors. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Doctor Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user\": {{user_id}},\n    \"specialization\": \"Cardiology\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/doctors/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "doctors", ""]
+            },
+            "description": "Create a new doctor profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Doctor by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/doctors/{{doctor_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "doctors", "{{doctor_id}}", ""]
+            },
+            "description": "Get doctor details by ID. Admin or authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Doctor Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user\": {{user_id}},\n    \"specialization\": \"Neurology\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/doctors/{{doctor_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "doctors", "{{doctor_id}}", ""]
+            },
+            "description": "Full update of a doctor profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Doctor Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"specialization\": \"Orthopedics\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/doctors/{{doctor_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "doctors", "{{doctor_id}}", ""]
+            },
+            "description": "Partial update of a doctor profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Doctor Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/doctors/{{doctor_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "doctors", "{{doctor_id}}", ""]
+            },
+            "description": "Delete a doctor profile. Admin only."
+          },
+          "response": []
+        }
+      ],
+      "description": "Doctor profile management."
+    },
+    {
+      "name": "Lab Admins",
+      "item": [
+        {
+          "name": "List All Lab Admins",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/lab-admins/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "lab-admins", ""]
+            },
+            "description": "List all lab admins. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Lab Admin Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user\": {{user_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/lab-admins/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "lab-admins", ""]
+            },
+            "description": "Create a new lab admin profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Lab Admin by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/lab-admins/{{labadmin_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "lab-admins", "{{labadmin_id}}", ""]
+            },
+            "description": "Get lab admin details by ID. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Lab Admin Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user\": {{user_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/lab-admins/{{labadmin_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "lab-admins", "{{labadmin_id}}", ""]
+            },
+            "description": "Full update of a lab admin profile. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Lab Admin Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/lab-admins/{{labadmin_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "lab-admins", "{{labadmin_id}}", ""]
+            },
+            "description": "Delete a lab admin profile. Admin only."
+          },
+          "response": []
+        }
+      ],
+      "description": "Lab admin profile management. Admin only."
+    },
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Upload File (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/test_report.pdf"
+                },
+                {
+                  "key": "receiver",
+                  "value": "2",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/upload/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", ""]
+            },
+            "description": "Upload a file to a receiver. Authenticated users only."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload File (Regular User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/lab_result.jpg"
+                },
+                {
+                  "key": "receiver",
+                  "value": "3",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/upload/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", ""]
+            },
+            "description": "Upload a file as a regular user."
+          },
+          "response": []
+        },
+        {
+          "name": "List Unapproved Files",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/upload/unapproved/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "unapproved", ""]
+            },
+            "description": "List all unapproved files sent to the current user."
+          },
+          "response": []
+        },
+        {
+          "name": "List Approved Files",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/upload/approved/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "approved", ""]
+            },
+            "description": "List all approved files for the current user."
+          },
+          "response": []
+        },
+        {
+          "name": "Approve File by ID",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/upload/{{upload_id}}/approve/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "{{upload_id}}", "approve", ""]
+            },
+            "description": "Approve a file by ID. Only the receiver can approve."
+          },
+          "response": []
+        }
+      ],
+      "description": "File upload and approval workflow."
+    },
+    {
+      "name": "Facilities",
+      "item": [
+        {
+          "name": "Clinics",
+          "item": [
+            {
+              "name": "List All Clinics",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/clinics/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "clinics", ""]
+                },
+                "description": "List all clinics. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Create New Clinic",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Cardiology Clinic\",\n    \"description\": \"Specialized heart care clinic.\",\n    \"phone\": \"+1112223333\",\n    \"email\": \"heart@clinic.com\",\n    \"website\": \"https://cardioclinic.com\",\n    \"opening_time\": \"09:00:00\",\n    \"closing_time\": \"17:00:00\",\n    \"is_active\": true,\n    \"specialty\": \"Cardiology\",\n    \"consultation_fee\": \"150.00\",\n    \"emergency_services\": true,\n    \"appointment_required\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/clinics/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "clinics", ""]
+                },
+                "description": "Create a new clinic. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Clinic by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+                },
+                "description": "Get clinic details by ID."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Clinic by ID",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Advanced Cardiology Clinic\",\n    \"description\": \"Updated heart care clinic.\",\n    \"phone\": \"+1112223333\",\n    \"email\": \"heart@clinic.com\",\n    \"website\": \"https://cardioclinic.com\",\n    \"opening_time\": \"09:00:00\",\n    \"closing_time\": \"17:00:00\",\n    \"is_active\": true,\n    \"specialty\": \"Cardiology\",\n    \"consultation_fee\": \"200.00\",\n    \"emergency_services\": true,\n    \"appointment_required\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+                },
+                "description": "Full update of a clinic. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Partial Update Clinic by ID",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"consultation_fee\": \"175.00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+                },
+                "description": "Partial update of a clinic. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Clinic by ID",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/clinics/{{clinic_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "clinics", "{{clinic_id}}", ""]
+                },
+                "description": "Delete a clinic. Admin only."
+              },
+              "response": []
+            }
+          ],
+          "description": "Clinic management endpoints."
+        },
+        {
+          "name": "Laboratories",
+          "item": [
+            {
+              "name": "List All Laboratories",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/laboratories/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "laboratories", ""]
+                },
+                "description": "List all laboratories. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Create New Laboratory",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Central Diagnostic Lab\",\n    \"description\": \"Full diagnostic laboratory services.\",\n    \"phone\": \"+4445556666\",\n    \"email\": \"lab@central.com\",\n    \"website\": \"https://centrallab.com\",\n    \"opening_time\": \"07:00:00\",\n    \"closing_time\": \"19:00:00\",\n    \"is_active\": true,\n    \"home_sample_collection\": true,\n    \"online_results\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/laboratories/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "laboratories", ""]
+                },
+                "description": "Create a new laboratory. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Laboratory by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+                },
+                "description": "Get laboratory details by ID."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Laboratory by ID",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Advanced Central Diagnostic Lab\",\n    \"description\": \"Updated diagnostic laboratory.\",\n    \"phone\": \"+4445556666\",\n    \"email\": \"lab@central.com\",\n    \"website\": \"https://centrallab.com\",\n    \"opening_time\": \"07:00:00\",\n    \"closing_time\": \"19:00:00\",\n    \"is_active\": true,\n    \"home_sample_collection\": false,\n    \"online_results\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+                },
+                "description": "Full update of a laboratory. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Partial Update Laboratory by ID",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"online_results\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+                },
+                "description": "Partial update of a laboratory. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Laboratory by ID",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/laboratories/{{lab_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "laboratories", "{{lab_id}}", ""]
+                },
+                "description": "Delete a laboratory. Admin only."
+              },
+              "response": []
+            }
+          ],
+          "description": "Laboratory management endpoints."
+        },
+        {
+          "name": "Addresses",
+          "item": [
+            {
+              "name": "List All Addresses",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/addresses/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "addresses", ""]
+                },
+                "description": "List all addresses. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Address for Clinic",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"content_type\": \"facilities.clinic\",\n    \"object_id\": {{clinic_id}},\n    \"governorate\": \"Cairo\",\n    \"city\": \"Nasr City\",\n    \"street\": \"Tayaran Street\",\n    \"latitude\": 30.0561,\n    \"longitude\": 31.3301\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/addresses/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "addresses", ""]
+                },
+                "description": "Create an address linked to a clinic using generic relations."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Address for Laboratory",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"content_type\": \"facilities.laboratory\",\n    \"object_id\": {{lab_id}},\n    \"governorate\": \"Giza\",\n    \"city\": \"Dokki\",\n    \"street\": \"Nile Street\",\n    \"latitude\": 30.0478,\n    \"longitude\": 31.2065\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/addresses/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "addresses", ""]
+                },
+                "description": "Create an address linked to a laboratory using generic relations."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Address by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+                },
+                "description": "Get address details by ID."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Address by ID",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"content_type\": \"facilities.clinic\",\n    \"object_id\": {{clinic_id}},\n    \"governorate\": \"Giza\",\n    \"city\": \"Dokki\",\n    \"street\": \"Nile Street\",\n    \"latitude\": 30.0478,\n    \"longitude\": 31.2065\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+                },
+                "description": "Full update of an address. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Partial Update Address by ID",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"street\": \"Updated Street Name\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+                },
+                "description": "Partial update of an address. Admin only."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Address by ID",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/facilities/addresses/{{address_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "facilities", "addresses", "{{address_id}}", ""]
+                },
+                "description": "Delete an address. Admin only."
+              },
+              "response": []
+            }
+          ],
+          "description": "Address management using Django ContentTypes (GenericForeignKey)."
+        }
+      ],
+      "description": "Facility management. Facility is abstract - only concrete Clinic and Laboratory instances can be created."
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL for the Tashkhees API"
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@example.com",
+      "type": "string",
+      "description": "Admin user email for authentication"
+    },
+    {
+      "key": "admin_password",
+      "value": "adminpass123",
+      "type": "string",
+      "description": "Admin user password"
+    },
+    {
+      "key": "user_email",
+      "value": "user@example.com",
+      "type": "string",
+      "description": "Regular user email for authentication"
+    },
+    {
+      "key": "user_password",
+      "value": "userpass123",
+      "type": "string",
+      "description": "Regular user password"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string",
+      "description": "Admin JWT access token (obtained from /api/token/)"
+    },
+    {
+      "key": "admin_refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "Admin JWT refresh token"
+    },
+    {
+      "key": "user_token",
+      "value": "",
+      "type": "string",
+      "description": "Regular user JWT access token"
+    },
+    {
+      "key": "user_refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "Regular user JWT refresh token"
+    },
+    {
+      "key": "user_id",
+      "value": "1",
+      "type": "string",
+      "description": "User ID for creating profiles"
+    },
+    {
+      "key": "patient_id",
+      "value": "1",
+      "type": "string",
+      "description": "Patient profile ID"
+    },
+    {
+      "key": "doctor_id",
+      "value": "1",
+      "type": "string",
+      "description": "Doctor profile ID"
+    },
+    {
+      "key": "labadmin_id",
+      "value": "1",
+      "type": "string",
+      "description": "Lab admin profile ID"
+    },
+    {
+      "key": "upload_id",
+      "value": "1",
+      "type": "string",
+      "description": "File upload ID for approval"
+    },
+    {
+      "key": "clinic_id",
+      "value": "1",
+      "type": "string",
+      "description": "Clinic ID"
+    },
+    {
+      "key": "lab_id",
+      "value": "1",
+      "type": "string",
+      "description": "Laboratory ID"
+    },
+    {
+      "key": "address_id",
+      "value": "1",
+      "type": "string",
+      "description": "Address ID"
+    }
+  ]
+}

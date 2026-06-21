@@ -1,0 +1,1115 @@
+openapi: "3.0.3"
+info:
+  title: InBuddy API
+  description: |
+    Body composition tracking system API.
+    
+    Extracts metrics from body composition report images using OCR, parses text into structured data, and tracks measurements over time.
+    
+    ## Authentication
+    All endpoints (except `/api/auth/users/` for registration and `/api/auth/jwt/create/` for login) require JWT Bearer token authentication.
+    
+    ### Getting a token
+    1. Register: `POST /api/auth/users/`
+    2. Login: `POST /api/auth/jwt/create/` → returns `access` and `refresh` tokens
+    3. Use the `access` token in the `Authorization` header: `Authorization: Bearer <token>`
+    
+    ### Refreshing a token
+    - `POST /api/auth/jwt/refresh/` with `{"refresh": "<refresh_token>"}`
+  version: "1.0.0"
+  contact:
+    name: InBuddy
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /api/auth/users/:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Creates a new user account and returns the created user object.
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateRequest"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Validation error (e.g., duplicate email, weak password)
+
+  /api/auth/jwt/create/:
+    post:
+      tags:
+        - Authentication
+      summary: Login (get JWT tokens)
+      description: Authenticates a user and returns access and refresh JWT tokens.
+      operationId: jwtCreate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenPair"
+        "401":
+          description: Invalid credentials
+
+  /api/auth/jwt/refresh/:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Returns a new access token using a valid refresh token.
+      operationId: jwtRefresh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refresh
+              properties:
+                refresh:
+                  type: string
+                  description: Valid refresh token
+      responses:
+        "200":
+          description: New token pair
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenPair"
+        "401":
+          description: Invalid or expired refresh token
+
+  /api/auth/jwt/verify/:
+    post:
+      tags:
+        - Authentication
+      summary: Verify token
+      description: Verifies if a token is valid.
+      operationId: jwtVerify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+              properties:
+                token:
+                  type: string
+      responses:
+        "200":
+          description: Token is valid
+        "401":
+          description: Token is invalid or expired
+
+  /api/users/profile/:
+    get:
+      tags:
+        - Users
+      summary: Get current user profile
+      description: Returns the profile of the authenticated user.
+      operationId: getUserProfile
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+
+    patch:
+      tags:
+        - Users
+      summary: Update current user profile
+      description: Partially updates the authenticated user's profile fields. Only send fields you want to change.
+      operationId: updateUserProfile
+      security:
+        - jwtAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequest"
+      responses:
+        "200":
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Validation error
+        "401":
+          description: Unauthorized
+
+    delete:
+      tags:
+        - Users
+      summary: Delete current user account
+      description: Permanently deletes the authenticated user's account.
+      operationId: deleteUserProfile
+      security:
+        - jwtAuth: []
+      responses:
+        "204":
+          description: Account deleted
+        "401":
+          description: Unauthorized
+
+  /api/extractions/:
+    get:
+      tags:
+        - Text Extraction
+      summary: List extraction tasks
+      description: Returns a paginated list of the authenticated user's extraction tasks.
+      operationId: listExtractions
+      security:
+        - jwtAuth: []
+      parameters:
+        - $ref: "#/components/parameters/page"
+      responses:
+        "200":
+          description: List of extraction tasks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedExtractions"
+        "401":
+          description: Unauthorized
+
+    post:
+      tags:
+        - Text Extraction
+      summary: Create extraction task (upload image)
+      description: |
+        Uploads an image for OCR text extraction.
+        
+        The extraction runs synchronously. Supported formats: JPEG, PNG, BMP, TIFF, WebP.
+      operationId: createExtraction
+      security:
+        - jwtAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Image file of the body composition report
+      responses:
+        "201":
+          description: Extraction task created and processed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExtractionTask"
+        "400":
+          description: Invalid file or missing image
+        "401":
+          description: Unauthorized
+
+  /api/extractions/{id}/:
+    get:
+      tags:
+        - Text Extraction
+      summary: Get extraction task
+      description: Returns a single extraction task by ID.
+      operationId: getExtraction
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Extraction task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExtractionTask"
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+    delete:
+      tags:
+        - Text Extraction
+      summary: Delete extraction task
+      description: Deletes an extraction task and its associated image.
+      operationId: deleteExtraction
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+  /api/analysis/:
+    get:
+      tags:
+        - Analysis
+      summary: List analyses
+      description: Returns a paginated list of the authenticated user's analyses.
+      operationId: listAnalyses
+      security:
+        - jwtAuth: []
+      parameters:
+        - $ref: "#/components/parameters/page"
+      responses:
+        "200":
+          description: List of analyses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedAnalyses"
+        "401":
+          description: Unauthorized
+
+  /api/analysis/create/:
+    post:
+      tags:
+        - Analysis
+      summary: Create analysis
+      description: |
+        Parses body composition report text into structured metrics.
+        
+        The parser extracts metrics like body fat %, muscle mass, BMI, water %, etc. from free-form text using pattern matching.
+      operationId: createAnalysis
+      security:
+        - jwtAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalysisCreateRequest"
+      responses:
+        "201":
+          description: Analysis created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisResult"
+        "400":
+          description: Missing text field
+        "401":
+          description: Unauthorized
+
+  /api/analysis/{id}/:
+    get:
+      tags:
+        - Analysis
+      summary: Get analysis
+      description: Returns a single analysis by ID.
+      operationId: getAnalysis
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisResult"
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+    delete:
+      tags:
+        - Analysis
+      summary: Delete analysis
+      description: Deletes an analysis result.
+      operationId: deleteAnalysis
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+  /api/measurements/:
+    get:
+      tags:
+        - Measurements
+      summary: List measurements
+      description: Returns a paginated list of the authenticated user's body measurements.
+      operationId: listMeasurements
+      security:
+        - jwtAuth: []
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - name: date_from
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter measurements from this date (YYYY-MM-DD)
+        - name: date_to
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter measurements to this date (YYYY-MM-DD)
+      responses:
+        "200":
+          description: List of measurements
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedMeasurements"
+        "401":
+          description: Unauthorized
+
+    post:
+      tags:
+        - Measurements
+      summary: Create measurement
+      description: Creates a new body measurement record. Only `date` is required; all metric fields are optional.
+      operationId: createMeasurement
+      security:
+        - jwtAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BodyMeasurementCreateRequest"
+      responses:
+        "201":
+          description: Measurement created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BodyMeasurement"
+        "400":
+          description: Validation error
+        "401":
+          description: Unauthorized
+
+  /api/measurements/latest/:
+    get:
+      tags:
+        - Measurements
+      summary: Get latest measurement
+      description: Returns the most recent body measurement for the authenticated user.
+      operationId: getLatestMeasurement
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Latest measurement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BodyMeasurement"
+        "404":
+          description: No measurements found
+        "401":
+          description: Unauthorized
+
+  /api/measurements/{id}/:
+    get:
+      tags:
+        - Measurements
+      summary: Get measurement
+      description: Returns a single body measurement by ID.
+      operationId: getMeasurement
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Measurement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BodyMeasurement"
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+    patch:
+      tags:
+        - Measurements
+      summary: Update measurement
+      description: Partially updates a body measurement.
+      operationId: updateMeasurement
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BodyMeasurementUpdateRequest"
+      responses:
+        "200":
+          description: Measurement updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BodyMeasurement"
+        "400":
+          description: Validation error
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+    delete:
+      tags:
+        - Measurements
+      summary: Delete measurement
+      description: Deletes a body measurement.
+      operationId: deleteMeasurement
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT access token. Get it via POST /api/auth/jwt/create/"
+
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+      description: Page number for pagination (20 items per page)
+
+  schemas:
+    UserCreateRequest:
+      type: object
+      required:
+        - email
+        - username
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: Unique email address (used as login)
+        username:
+          type: string
+          description: Unique username
+        password:
+          type: string
+          format: password
+          minLength: 8
+          description: Password (minimum 8 characters)
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    TokenPair:
+      type: object
+      properties:
+        access:
+          type: string
+          description: JWT access token (expires in 30 minutes)
+        refresh:
+          type: string
+          description: JWT refresh token (expires in 7 days)
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        age:
+          type: integer
+          nullable: true
+          minimum: 1
+        gender:
+          type: string
+          nullable: true
+          enum:
+            - male
+            - female
+            - other
+        height_cm:
+          type: number
+          format: float
+          nullable: true
+          description: Height in centimeters
+        weight_kg:
+          type: number
+          format: float
+          nullable: true
+          description: Weight in kilograms
+        goal:
+          type: string
+          nullable: true
+          enum:
+            - lose_weight
+            - maintain
+            - gain_muscle
+            - improve_fitness
+        activity_level:
+          type: string
+          nullable: true
+          enum:
+            - sedentary
+            - light
+            - moderate
+            - active
+            - very_active
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        age:
+          type: integer
+          minimum: 1
+          nullable: true
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+            - other
+          nullable: true
+        height_cm:
+          type: number
+          format: float
+          nullable: true
+        weight_kg:
+          type: number
+          format: float
+          nullable: true
+        goal:
+          type: string
+          enum:
+            - lose_weight
+            - maintain
+            - gain_muscle
+            - improve_fitness
+          nullable: true
+        activity_level:
+          type: string
+          enum:
+            - sedentary
+            - light
+            - moderate
+            - active
+            - very_active
+          nullable: true
+
+    ExtractionTask:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          description: URL of the uploaded image
+        extracted_text:
+          type: string
+          description: OCR-extracted text from the image
+          readOnly: true
+        status:
+          type: string
+          enum:
+            - pending
+            - processing
+            - completed
+            - failed
+          readOnly: true
+        error_message:
+          type: string
+          description: Error details if status is 'failed'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+
+    PaginatedExtractions:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExtractionTask"
+
+    AnalysisCreateRequest:
+      type: object
+      required:
+        - text
+      properties:
+        extraction_task:
+          type: integer
+          nullable: true
+          description: ID of the extraction task this analysis is linked to
+        text:
+          type: string
+          description: Raw body composition report text to parse
+
+    AnalysisResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        extraction_task:
+          type: integer
+          nullable: true
+          description: ID of the linked extraction task
+        source_text:
+          type: string
+          description: The original text that was analyzed
+        parsed_metrics:
+          $ref: "#/components/schemas/ParsedMetrics"
+        analyzed_at:
+          type: string
+          format: date-time
+          readOnly: true
+
+    ParsedMetrics:
+      type: object
+      description: Structured metrics extracted from body composition report text. Only present metrics are included.
+      properties:
+        body_fat_percent:
+          type: number
+          format: float
+          description: Body fat percentage
+        muscle_mass_percent:
+          type: number
+          format: float
+          description: Muscle mass percentage
+        muscle_mass_kg:
+          type: number
+          format: float
+          description: Muscle mass in kilograms
+        bmi:
+          type: number
+          format: float
+          description: Body Mass Index
+        water_percent:
+          type: number
+          format: float
+          description: Body water percentage
+        visceral_fat:
+          type: number
+          format: float
+          description: Visceral fat level
+        bone_mass_kg:
+          type: number
+          format: float
+          description: Bone mass in kilograms
+        bone_mass_percent:
+          type: number
+          format: float
+          description: Bone mass percentage
+        basal_metabolism_kcal:
+          type: number
+          format: float
+          description: Basal metabolic rate in kcal
+        body_age:
+          type: number
+          format: float
+          description: Metabolic/body age
+        weight_kg:
+          type: number
+          format: float
+          description: Weight in kilograms
+        protein_percent:
+          type: number
+          format: float
+          description: Protein percentage
+        subcutaneous_fat:
+          type: number
+          format: float
+          description: Subcutaneous fat percentage
+        obesity_grade:
+          type: number
+          format: float
+          description: Obesity grade/level
+
+    PaginatedAnalyses:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnalysisResult"
+
+    BodyMeasurementCreateRequest:
+      type: object
+      required:
+        - date
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the measurement
+        body_fat_percent:
+          type: number
+          format: float
+          nullable: true
+        muscle_mass_kg:
+          type: number
+          format: float
+          nullable: true
+        muscle_mass_percent:
+          type: number
+          format: float
+          nullable: true
+        bmi:
+          type: number
+          format: float
+          nullable: true
+        water_percent:
+          type: number
+          format: float
+          nullable: true
+        visceral_fat:
+          type: number
+          format: float
+          nullable: true
+        bone_mass_kg:
+          type: number
+          format: float
+          nullable: true
+        basal_metabolism_kcal:
+          type: integer
+          nullable: true
+        body_age:
+          type: integer
+          nullable: true
+        weight_kg:
+          type: number
+          format: float
+          nullable: true
+        protein_percent:
+          type: number
+          format: float
+          nullable: true
+        subcutaneous_fat_percent:
+          type: number
+          format: float
+          nullable: true
+        notes:
+          type: string
+          description: Free-form notes
+          default: ""
+        source_analysis:
+          type: integer
+          nullable: true
+          description: ID of the analysis this measurement originated from
+
+    BodyMeasurementUpdateRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        body_fat_percent:
+          type: number
+          format: float
+          nullable: true
+        muscle_mass_kg:
+          type: number
+          format: float
+          nullable: true
+        muscle_mass_percent:
+          type: number
+          format: float
+          nullable: true
+        bmi:
+          type: number
+          format: float
+          nullable: true
+        water_percent:
+          type: number
+          format: float
+          nullable: true
+        visceral_fat:
+          type: number
+          format: float
+          nullable: true
+        bone_mass_kg:
+          type: number
+          format: float
+          nullable: true
+        basal_metabolism_kcal:
+          type: integer
+          nullable: true
+        body_age:
+          type: integer
+          nullable: true
+        weight_kg:
+          type: number
+          format: float
+          nullable: true
+        protein_percent:
+          type: number
+          format: float
+          nullable: true
+        subcutaneous_fat_percent:
+          type: number
+          format: float
+          nullable: true
+        notes:
+          type: string
+        source_analysis:
+          type: integer
+          nullable: true
+
+    BodyMeasurement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+          description: ID of the user who owns this measurement
+        date:
+          type: string
+          format: date
+        body_fat_percent:
+          type: number
+          format: float
+          nullable: true
+        muscle_mass_kg:
+          type: number
+          format: float
+          nullable: true
+        muscle_mass_percent:
+          type: number
+          format: float
+          nullable: true
+        bmi:
+          type: number
+          format: float
+          nullable: true
+        water_percent:
+          type: number
+          format: float
+          nullable: true
+        visceral_fat:
+          type: number
+          format: float
+          nullable: true
+        bone_mass_kg:
+          type: number
+          format: float
+          nullable: true
+        basal_metabolism_kcal:
+          type: integer
+          nullable: true
+        body_age:
+          type: integer
+          nullable: true
+        weight_kg:
+          type: number
+          format: float
+          nullable: true
+        protein_percent:
+          type: number
+          format: float
+          nullable: true
+        subcutaneous_fat_percent:
+          type: number
+          format: float
+          nullable: true
+        notes:
+          type: string
+          default: ""
+        source_analysis:
+          type: integer
+          nullable: true
+          description: ID of the analysis this measurement originated from
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+
+    PaginatedMeasurements:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/BodyMeasurement"
+
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error message

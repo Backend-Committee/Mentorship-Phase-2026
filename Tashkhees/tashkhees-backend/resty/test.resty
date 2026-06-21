@@ -4,8 +4,8 @@
 @admin_email=hamza.hindawyy@gmail.com
 @admin_password=Ham@za
 
-@patient_email=patient@example.com
-@patient_password=Patient@123
+@receiver_email=receiver@gmail.com
+@receiver_password=Receiver@123
 
 @doctor_email=doctor@example.com
 @doctor_password=Doctor@123
@@ -92,17 +92,17 @@ Content-Type: application/json
 --%}
 
 
-### #Register New User
+### #Register New User 
+
 POST {{base_url}}/api/users/register/
 Content-Type: application/json
 
 {
-    "email": "doctor71@gmail.com",
-    "username": "Doctor71",
-    "is_doctor": true,
+    "email": "{{receiver_email}}",
+    "username": "ReceiverUser",
+    "is_doctor": false,
     "is_lab_admin": false,
-    "password": "Doctor@123",
-    "specialization": "Cardiology",
+    "password": "{{receiver_password}}",
     "is_staff": false
 }
 

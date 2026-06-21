@@ -139,18 +139,18 @@ The `files` app handles file uploads with a sender/receiver approval workflow.
 
 ### Facilities
 
-The `facilities` app manages medical facilities.
+The `facilities` app manages medical facilities. `Facility` is an **abstract base model** — you cannot create a standalone `Facility`. Instead, you create concrete instances as either a `Clinic` or a `Laboratory`.
 
 #### Models
 
 | Model | Description |
 |-------|-------------|
-| `Facility` | Base model for all facilities |
-| `Address` | Address information linked to a Facility |
-| `Clinic` | Extends Facility (specialty, consultation fee, doctors) |
-| `Laboratory` | Extends Facility (home sample collection, online results) |
+| `Facility` | **Abstract** base model (name, description, hours, contact info) |
+| `Clinic` | Concrete facility with specialty, consultation fee, doctors |
+| `Laboratory` | Concrete facility with home sample collection, online results |
+| `Address` | Address information linked to any facility via generic relation |
 
-#### Facility Fields
+#### Facility (Abstract) Fields
 
 - `name` — Facility name
 - `description` — Description
@@ -159,6 +159,8 @@ The `facilities` app manages medical facilities.
 - `website` — Website URL
 - `opening_time` / `closing_time` — Operating hours
 - `is_active` — Active status
+
+> **Note:** Since `Facility` is abstract, it has no database table and no API endpoints. Use `/api/facilities/clinics/` or `/api/facilities/laboratories/` instead.
 
 ---
 
@@ -253,6 +255,17 @@ Authorization: Bearer <access_token>
 | `GET` | `/api/upload/approved/` | IsAuthenticated | List approved files for current user |
 | `POST` | `/api/upload/<id>/approve/` | IsAuthenticated | Approve a file (receiver only) |
 
+### Facilities
+
+| Method | Endpoint | Permission | Description |
+|--------|----------|------------|-------------|
+| `GET/POST` | `/api/facilities/clinics/` | IsAdminUser | List/Create clinics |
+| `GET/PUT/PATCH/DELETE` | `/api/facilities/clinics/<id>/` | IsAdminUser | Clinic detail |
+| `GET/POST` | `/api/facilities/laboratories/` | IsAdminUser | List/Create labs |
+| `GET/PUT/PATCH/DELETE` | `/api/facilities/laboratories/<id>/` | IsAdminUser | Lab detail |
+| `GET/POST` | `/api/facilities/addresses/` | IsAdminUser | List/Create addresses |
+| `GET/PUT/PATCH/DELETE` | `/api/facilities/addresses/<id>/` | IsAdminUser | Address detail |
+
 ---
 
 ## File Upload & Approval Workflow
@@ -334,9 +347,10 @@ The project includes [Resty](https://github.com/micha/resty) client test files i
 
 ```
 resty/
-├── auth.resty      # JWT token management
-├── users.resty     # User & profile endpoints
-└── files.resty     # File upload & approval
+├── auth.resty         # JWT token management
+├── users.resty        # User & profile endpoints
+├── files.resty        # File upload & approval
+└── facilities.resty   # Clinics, laboratories & addresses
 ```
 
 ### Resty Conventions
@@ -394,6 +408,9 @@ Content-Type: application/json
 | `user.refresh_token` | Regular user JWT refresh token |
 | `files.upload_id` | Last uploaded file ID |
 | `files.file_id` | Last file object ID |
+| `facilities.clinic_id` | Last created clinic ID |
+| `facilities.lab_id` | Last created laboratory ID |
+| `facilities.address_id` | Last created address ID |
 
 ---
 

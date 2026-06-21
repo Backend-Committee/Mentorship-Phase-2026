@@ -1,0 +1,16 @@
+# Core
+Django>=6.0,<7.0
+djangorestframework>=3.17,<4.0
+djoser>=2.3,<3.0
+psycopg2-binary>=2.9,<3.0
+
+# CPU-only PyTorch (for EasyOCR)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.4,<3.0
+torchvision>=0.19,<1.0
+
+# OCR
+easyocr>=1.7,<2.0
+
+# Image handling
+Pillow>=10.0,<13.0
