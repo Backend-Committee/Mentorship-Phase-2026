@@ -15,9 +15,9 @@ class UserView(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['list', 'create', 'destroy']:
-            permission_classes = [permissions.IsManger]
+            permission_classes = [IsManger]
         else:
-            permission_classes = [permissions.IsAuthenticated]
+            permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
     @action(detail=False, methods=['get'])
@@ -28,10 +28,13 @@ class UserView(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='change-password')
     def change_password(self, request):
         user = request.user
-        new_password = request.data.get('password')
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
 
-        if not new_password:
-            return Response({"error": "Enter the new password"}, status=status.HTTP_400_BAD_REQUEST)
+        if not new_password or not old_password:
+            return Response({"error": "Enter the old password and the new password"}, status=status.HTTP_400_BAD_REQUEST)
+        if not user.check_password(old_password):
+            return Response({"message": "old_password does not match the current password"}, status=status.HTTP_400_BAD_REQUEST)
         user.set_password(new_password)
         user.save()
         return Response({"message": "password changed successfully!"}, status=status.HTTP_200_OK)

@@ -13,7 +13,7 @@ class Invoice(models.Model):
         ('Debt', 'Debt'),
     )
     shift = models.ForeignKey('shifts.Shift', on_delete=models.RESTRICT, related_name='invoices')
-    customer = models.ForeignKey('debt_management.Customer', on_delete=models.RESTRICT, related_name='invoices')
+    customer = models.ForeignKey('debt_management.Customer', on_delete=models.RESTRICT, related_name='invoices', null=True, blank=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='Cash')
     created_at = models.DateTimeField(auto_now_add=True)

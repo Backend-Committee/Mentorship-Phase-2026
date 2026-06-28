@@ -9,7 +9,7 @@ class InvoiceItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = InvoiceItem
         fields = '__all__'
-        read_only_fields = ['total_price']
+        read_only_fields = ['total_price', 'invoice','unit_price']
 
 
 
@@ -37,6 +37,11 @@ class InvoiceSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         items_data = validated_data.pop('items')
         invoice_type = validated_data.get('type', 'Sale')
+
+        for item in items_data:
+            medicine = item['medicine']
+            item['unit_price'] = medicine.price
+
 
         total_price = sum(item['quantity'] * item['unit_price'] for item in items_data)
         invoice = Invoice.objects.create(total_price=total_price, **validated_data)

@@ -6,6 +6,7 @@ from accounts import permissions as account_permissions
 from rest_framework.decorators import action
 from django.utils import timezone
 from rest_framework.response import Response
+from decimal import Decimal, InvalidOperation
 
 
 # Create your views here.
@@ -29,21 +30,21 @@ class ShiftView(viewsets.ModelViewSet):
         shift = serializer.save()
         shift.user.add(self.request.user)
 
-    @action(detail=True, methods=['post'])
-    def close_shift(self, request, pk=None):
-        shift = self.get_object()
+    @action(detail=False, methods=['post'])
+    def close_shift(self, request):
+        shift = Shift.objects.filter(is_closed=False).first()
 
-        if shift.is_closed:
-            raise ValidationError({"detail": "the shift is already closed"})
+        if not shift:
+            raise ValidationError({"detail": "there is no shift opened"})
 
         closing_cash = request.data.get('closing_cash')
         if closing_cash is None:
             raise ValidationError({"closing_cash": "Enter the closing cash first"})
 
         try:
-            closing_cash = float(closing_cash)
-        except ValueError:
-            raise ValidationError({"closing_cash": "the closing cash must be an integer"})
+            closing_cash = Decimal(str(closing_cash))
+        except (ValueError, InvalidOperation):
+            raise ValidationError({"closing_cash": "the closing cash must be a valid number"})
 
         shift.closing_cash = closing_cash
         shift.end_time = timezone.now()

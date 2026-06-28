@@ -6,6 +6,7 @@ from accounts import permissions as custom_permissions
 from rest_framework.decorators import action
 from django.db.models import F
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.response import Response
 # Create your views here.
 
 class MedicineView(viewsets.ModelViewSet):
@@ -30,7 +31,7 @@ class MedicineView(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='low-stock')
     def low_stock(self, request):
         low_stock_medicines = self.get_queryset().filter(stock_quantity__lte=F('min_stock'))
         serializer = self.get_serializer(low_stock_medicines, many=True)
